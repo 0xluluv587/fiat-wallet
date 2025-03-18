@@ -6,6 +6,43 @@
     <title>Matrix USD - 选择银行账户</title>
     <link href="../styles/main.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .add-bank-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--neutral-50);
+            border: 2px dashed var(--neutral-300);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 16px;
+            margin-bottom: 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .add-bank-btn:hover {
+            background-color: var(--neutral-100);
+        }
+        
+        .add-bank-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+        
+        .add-bank-text {
+            font-weight: 500;
+            color: var(--neutral-700);
+        }
+    </style>
 </head>
 <body>
     <!-- iOS设备模拟 -->
@@ -35,8 +72,8 @@
                 <span>返回</span>
             </div>
             <div class="nav-title">选择银行账户</div>
-            <div class="nav-action">
-                <i class="fas fa-plus" id="addNewBankBtn"></i>
+            <div class="nav-action" style="visibility: hidden">
+                <i class="fas fa-ellipsis-v"></i>
             </div>
         </div>
 
@@ -80,6 +117,14 @@
                         <i class="fas fa-ellipsis-h"></i>
                     </div>
                 </div>
+                
+                <!-- 添加新银行账户按钮 -->
+                <div class="add-bank-btn" onclick="showAddNewBankPage()">
+                    <div class="add-bank-icon">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="add-bank-text">添加新的银行账户</div>
+                </div>
             </div>
             
             <div class="ios-section mt-6">
@@ -95,7 +140,7 @@
                     <i class="fas fa-university text-5xl opacity-50 mb-4"></i>
                     <p class="mt-4">暂无银行账户</p>
                 </div>
-                <button class="btn btn-primary mt-4" onclick="showAddNewBankModal()">
+                <button class="btn btn-primary mt-4" onclick="showAddNewBankPage()">
                     <i class="fas fa-plus mr-2"></i> 添加银行账户
                 </button>
             </div>
@@ -235,14 +280,9 @@
             closeEditMenu();
         }
         
-        // 添加新银行卡按钮事件
-        document.getElementById('addNewBankBtn').addEventListener('click', function() {
-            showAddNewBankModal();
-        });
-        
-        // 显示添加新银行账户弹窗
-        function showAddNewBankModal() {
-            alert('添加新银行账户功能将在下一版本开放');
+        // 显示添加新银行账户页面
+        function showAddNewBankPage() {
+            window.location.href = 'coin-exchange-bank-add.html';
         }
         
         // 确认银行卡选择

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matrix USD - 添加机构</title>
+    <link href="../styles/main.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .toggle-tabs {
+            display: flex;
+            background-color: var(--neutral-100);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 24px;
+        }
+        
+        .toggle-tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 14px;
+            color: var(--neutral-600);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .toggle-tab.active {
+            background-color: white;
+            color: var(--primary-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .org-form {
+            display: none;
+        }
+        
+        .org-form.active {
+            display: block;
+        }
+        
+        .search-box {
+            position: relative;
+            margin-bottom: 24px;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neutral-400);
+        }
+        
+        .search-input {
+            width: 100%;
+            height: 48px;
+            padding: 0 16px 0 44px;
+            border: 1px solid var(--neutral-200);
+            border-radius: 12px;
+            font-size: 16px;
+            background-color: var(--neutral-50);
+        }
+        
+        .search-input:focus {
+            border-color: var(--primary-color);
+            background-color: white;
+            outline: none;
+        }
+        
+        .org-result-list {
+            margin-bottom: 24px;
+        }
+        
+        .result-card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .result-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .result-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background-color: var(--neutral-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            font-size: 20px;
+            color: var(--neutral-700);
+        }
+        
+        .result-info {
+            flex: 1;
+        }
+        
+        .result-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .result-details {
+            color: var(--neutral-500);
+            font-size: 14px;
+        }
+        
+        .form-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--neutral-800);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            color: var(--neutral-600);
+            margin-bottom: 8px;
+        }
+        
+        .form-input {
+            width: 100%;
+            height: 48px;
+            padding: 0 16px;
+            border: 1px solid var(--neutral-200);
+            border-radius: 12px;
+            font-size: 16px;
+            color: var(--neutral-900);
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
+            outline: none;
+        }
+        
+        .form-textarea {
+            width: 100%;
+            height: 100px;
+            padding: 12px 16px;
+            border: 1px solid var(--neutral-200);
+            border-radius: 12px;
+            font-size: 16px;
+            color: var(--neutral-900);
+            resize: none;
+            transition: all 0.3s;
+        }
+        
+        .form-textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
+            outline: none;
+        }
+        
+        .hint-text {
+            color: var(--neutral-500);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+        
+        .action-button {
+            width: 100%;
+            height: 48px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 24px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .action-button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .action-button:disabled {
+            background-color: var(--neutral-300);
+            cursor: not-allowed;
+        }
+        
+        .error-message {
+            color: var(--error);
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 32px 0;
+            color: var(--neutral-500);
+        }
+        
+        .no-results i {
+            font-size: 32px;
+            margin-bottom: 16px;
+            color: var(--neutral-300);
+        }
+    </style>
+</head>
+<body>
+    <!-- iOS设备模拟 -->
+    <div class="ios-device">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-bar-content">
+                <div class="status-bar-time" id="statusBarTime">9:41</div>
+                <div class="status-bar-icons">
+                    <div class="status-bar-signal">
+                        <i class="fas fa-signal"></i>
+                    </div>
+                    <div class="status-bar-wifi">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <div class="status-bar-battery">
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 导航栏 -->
+        <div class="nav-bar">
+            <div class="nav-back" id="navBack">
+                <i class="fas fa-chevron-left"></i>
+                <span>返回</span>
+            </div>
+            <div class="nav-title">添加机构</div>
+            <div class="nav-action" style="visibility: hidden">
+                <i class="fas fa-ellipsis-v"></i>
+            </div>
+        </div>
+
+        <!-- 主要内容区 -->
+        <div class="content">
+            <!-- 选项卡切换 -->
+            <div class="toggle-tabs">
+                <div class="toggle-tab active" data-form="join-form">加入现有机构</div>
+                <div class="toggle-tab" data-form="create-form">创建新机构</div>
+            </div>
+            
+            <!-- 加入现有机构表单 -->
+            <div id="join-form" class="org-form active">
+                <!-- 搜索框 -->
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="搜索机构名称" id="orgSearch" oninput="searchOrgs()">
+                </div>
+                
+                <!-- 搜索结果列表 -->
+                <div class="org-result-list" id="searchResults">
+                    <!-- 默认显示的推荐机构 -->
+                    <div class="result-card" onclick="showJoinConfirm('杭州云科技有限公司')">
+                        <div class="result-logo" style="background-color: #e9f0ff; color: #0052ff;">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <div class="result-info">
+                            <div class="result-name">杭州云科技有限公司</div>
+                            <div class="result-details">科技 | 已认证 | 50-200人</div>
+                        </div>
+                    </div>
+                    
+                    <div class="result-card" onclick="showJoinConfirm('深圳智慧金融科技有限公司')">
+                        <div class="result-logo" style="background-color: #f0fdf4; color: #10b981;">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="result-info">
+                            <div class="result-name">深圳智慧金融科技有限公司</div>
+                            <div class="result-details">金融 | 已认证 | 200-500人</div>
+                        </div>
+                    </div>
+                    
+                    <div class="result-card" onclick="showJoinConfirm('北京数据智能有限责任公司')">
+                        <div class="result-logo" style="background-color: #f3f4f6; color: #4b5563;">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="result-info">
+                            <div class="result-name">北京数据智能有限责任公司</div>
+                            <div class="result-details">数据服务 | 已认证 | 500+人</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 无搜索结果时显示 -->
+                <div class="no-results" id="noResults" style="display: none;">
+                    <i class="fas fa-search"></i>
+                    <p>未找到匹配的机构</p>
+                    <p class="hint-text">请尝试其他关键词或创建新机构</p>
+                </div>
+            </div>
+            
+            <!-- 创建新机构表单 -->
+            <div id="create-form" class="org-form">
+                <div class="form-title">基本信息</div>
+                
+                <form id="createOrgForm" onsubmit="return handleCreateOrg(event)">
+                    <div class="form-group">
+                        <label class="form-label" for="orgName">机构名称 <span class="text-error">*</span></label>
+                        <input type="text" id="orgName" class="form-input" placeholder="请输入机构全称" required>
+                        <div class="hint-text">请填写与营业执照上一致的机构全称</div>
+                        <div class="error-message" id="orgNameError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="businessLicense">统一社会信用代码 <span class="text-error">*</span></label>
+                        <input type="text" id="businessLicense" class="form-input" placeholder="请输入18位统一社会信用代码" required maxlength="18">
+                        <div class="error-message" id="businessLicenseError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="industry">所属行业</label>
+                        <select id="industry" class="form-input">
+                            <option value="">请选择行业</option>
+                            <option value="tech">互联网/IT/科技</option>
+                            <option value="finance">金融/投资/保险</option>
+                            <option value="manufacturing">制造业</option>
+                            <option value="retail">零售/批发</option>
+                            <option value="education">教育/培训</option>
+                            <option value="healthcare">医疗健康</option>
+                            <option value="realestate">房地产/建筑</option>
+                            <option value="service">服务业</option>
+                            <option value="other">其他行业</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="orgSize">公司规模</label>
+                        <select id="orgSize" class="form-input">
+                            <option value="">请选择规模</option>
+                            <option value="1-10">1-10人</option>
+                            <option value="11-50">11-50人</option>
+                            <option value="51-200">51-200人</option>
+                            <option value="201-500">201-500人</option>
+                            <option value="501-1000">501-1000人</option>
+                            <option value="1000+">1000人以上</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="orgDescription">机构简介</label>
+                        <textarea id="orgDescription" class="form-textarea" placeholder="请简要描述您的机构业务"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="action-button" id="createButton">
+                        创建机构
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 设置状态栏时间
+        function updateStatusBarTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            hours = hours < 10 ? `0${hours}` : hours;
+            minutes = minutes < 10 ? `0${minutes}` : minutes;
+            document.getElementById('statusBarTime').textContent = `${hours}:${minutes}`;
+        }
+        
+        // 初始化时间并每分钟更新一次
+        updateStatusBarTime();
+        setInterval(updateStatusBarTime, 60000);
+        
+        // 返回按钮
+        document.getElementById('navBack').addEventListener('click', function() {
+            window.location.href = 'org-select.html';
+        });
+        
+        // 切换表单
+        const toggleTabs = document.querySelectorAll('.toggle-tab');
+        toggleTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // 移除所有活动状态
+                toggleTabs.forEach(t => t.classList.remove('active'));
+                // 添加当前活动状态
+                this.classList.add('active');
+                
+                // 获取对应的表单
+                const formId = this.getAttribute('data-form');
+                
+                // 隐藏所有表单
+                document.querySelectorAll('.org-form').forEach(form => {
+                    form.classList.remove('active');
+                });
+                
+                // 显示当前表单
+                document.getElementById(formId).classList.add('active');
+            });
+        });
+        
+        // 搜索机构
+        function searchOrgs() {
+            const searchTerm = document.getElementById('orgSearch').value.toLowerCase().trim();
+            const searchResults = document.getElementById('searchResults');
+            const noResults = document.getElementById('noResults');
+            const resultCards = searchResults.querySelectorAll('.result-card');
+            
+            // 如果搜索词为空，显示所有结果
+            if (searchTerm === '') {
+                resultCards.forEach(card => {
+                    card.style.display = 'flex';
+                });
+                noResults.style.display = 'none';
+                return;
+            }
+            
+            // 筛选匹配的结果
+            let hasResults = false;
+            resultCards.forEach(card => {
+                const orgName = card.querySelector('.result-name').textContent.toLowerCase();
+                if (orgName.includes(searchTerm)) {
+                    card.style.display = 'flex';
+                    hasResults = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // 显示或隐藏无结果提示
+            if (hasResults) {
+                noResults.style.display = 'none';
+            } else {
+                noResults.style.display = 'block';
+            }
+        }
+        
+        // 显示加入确认弹窗
+        function showJoinConfirm(orgName) {
+            if (confirm(`确定申请加入 "${orgName}" 吗？申请需要等待管理员审核。`)) {
+                // 显示加载状态
+                alert('申请已提交，请等待审核');
+                
+                // 跳转回机构选择页面
+                setTimeout(() => {
+                    window.location.href = 'org-select.html';
+                }, 500);
+            }
+        }
+        
+        // 创建机构表单提交
+        function handleCreateOrg(event) {
+            event.preventDefault();
+            
+            const orgName = document.getElementById('orgName').value;
+            const businessLicense = document.getElementById('businessLicense').value;
+            
+            // 重置错误信息
+            document.getElementById('orgNameError').classList.remove('show');
+            document.getElementById('businessLicenseError').classList.remove('show');
+            
+            // 简单的表单验证
+            let hasError = false;
+            
+            if (!orgName) {
+                document.getElementById('orgNameError').textContent = '请输入机构名称';
+                document.getElementById('orgNameError').classList.add('show');
+                hasError = true;
+            }
+            
+            if (!businessLicense) {
+                document.getElementById('businessLicenseError').textContent = '请输入统一社会信用代码';
+                document.getElementById('businessLicenseError').classList.add('show');
+                hasError = true;
+            } else if (businessLicense.length !== 18) {
+                document.getElementById('businessLicenseError').textContent = '统一社会信用代码应为18位';
+                document.getElementById('businessLicenseError').classList.add('show');
+                hasError = true;
+            }
+            
+            if (hasError) {
+                return false;
+            }
+            
+            // 显示加载状态
+            const createButton = document.getElementById('createButton');
+            createButton.disabled = true;
+            createButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 创建中...';
+            
+            // 模拟创建请求
+            setTimeout(() => {
+                alert('机构创建成功！为保证资金安全，请完成企业认证。');
+                
+                // 跳转到机构认证页面
+                window.location.href = 'org-verify.html';
+            }, 1500);
+            
+            return false;
+        }
+    </script>
+</body>
+</html> 

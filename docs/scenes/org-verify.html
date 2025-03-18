@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matrix USD - 机构认证</title>
+    <link href="../styles/main.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .steps-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        
+        .step-line {
+            position: absolute;
+            top: 24px;
+            left: 40px;
+            right: 40px;
+            height: 2px;
+            background-color: var(--neutral-200);
+            z-index: 0;
+        }
+        
+        .step-progress {
+            position: absolute;
+            top: 24px;
+            left: 40px;
+            height: 2px;
+            background-color: var(--primary-color);
+            z-index: 1;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+        }
+        
+        .step-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: var(--neutral-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            color: var(--neutral-500);
+            border: 2px solid var(--neutral-200);
+            transition: all 0.3s;
+        }
+        
+        .step-text {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--neutral-500);
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .step.active .step-circle {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .step.active .step-text {
+            color: var(--primary-color);
+        }
+        
+        .step.completed .step-circle {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .step-content {
+            display: none;
+        }
+        
+        .step-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .upload-container {
+            border: 2px dashed var(--neutral-300);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .upload-container:hover {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+        
+        .upload-icon {
+            font-size: 32px;
+            color: var(--neutral-400);
+            margin-bottom: 12px;
+        }
+        
+        .upload-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .upload-text {
+            color: var(--neutral-500);
+            font-size: 14px;
+        }
+        
+        .upload-hint {
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--neutral-500);
+        }
+        
+        .file-list {
+            margin-top: 16px;
+        }
+        
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background-color: var(--neutral-50);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .file-icon {
+            color: var(--primary-color);
+            margin-right: 12px;
+            font-size: 20px;
+        }
+        
+        .file-info {
+            flex: 1;
+        }
+        
+        .file-name {
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        
+        .file-size {
+            font-size: 12px;
+            color: var(--neutral-500);
+        }
+        
+        .file-actions {
+            display: flex;
+        }
+        
+        .file-action {
+            padding: 6px;
+            color: var(--neutral-500);
+            cursor: pointer;
+        }
+        
+        .file-action:hover {
+            color: var(--primary-color);
+        }
+        
+        .form-divider {
+            height: 1px;
+            background-color: var(--neutral-100);
+            margin: 24px 0;
+        }
+        
+        .form-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--neutral-800);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            color: var(--neutral-600);
+            margin-bottom: 8px;
+        }
+        
+        .form-input {
+            width: 100%;
+            height: 48px;
+            padding: 0 16px;
+            border: 1px solid var(--neutral-200);
+            border-radius: 12px;
+            font-size: 16px;
+            color: var(--neutral-900);
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
+            outline: none;
+        }
+        
+        .hint-text {
+            color: var(--neutral-500);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 16px;
+        }
+        
+        .form-col {
+            flex: 1;
+        }
+        
+        .step-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 32px;
+        }
+        
+        .btn-prev {
+            padding: 12px 20px;
+            background-color: white;
+            border: 1px solid var(--neutral-200);
+            border-radius: 12px;
+            color: var(--neutral-700);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-prev:hover {
+            background-color: var(--neutral-50);
+        }
+        
+        .btn-next {
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-next:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-submit {
+            width: 100%;
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-submit:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .verification-summary {
+            background-color: var(--primary-light);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        
+        .summary-icon {
+            font-size: 32px;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            text-align: center;
+        }
+        
+        .summary-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        
+        .summary-text {
+            color: var(--neutral-700);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .summary-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .summary-label {
+            color: var(--neutral-600);
+            font-size: 14px;
+        }
+        
+        .summary-value {
+            font-weight: 500;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <!-- iOS设备模拟 -->
+    <div class="ios-device">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-bar-content">
+                <div class="status-bar-time" id="statusBarTime">9:41</div>
+                <div class="status-bar-icons">
+                    <div class="status-bar-signal">
+                        <i class="fas fa-signal"></i>
+                    </div>
+                    <div class="status-bar-wifi">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <div class="status-bar-battery">
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 导航栏 -->
+        <div class="nav-bar">
+            <div class="nav-back" id="navBack">
+                <i class="fas fa-chevron-left"></i>
+                <span>返回</span>
+            </div>
+            <div class="nav-title">机构认证</div>
+            <div class="nav-action" style="visibility: hidden">
+                <i class="fas fa-ellipsis-v"></i>
+            </div>
+        </div>
+
+        <!-- 主要内容区 -->
+        <div class="content">
+            <!-- 步骤指示器 -->
+            <div class="steps-container">
+                <div class="step-line"></div>
+                <div class="step-progress" id="stepProgress"></div>
+                
+                <div class="step active" data-step="1">
+                    <div class="step-circle">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="step-text">企业资质</div>
+                </div>
+                
+                <div class="step" data-step="2">
+                    <div class="step-circle">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="step-text">法人信息</div>
+                </div>
+                
+                <div class="step" data-step="3">
+                    <div class="step-circle">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="step-text">确认提交</div>
+                </div>
+            </div>
+            
+            <!-- 步骤1: 企业资质 -->
+            <div id="step1" class="step-content active">
+                <!-- 营业执照上传 -->
+                <div class="upload-container" onclick="triggerFileUpload('businessLicense')">
+                    <input type="file" id="businessLicense" style="display: none;" accept="image/png, image/jpeg, application/pdf" onchange="handleFileUpload(this, '营业执照')">
+                    <div class="upload-icon">
+                        <i class="fas fa-file-upload"></i>
+                    </div>
+                    <div class="upload-title">上传营业执照</div>
+                    <div class="upload-text">点击或拖拽文件至此处上传</div>
+                    <div class="upload-hint">支持 JPG、PNG、PDF 格式，文件大小不超过5MB</div>
+                </div>
+                
+                <!-- 组织机构代码证上传 -->
+                <div class="upload-container" onclick="triggerFileUpload('orgCode')">
+                    <input type="file" id="orgCode" style="display: none;" accept="image/png, image/jpeg, application/pdf" onchange="handleFileUpload(this, '组织机构代码证')">
+                    <div class="upload-icon">
+                        <i class="fas fa-file-upload"></i>
+                    </div>
+                    <div class="upload-title">上传组织机构代码证</div>
+                    <div class="upload-text">点击或拖拽文件至此处上传</div>
+                    <div class="upload-hint">支持 JPG、PNG、PDF 格式，文件大小不超过5MB</div>
+                </div>
+                
+                <!-- 上传的文件列表 -->
+                <div class="file-list" id="fileList"></div>
+                
+                <div class="step-buttons">
+                    <div></div> <!-- 占位 -->
+                    <button class="btn-next" onclick="nextStep(1)">
+                        下一步 <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 步骤2: 法人信息 -->
+            <div id="step2" class="step-content">
+                <div class="form-section-title">法人基本信息</div>
+                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label" for="legalName">法人姓名 <span class="text-error">*</span></label>
+                            <input type="text" id="legalName" class="form-input" placeholder="请输入法人姓名" required>
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label class="form-label" for="legalIdType">证件类型 <span class="text-error">*</span></label>
+                            <select id="legalIdType" class="form-input" required>
+                                <option value="idCard">身份证</option>
+                                <option value="passport">护照</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="legalIdNumber">证件号码 <span class="text-error">*</span></label>
+                    <input type="text" id="legalIdNumber" class="form-input" placeholder="请输入证件号码" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="legalPhone">法人手机号 <span class="text-error">*</span></label>
+                    <input type="tel" id="legalPhone" class="form-input" placeholder="请输入法人手机号" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="legalEmail">法人邮箱</label>
+                    <input type="email" id="legalEmail" class="form-input" placeholder="请输入法人邮箱">
+                </div>
+                
+                <div class="form-divider"></div>
+                
+                <div class="form-section-title">法人证件照</div>
+                
+                <div class="upload-container" onclick="triggerFileUpload('idCardFront')">
+                    <input type="file" id="idCardFront" style="display: none;" accept="image/png, image/jpeg" onchange="handleFileUpload(this, '身份证正面')">
+                    <div class="upload-icon">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                    <div class="upload-title">上传身份证人像面</div>
+                    <div class="upload-text">点击或拖拽文件至此处上传</div>
+                    <div class="upload-hint">支持 JPG、PNG 格式，文件大小不超过2MB</div>
+                </div>
+                
+                <div class="upload-container" onclick="triggerFileUpload('idCardBack')">
+                    <input type="file" id="idCardBack" style="display: none;" accept="image/png, image/jpeg" onchange="handleFileUpload(this, '身份证背面')">
+                    <div class="upload-icon">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                    <div class="upload-title">上传身份证国徽面</div>
+                    <div class="upload-text">点击或拖拽文件至此处上传</div>
+                    <div class="upload-hint">支持 JPG、PNG 格式，文件大小不超过2MB</div>
+                </div>
+                
+                <div class="step-buttons">
+                    <button class="btn-prev" onclick="prevStep(2)">
+                        <i class="fas fa-arrow-left mr-2"></i> 上一步
+                    </button>
+                    <button class="btn-next" onclick="nextStep(2)">
+                        下一步 <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 步骤3: 确认提交 -->
+            <div id="step3" class="step-content">
+                <div class="verification-summary">
+                    <div class="summary-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="summary-title">企业认证信息确认</div>
+                    <div class="summary-text">请确认以下信息准确无误，提交后将进入人工审核阶段</div>
+                    
+                    <div class="summary-item">
+                        <div class="summary-label">企业名称</div>
+                        <div class="summary-value">上海数字科技有限公司</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">统一社会信用代码</div>
+                        <div class="summary-value">91310000MA1FL4XY28</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">法人姓名</div>
+                        <div class="summary-value" id="summaryLegalName">张明</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">法人证件号码</div>
+                        <div class="summary-value" id="summaryLegalId">31010119****123456</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">联系电话</div>
+                        <div class="summary-value" id="summaryPhone">138****5678</div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="remember-me">
+                        <input type="checkbox" id="agreement" required>
+                        <label for="agreement">我已阅读并同意《企业认证服务协议》和《个人信息处理声明》</label>
+                    </div>
+                </div>
+                
+                <button id="submitButton" class="btn-submit" onclick="submitVerification()">
+                    提交认证
+                </button>
+                
+                <div class="hint-text text-center mt-4">
+                    审核结果将在1-3个工作日内通过短信和邮件通知，请留意接收。
+                </div>
+                
+                <div class="step-buttons">
+                    <button class="btn-prev" onclick="prevStep(3)">
+                        <i class="fas fa-arrow-left mr-2"></i> 上一步
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 设置状态栏时间
+        function updateStatusBarTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            hours = hours < 10 ? `0${hours}` : hours;
+            minutes = minutes < 10 ? `0${minutes}` : minutes;
+            document.getElementById('statusBarTime').textContent = `${hours}:${minutes}`;
+        }
+        
+        // 初始化时间并每分钟更新一次
+        updateStatusBarTime();
+        setInterval(updateStatusBarTime, 60000);
+        
+        // 返回按钮
+        document.getElementById('navBack').addEventListener('click', function() {
+            if (confirm('离开将丢失已填写的信息，确定要返回吗？')) {
+                window.location.href = 'org-select.html';
+            }
+        });
+        
+        // 全局变量：当前步骤
+        let currentStep = 1;
+        
+        // 下一步
+        function nextStep(step) {
+            if (step === 1) {
+                // 简单验证：检查是否上传了营业执照
+                const fileList = document.getElementById('fileList');
+                if (fileList.children.length === 0) {
+                    alert('请至少上传营业执照');
+                    return;
+                }
+            } else if (step === 2) {
+                // 简单验证：检查法人信息
+                const legalName = document.getElementById('legalName').value;
+                const legalIdNumber = document.getElementById('legalIdNumber').value;
+                const legalPhone = document.getElementById('legalPhone').value;
+                
+                if (!legalName || !legalIdNumber || !legalPhone) {
+                    alert('请填写法人必填信息');
+                    return;
+                }
+                
+                // 更新摘要信息
+                document.getElementById('summaryLegalName').textContent = legalName;
+                document.getElementById('summaryLegalId').textContent = maskString(legalIdNumber, 4, 4);
+                document.getElementById('summaryPhone').textContent = maskString(legalPhone, 3, 4);
+            }
+            
+            // 隐藏当前步骤内容
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            
+            // 更新当前步骤
+            currentStep = step + 1;
+            
+            // 显示下一步内容
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            
+            // 更新步骤指示器
+            updateStepIndicator();
+        }
+        
+        // 上一步
+        function prevStep(step) {
+            // 隐藏当前步骤内容
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            
+            // 更新当前步骤
+            currentStep = step - 1;
+            
+            // 显示上一步内容
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            
+            // 更新步骤指示器
+            updateStepIndicator();
+        }
+        
+        // 更新步骤指示器
+        function updateStepIndicator() {
+            // 更新步骤状态
+            document.querySelectorAll('.step').forEach(step => {
+                const stepNumber = parseInt(step.getAttribute('data-step'));
+                
+                // 移除所有状态
+                step.classList.remove('active', 'completed');
+                
+                if (stepNumber === currentStep) {
+                    step.classList.add('active');
+                } else if (stepNumber < currentStep) {
+                    step.classList.add('completed');
+                }
+            });
+            
+            // 更新进度条
+            const progressWidth = ((currentStep - 1) / 2) * 100;
+            document.getElementById('stepProgress').style.width = `${progressWidth}%`;
+        }
+        
+        // 触发文件上传
+        function triggerFileUpload(inputId) {
+            document.getElementById(inputId).click();
+        }
+        
+        // 处理文件上传
+        function handleFileUpload(input, fileType) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                
+                // 检查文件大小
+                const maxSize = 5 * 1024 * 1024; // 5MB
+                if (file.size > maxSize) {
+                    alert('文件大小超过限制，请选择不超过5MB的文件');
+                    input.value = '';
+                    return;
+                }
+                
+                // 创建文件项
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <div class="file-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="file-info">
+                        <div class="file-name">${fileType}</div>
+                        <div class="file-size">${formatFileSize(file.size)}</div>
+                    </div>
+                    <div class="file-actions">
+                        <div class="file-action" onclick="viewFile('${input.id}')">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="file-action" onclick="deleteFile('${input.id}', this.parentNode.parentNode)">
+                            <i class="fas fa-trash-alt"></i>
+                        </div>
+                    </div>
+                `;
+                
+                // 添加到文件列表
+                document.getElementById('fileList').appendChild(fileItem);
+            }
+        }
+        
+        // 格式化文件大小
+        function formatFileSize(bytes) {
+            if (bytes < 1024) {
+                return bytes + ' B';
+            } else if (bytes < 1024 * 1024) {
+                return (bytes / 1024).toFixed(2) + ' KB';
+            } else {
+                return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+            }
+        }
+        
+        // 查看文件
+        function viewFile(inputId) {
+            alert('查看文件功能暂未实现');
+        }
+        
+        // 删除文件
+        function deleteFile(inputId, fileItem) {
+            if (confirm('确定要删除此文件吗？')) {
+                // 清除文件输入
+                document.getElementById(inputId).value = '';
+                
+                // 移除文件项
+                fileItem.remove();
+            }
+        }
+        
+        // 掩码字符串
+        function maskString(str, prefixLength, suffixLength) {
+            if (!str) return '';
+            
+            const prefix = str.substring(0, prefixLength);
+            const suffix = str.substring(str.length - suffixLength);
+            const maskedLength = str.length - prefixLength - suffixLength;
+            const masked = '*'.repeat(maskedLength);
+            
+            return prefix + masked + suffix;
+        }
+        
+        // 提交认证
+        function submitVerification() {
+            const agreement = document.getElementById('agreement');
+            
+            if (!agreement.checked) {
+                alert('请阅读并同意协议');
+                return;
+            }
+            
+            // 显示加载状态
+            const submitButton = document.getElementById('submitButton');
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 提交中...';
+            
+            // 模拟提交请求
+            setTimeout(() => {
+                alert('认证申请已提交，请等待审核结果通知');
+                
+                // 跳转到机构选择页面
+                window.location.href = 'org-select.html';
+            }, 1500);
+        }
+    </script>
+</body>
+</html> 

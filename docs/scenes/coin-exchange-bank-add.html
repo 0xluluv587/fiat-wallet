@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matrix USD - 添加银行账户</title>
+    <link href="../styles/main.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .form-header {
+            margin-bottom: 24px;
+        }
+        
+        .form-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .form-subtitle {
+            color: var(--neutral-500);
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            color: var(--neutral-600);
+            margin-bottom: 8px;
+        }
+        
+        .form-input {
+            width: 100%;
+            height: 48px;
+            padding: 0 16px;
+            border: 1px solid var(--neutral-200);
+            border-radius: 12px;
+            font-size: 16px;
+            color: var(--neutral-900);
+            transition: all 0.3s;
+            background-color: white;
+        }
+        
+        .form-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
+            outline: none;
+        }
+        
+        .form-select {
+            width: 100%;
+            height: 48px;
+            padding: 0 16px;
+            border: 1px solid var(--neutral-200);
+            border-radius: 12px;
+            font-size: 16px;
+            color: var(--neutral-900);
+            background-color: white;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+        }
+        
+        .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
+            outline: none;
+        }
+        
+        .text-error {
+            color: var(--error);
+        }
+        
+        .hint-text {
+            color: var(--neutral-500);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+        
+        .required-mark:after {
+            content: "*";
+            color: var(--error);
+            margin-left: 2px;
+        }
+        
+        .upload-container {
+            border: 2px dashed var(--neutral-300);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .upload-container:hover {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+        
+        .upload-icon {
+            font-size: 32px;
+            color: var(--neutral-400);
+            margin-bottom: 12px;
+        }
+        
+        .upload-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .upload-text {
+            color: var(--neutral-500);
+            font-size: 14px;
+        }
+        
+        .upload-hint {
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--neutral-500);
+        }
+        
+        .file-list {
+            margin-top: 16px;
+        }
+        
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background-color: var(--neutral-50);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .file-icon {
+            color: var(--primary-color);
+            margin-right: 12px;
+            font-size: 20px;
+        }
+        
+        .file-info {
+            flex: 1;
+        }
+        
+        .file-name {
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        
+        .file-size {
+            font-size: 12px;
+            color: var(--neutral-500);
+        }
+        
+        .file-actions {
+            display: flex;
+        }
+        
+        .file-action {
+            padding: 6px;
+            color: var(--neutral-500);
+            cursor: pointer;
+        }
+        
+        .file-action:hover {
+            color: var(--primary-color);
+        }
+        
+        .bank-list {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -8px;
+        }
+        
+        .bank-option {
+            width: calc(33.33% - 16px);
+            margin: 0 8px 16px;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .bank-option-inner {
+            border: 1px solid var(--neutral-200);
+            border-radius: 12px;
+            padding: 12px 8px;
+            transition: all 0.2s;
+        }
+        
+        .bank-option.selected .bank-option-inner {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+        
+        .bank-logo {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            color: var(--neutral-700);
+            font-size: 24px;
+        }
+        
+        .bank-name {
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .form-divider {
+            height: 16px;
+            margin-bottom: 16px;
+            border-bottom: 8px solid var(--neutral-100);
+            margin-left: -20px;
+            margin-right: -20px;
+        }
+        
+        .bottom-action-bar {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+    </style>
+</head>
+<body>
+    <!-- iOS设备模拟 -->
+    <div class="ios-device">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-bar-content">
+                <div class="status-bar-time" id="statusBarTime">9:41</div>
+                <div class="status-bar-icons">
+                    <div class="status-bar-signal">
+                        <i class="fas fa-signal"></i>
+                    </div>
+                    <div class="status-bar-wifi">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <div class="status-bar-battery">
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 导航栏 -->
+        <div class="nav-bar">
+            <div class="nav-back" id="navBack">
+                <i class="fas fa-chevron-left"></i>
+                <span>返回</span>
+            </div>
+            <div class="nav-title">添加银行账户</div>
+            <div class="nav-action" style="visibility: hidden">
+                <i class="fas fa-ellipsis-v"></i>
+            </div>
+        </div>
+
+        <!-- 主要内容区 -->
+        <div class="content">
+            <div class="form-header">
+                <div class="form-title">添加新的银行账户</div>
+                <div class="form-subtitle">请填写您的银行账户信息，用于法币交易收款</div>
+            </div>
+            
+            <form id="bankAccountForm" onsubmit="return handleSubmit(event)">
+                <!-- 选择银行 -->
+                <div class="form-group">
+                    <label class="form-label required-mark">选择银行</label>
+                    <div class="bank-list">
+                        <div class="bank-option" onclick="selectBank(this, 'ICBC')">
+                            <div class="bank-option-inner">
+                                <div class="bank-logo" style="color: #C50F1C;">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                                <div class="bank-name">工商银行</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bank-option" onclick="selectBank(this, 'CCB')">
+                            <div class="bank-option-inner">
+                                <div class="bank-logo" style="color: #0066B3;">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                                <div class="bank-name">建设银行</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bank-option" onclick="selectBank(this, 'BOC')">
+                            <div class="bank-option-inner">
+                                <div class="bank-logo" style="color: #E50012;">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                                <div class="bank-name">中国银行</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bank-option" onclick="selectBank(this, 'ABC')">
+                            <div class="bank-option-inner">
+                                <div class="bank-logo" style="color: #319C8B;">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                                <div class="bank-name">农业银行</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bank-option" onclick="selectBank(this, 'CMBC')">
+                            <div class="bank-option-inner">
+                                <div class="bank-logo" style="color: #A61F34;">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                                <div class="bank-name">民生银行</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bank-option" onclick="selectBank(this, 'Other')">
+                            <div class="bank-option-inner">
+                                <div class="bank-logo">
+                                    <i class="fas fa-ellipsis-h"></i>
+                                </div>
+                                <div class="bank-name">其他银行</div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="selectedBank" name="selectedBank" required>
+                    <div class="error-message" id="bankError" style="display: none; color: var(--error); font-size: 14px;"></div>
+                </div>
+                
+                <!-- 其他银行名称 (仅当选择"其他银行"时显示) -->
+                <div class="form-group" id="otherBankGroup" style="display: none;">
+                    <label class="form-label required-mark" for="otherBankName">银行名称</label>
+                    <input type="text" id="otherBankName" class="form-input" placeholder="请输入银行名称">
+                    <div class="error-message" id="otherBankError" style="display: none; color: var(--error); font-size: 14px;"></div>
+                </div>
+                
+                <div class="form-divider"></div>
+                
+                <!-- 账户号码 -->
+                <div class="form-group">
+                    <label class="form-label required-mark" for="accountNumber">账户号码</label>
+                    <input type="text" id="accountNumber" class="form-input" placeholder="请输入银行账户号码" required maxlength="19">
+                    <div class="error-message" id="accountNumberError" style="display: none; color: var(--error); font-size: 14px;"></div>
+                </div>
+                
+                <!-- 账户持有人姓名 -->
+                <div class="form-group">
+                    <label class="form-label required-mark" for="accountHolder">账户持有人姓名</label>
+                    <input type="text" id="accountHolder" class="form-input" placeholder="请输入与银行账户一致的姓名" required>
+                    <div class="hint-text">请确保与您的实名认证信息一致</div>
+                    <div class="error-message" id="accountHolderError" style="display: none; color: var(--error); font-size: 14px;"></div>
+                </div>
+                
+                <!-- 支行信息 -->
+                <div class="form-group">
+                    <label class="form-label" for="branchInfo">支行信息</label>
+                    <input type="text" id="branchInfo" class="form-input" placeholder="请输入开户支行信息">
+                </div>
+                
+                <!-- 银行所在地区 -->
+                <div class="form-group">
+                    <label class="form-label required-mark" for="bankRegion">银行所在地区</label>
+                    <select id="bankRegion" class="form-select" required>
+                        <option value="">请选择地区</option>
+                        <option value="CN">中国大陆</option>
+                        <option value="HK">中国香港</option>
+                        <option value="MO">中国澳门</option>
+                        <option value="TW">中国台湾</option>
+                        <option value="US">美国</option>
+                        <option value="SG">新加坡</option>
+                        <option value="JP">日本</option>
+                        <option value="OT">其他地区</option>
+                    </select>
+                    <div class="error-message" id="bankRegionError" style="display: none; color: var(--error); font-size: 14px;"></div>
+                </div>
+                
+                <div class="form-divider"></div>
+                
+                <!-- 上传银行账户证明 -->
+                <div class="form-group">
+                    <label class="form-label required-mark">上传银行账户证明</label>
+                    <div class="upload-container" onclick="triggerFileUpload('bankProof')">
+                        <input type="file" id="bankProof" style="display: none;" accept="image/png, image/jpeg, application/pdf" onchange="handleFileUpload(this)">
+                        <div class="upload-icon">
+                            <i class="fas fa-file-upload"></i>
+                        </div>
+                        <div class="upload-title">银行账户证明</div>
+                        <div class="upload-text">请上传银行卡/对账单/电子回单等证明</div>
+                        <div class="upload-hint">支持 JPG、PNG、PDF 格式，文件大小不超过5MB</div>
+                    </div>
+                    
+                    <!-- 上传的文件列表 -->
+                    <div class="file-list" id="fileList"></div>
+                    <div class="error-message" id="fileError" style="display: none; color: var(--error); font-size: 14px;"></div>
+                </div>
+                
+                <!-- 注意事项 -->
+                <div class="ios-section mt-6">
+                    <div class="ios-section-subtitle">
+                        <i class="fas fa-info-circle text-primary mr-2"></i>
+                        重要提示
+                    </div>
+                    <ul class="ios-section-list mt-2">
+                        <li>• 仅支持添加同名银行账户</li>
+                        <li>• 银行账户持有人姓名必须与实名认证信息一致</li>
+                        <li>• 请上传清晰的银行账户证明文件</li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+        
+        <!-- 底部操作栏 -->
+        <div class="bottom-action-bar">
+            <button id="submitButton" class="btn btn-primary btn-lg btn-block" onclick="handleSubmit(event)">
+                提交审核
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 设置状态栏时间
+        function updateStatusBarTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            hours = hours < 10 ? `0${hours}` : hours;
+            minutes = minutes < 10 ? `0${minutes}` : minutes;
+            document.getElementById('statusBarTime').textContent = `${hours}:${minutes}`;
+        }
+        
+        // 初始化时间并每分钟更新一次
+        updateStatusBarTime();
+        setInterval(updateStatusBarTime, 60000);
+        
+        // 返回按钮事件
+        document.getElementById('navBack').addEventListener('click', function() {
+            if (hasFormChanges()) {
+                if (confirm('您的表单尚未提交，确定要离开吗？')) {
+                    window.location.href = 'coin-exchange-bank-list.html';
+                }
+            } else {
+                window.location.href = 'coin-exchange-bank-list.html';
+            }
+        });
+        
+        // 检查表单是否有修改
+        function hasFormChanges() {
+            const formElements = document.querySelectorAll('#bankAccountForm input, #bankAccountForm select');
+            for (const element of formElements) {
+                if (element.value) return true;
+            }
+            
+            if (document.getElementById('fileList').children.length > 0) return true;
+            
+            return false;
+        }
+        
+        // 选择银行
+        function selectBank(element, bankCode) {
+            // 移除所有选中状态
+            document.querySelectorAll('.bank-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // 添加选中状态
+            element.classList.add('selected');
+            
+            // 更新隐藏的银行选择字段
+            document.getElementById('selectedBank').value = bankCode;
+            
+            // 如果选择了"其他银行"，显示其他银行名称输入框
+            const otherBankGroup = document.getElementById('otherBankGroup');
+            if (bankCode === 'Other') {
+                otherBankGroup.style.display = 'block';
+                document.getElementById('otherBankName').required = true;
+            } else {
+                otherBankGroup.style.display = 'none';
+                document.getElementById('otherBankName').required = false;
+            }
+            
+            // 清除错误消息
+            document.getElementById('bankError').style.display = 'none';
+        }
+        
+        // 触发文件上传
+        function triggerFileUpload(inputId) {
+            document.getElementById(inputId).click();
+        }
+        
+        // 处理文件上传
+        function handleFileUpload(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                
+                // 检查文件大小
+                const maxSize = 5 * 1024 * 1024; // 5MB
+                if (file.size > maxSize) {
+                    alert('文件大小超过限制，请选择不超过5MB的文件');
+                    input.value = '';
+                    return;
+                }
+                
+                // 清空原有文件列表
+                document.getElementById('fileList').innerHTML = '';
+                
+                // 创建文件项
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <div class="file-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="file-info">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">${formatFileSize(file.size)}</div>
+                    </div>
+                    <div class="file-actions">
+                        <div class="file-action" onclick="deleteFile('${input.id}')">
+                            <i class="fas fa-trash-alt"></i>
+                        </div>
+                    </div>
+                `;
+                
+                // 添加到文件列表
+                document.getElementById('fileList').appendChild(fileItem);
+                
+                // 清除错误消息
+                document.getElementById('fileError').style.display = 'none';
+            }
+        }
+        
+        // 格式化文件大小
+        function formatFileSize(bytes) {
+            if (bytes < 1024) {
+                return bytes + ' B';
+            } else if (bytes < 1024 * 1024) {
+                return (bytes / 1024).toFixed(2) + ' KB';
+            } else {
+                return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+            }
+        }
+        
+        // 删除文件
+        function deleteFile(inputId) {
+            // 清除文件输入
+            document.getElementById(inputId).value = '';
+            
+            // 清空文件列表
+            document.getElementById('fileList').innerHTML = '';
+        }
+        
+        // 表单提交
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            // 重置所有错误消息
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            // 验证银行选择
+            const selectedBank = document.getElementById('selectedBank').value;
+            if (!selectedBank) {
+                document.getElementById('bankError').textContent = '请选择银行';
+                document.getElementById('bankError').style.display = 'block';
+                return false;
+            }
+            
+            // 验证其他银行名称（如果适用）
+            if (selectedBank === 'Other') {
+                const otherBankName = document.getElementById('otherBankName').value.trim();
+                if (!otherBankName) {
+                    document.getElementById('otherBankError').textContent = '请输入银行名称';
+                    document.getElementById('otherBankError').style.display = 'block';
+                    return false;
+                }
+            }
+            
+            // 验证账户号码
+            const accountNumber = document.getElementById('accountNumber').value.trim();
+            if (!accountNumber) {
+                document.getElementById('accountNumberError').textContent = '请输入账户号码';
+                document.getElementById('accountNumberError').style.display = 'block';
+                return false;
+            }
+            
+            // 验证账户持有人姓名
+            const accountHolder = document.getElementById('accountHolder').value.trim();
+            if (!accountHolder) {
+                document.getElementById('accountHolderError').textContent = '请输入账户持有人姓名';
+                document.getElementById('accountHolderError').style.display = 'block';
+                return false;
+            }
+            
+            // 验证银行所在地区
+            const bankRegion = document.getElementById('bankRegion').value;
+            if (!bankRegion) {
+                document.getElementById('bankRegionError').textContent = '请选择银行所在地区';
+                document.getElementById('bankRegionError').style.display = 'block';
+                return false;
+            }
+            
+            // 验证文件上传
+            const fileList = document.getElementById('fileList');
+            if (fileList.children.length === 0) {
+                document.getElementById('fileError').textContent = '请上传银行账户证明';
+                document.getElementById('fileError').style.display = 'block';
+                return false;
+            }
+            
+            // 显示提交状态
+            const submitButton = document.getElementById('submitButton');
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> 提交中...';
+            
+            // 模拟提交请求
+            setTimeout(() => {
+                alert('银行账户添加申请已提交，将在1-2个工作日内完成审核');
+                
+                // 跳转回银行账户列表页面
+                window.location.href = 'coin-exchange-bank-list.html';
+            }, 2000);
+            
+            return false;
+        }
+    </script>
+</body>
+</html> 
