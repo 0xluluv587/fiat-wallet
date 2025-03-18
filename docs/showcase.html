@@ -313,11 +313,20 @@
 
                 <li class="nav-section">
                     <div class="nav-section-title">
-                        <i class="fas fa-sign-in-alt"></i> 用户登录
+                        <i class="fas fa-users"></i> 个人和机构账户
                     </div>
                     <ul>
                         <li class="nav-item">
-                            <a href="#login" class="nav-link">登录页面</a>
+                            <a href="#personal-login" class="nav-link">个人账户登录</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#org-select" class="nav-link">机构选择</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#org-add" class="nav-link">添加机构</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#org-verify" class="nav-link">机构认证</a>
                         </li>
                     </ul>
                 </li>
@@ -410,17 +419,63 @@
                 <p>以下展示了应用的各个核心场景，所有界面均采用 iPhone 15 Pro 样式呈现，带有手机外壳和状态栏。</p>
             </div>
             
-            <div class="section" id="login">
-                <h2><i class="fas fa-sign-in-alt icon"></i>用户登录</h2>
-                <div class="scene">
-                    <div class="scene-header">
-                        <div class="scene-title">登录页面</div>
-                        <div class="scene-desc">提供企业用户登录入口，带有账号密码登录和记住登录状态功能</div>
+            <div class="section" id="personal-login">
+                <h2><i class="fas fa-users icon"></i>个人和机构账户</h2>
+                <p>Matrix USD采用个人账户与机构账户双层架构，用户可以使用一个个人账户关联多个机构账户。</p>
+                <div class="grid">
+                    <!-- 个人账户登录页面 -->
+                    <div class="scene">
+                        <div class="scene-header">
+                            <div class="scene-title">个人账户登录</div>
+                            <div class="scene-desc">提供个人用户登录入口，支持邮箱密码登录和第三方账号快捷登录</div>
+                        </div>
+                        <div class="iphone-frame">
+                            <div class="dynamic-island"></div>
+                            <div class="iphone-screen">
+                                <iframe src="./index.html" class="scene-frame"></iframe>
+                            </div>
+                        </div>
                     </div>
-                    <div class="iphone-frame">
-                        <div class="dynamic-island"></div>
-                        <div class="iphone-screen">
-                            <iframe src="./index.html" class="scene-frame"></iframe>
+                    
+                    <!-- 机构选择页面 -->
+                    <div class="scene" id="org-select">
+                        <div class="scene-header">
+                            <div class="scene-title">机构选择</div>
+                            <div class="scene-desc">登录后选择要使用的机构账户，支持查看不同状态的机构和添加新机构</div>
+                        </div>
+                        <div class="iphone-frame">
+                            <div class="dynamic-island"></div>
+                            <div class="iphone-screen">
+                                <iframe src="./scenes/org-select.html" class="scene-frame"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 添加机构页面 -->
+                    <div class="scene" id="org-add">
+                        <div class="scene-header">
+                            <div class="scene-title">添加/加入机构</div>
+                            <div class="scene-desc">用户可以选择加入现有机构或创建新的机构，支持搜索机构和填写创建信息</div>
+                        </div>
+                        <div class="iphone-frame">
+                            <div class="dynamic-island"></div>
+                            <div class="iphone-screen">
+                                <iframe src="./scenes/org-add.html" class="scene-frame"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 机构认证页面 -->
+                    <div class="scene" id="org-verify">
+                        <div class="scene-header">
+                            <div class="scene-title">机构认证</div>
+                            <div class="scene-desc">分步骤完成机构认证流程，包括上传企业资质和法人信息</div>
+                        </div>
+                        <div class="iphone-frame">
+                            <div class="dynamic-island"></div>
+                            <div class="iphone-screen">
+                                <iframe src="./scenes/org-verify.html" class="scene-frame"></iframe>
+                            </div>
                         </div>
                     </div>
                 </div>
