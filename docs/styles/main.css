@@ -24,6 +24,16 @@
   --error: #f43f5e;               /* 红色 - 错误状态 */
   --info: #3b82f6;                /* 蓝色 - 信息状态 */
   
+  /* 辅助色 */
+  --gold: #FFD700;                /* 金色 - 强调色 */
+  --silver: #C0C0C0;              /* 银色 - 次要强调 */
+  --purple: #7209b7;              /* 紫色 - 特殊强调 */
+  
+  /* 渐变色 */
+  --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+  --gradient-gold: linear-gradient(135deg, #FFD700, #FFA500);
+  --gradient-silver: linear-gradient(135deg, #E0E0E0, #A0A0A0);
+  
   /* 字体 */
   --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
   
@@ -52,6 +62,10 @@
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  /* iOS特有阴影 */
+  --ios-shadow: 0 2px 14px 0 rgba(0, 0, 0, 0.1);
   
   /* 间距 */
   --spacing-1: 0.25rem;     /* 4px */
@@ -73,6 +87,11 @@
   --status-bar-height: 44px;
   --nav-bar-height: 48px;
   --tab-bar-height: 83px;   /* iOS底部导航栏高度(含安全区) */
+  
+  /* 动画时间 */
+  --transition-fast: 0.15s;
+  --transition-normal: 0.3s;
+  --transition-slow: 0.5s;
 }
 
 /* 重置样式 */
@@ -1262,224 +1281,408 @@ input:focus, select:focus {
 
 /* 银行账户卡片 */
 .bank-card {
-    background-color: var(--background-color);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 16px;
-    margin-bottom: 12px;
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-4);
+    margin-bottom: var(--spacing-4);
+    box-shadow: var(--ios-shadow);
+    border: 1px solid var(--neutral-100);
+    position: relative;
+    transition: all var(--transition-normal) ease-in-out;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.bank-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-2);
+}
+
+.bank-card-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--text-lg);
+    font-weight: var(--font-bold);
+    color: var(--primary-color);
+    margin-right: var(--spacing-3);
+}
+
+.bank-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+}
+
+.bank-card-main {
+    display: flex;
+    align-items: center;
+}
+
+.bank-card-name {
+    font-weight: var(--font-semibold);
+    font-size: var(--text-base);
+    color: var(--neutral-900);
+}
+
+.bank-card-info {
+    font-size: var(--text-sm);
+    color: var(--neutral-500);
+}
+
+.bank-card-switch {
+    position: absolute;
+    right: var(--spacing-4);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary-color);
+}
+
+.bank-card-status {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+    font-size: var(--text-xs);
+    font-weight: var(--font-medium);
+    padding: 3px 8px;
+    border-radius: 12px;
+}
+
+.bank-card:hover, .bank-card-selected {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--primary-light);
 }
 
 .bank-card-selected {
-    border: 2px solid var(--primary-color);
-    background-color: var(--primary-light);
+    background: linear-gradient(to right, white, var(--primary-light));
 }
 
-/* 手风琴组件 */
-.accordion {
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 16px;
-}
-
-.accordion-header {
-    padding: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--card-background);
-    cursor: pointer;
-}
-
-.accordion-content {
-    padding: 16px;
-    border-top: 1px solid var(--border-color);
-    background-color: var(--background-color);
-}
-
-/* 组件样式 - 移除旧的黑色主题相关样式 */
-@layer components {
-    .card {
-        background-color: var(--card-background);
-        border-radius: 16px;
-        border: 1px solid var(--border-color);
-    }
-    
-    .btn-primary {
-        background-color: var(--primary-color);
-        border-radius: 12px;
-        color: white;
-        font-weight: 600;
-        transition: all 0.3s ease;
-    }
-    
-    .btn-secondary {
-        background-color: var(--primary-light);
-        color: var(--primary-color);
-        font-weight: 600;
-        border-radius: 12px;
-    }
-
-    .input-field {
-        background-color: var(--background-color);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        padding: 12px 16px;
-    }
-}
-
-/* 状态样式 */
-.status-pending {
-    background-color: rgba(255, 159, 10, 0.1);
-    color: var(--warning-color);
-}
-
-.status-success {
-    background-color: rgba(0, 184, 121, 0.1);
-    color: var(--success-color);
-}
-
-.status-error {
-    background-color: rgba(255, 59, 48, 0.1);
-    color: var(--error-color);
-}
-
-/* iOS 状态栏样式 */
-.ios-status-bar {
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 16px;
-}
-
-/* 交易进度样式 */
-.transaction-progress {
-    position: relative;
-    height: 4px;
-    background-color: var(--border-color);
-    border-radius: 2px;
-    overflow: hidden;
-}
-
-.transaction-progress-bar {
+.bank-card-selected:before {
+    content: '';
     position: absolute;
     left: 0;
     top: 0;
-    height: 100%;
-    transition: all 0.5s ease-in-out;
+    bottom: 0;
+    width: 4px;
+    background: var(--primary-color);
+    border-radius: 4px 0 0 4px;
 }
 
-.transaction-progress-pending {
-    background-color: var(--warning-color);
+/* 银行列表页面 */
+.bank-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
 }
 
-.transaction-progress-processing {
-    background-color: var(--primary-color);
-}
-
-.transaction-progress-success {
-    background-color: var(--success-color);
-}
-
-.transaction-progress-failed {
-    background-color: var(--error-color);
-}
-
-/* 通知样式 */
-.notification-badge {
-    position: absolute;
-    top: -4px;
-    right: -4px;
-    width: 16px;
-    height: 16px;
-    background-color: var(--error-color);
-    border-radius: 50%;
+.bank-list-header {
     display: flex;
     align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 10px;
+    justify-content: space-between;
+    padding: var(--spacing-2) 0;
+    margin-bottom: var(--spacing-2);
+    border-bottom: 1px solid var(--neutral-100);
 }
 
-/* 汇率展示样式 */
-.exchange-rate-card {
-    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-    padding: 16px;
-    border-radius: 16px;
-    color: white;
+.bank-list-title {
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+    color: var(--neutral-900);
 }
 
-.exchange-rate-value {
-    font-size: 24px;
-    font-weight: 600;
+.bank-list-action {
+    color: var(--primary-color);
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
 }
 
-/* 交易确认弹窗样式 */
-.confirmation-modal {
-    position: fixed;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+/* 银行信息组件 */
+.bank-info-section {
+    margin-bottom: var(--spacing-6);
+}
+
+.bank-info-title {
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    color: var(--neutral-900);
+    margin-bottom: var(--spacing-3);
+    padding-bottom: var(--spacing-2);
+    border-bottom: 1px solid var(--neutral-100);
+}
+
+.bank-info-group {
+    margin-bottom: var(--spacing-4);
+}
+
+.bank-info-item {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 50;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-2);
+    padding-bottom: var(--spacing-2);
+    border-bottom: 1px dashed var(--neutral-100);
 }
 
-.confirmation-content {
-    background-color: var(--background-color);
-    border-radius: 20px;
-    padding: 24px;
-    width: 90%;
-    max-width: 400px;
-}
-
-/* 列表项样式 */
-.list-item {
-    padding: 16px;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.list-item:last-child {
+.bank-info-item:last-child {
     border-bottom: none;
 }
 
-/* 图标样式统一 */
-.icon-wrapper {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+.bank-info-label {
+    color: var(--neutral-500);
+    font-size: var(--text-sm);
+}
+
+.bank-info-value {
+    font-weight: var(--font-medium);
+    text-align: right;
+    color: var(--neutral-900);
+    font-size: var(--text-sm);
+    max-width: 60%;
+    word-break: break-word;
+}
+
+.copy-value {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    color: var(--primary-color);
+    font-size: var(--text-xs);
+    margin-left: var(--spacing-2);
+}
+
+/* 表单输入增强 */
+.exchange-input-wrapper {
+    position: relative;
+    border: 1.5px solid var(--neutral-200);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-3) var(--spacing-4);
+    background-color: white;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+}
+
+.exchange-input-wrapper:focus-within {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 82, 255, 0.1);
+}
+
+.exchange-input {
+    font-size: var(--text-xl);
+    font-weight: var(--font-semibold);
+    color: var(--neutral-900);
+    background-color: transparent;
+    border: none;
+    outline: none;
+    flex: 1;
+    padding: 0;
+    font-family: var(--font-family);
+}
+
+.exchange-currency {
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    color: var(--neutral-700);
+    display: flex;
+    align-items: center;
+    padding-left: var(--spacing-2);
+    border-left: 1px solid var(--neutral-200);
+}
+
+/* 按钮增强 */
+.btn-primary {
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: var(--radius-lg);
+    padding: 14px var(--spacing-4);
+    font-weight: var(--font-semibold);
+    box-shadow: 0 2px 10px rgba(0, 82, 255, 0.2);
+    transition: all 0.2s ease;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 82, 255, 0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+    opacity: 0.9;
+    box-shadow: 0 2px 6px rgba(0, 82, 255, 0.2);
+}
+
+/* 银行账户接收部分 */
+.bank-account-info {
+    background-color: white;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--neutral-100);
+    padding: var(--spacing-4);
+    margin-bottom: var(--spacing-4);
+}
+
+.bank-account-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--spacing-3);
+    padding-bottom: var(--spacing-3);
+    border-bottom: 1px solid var(--neutral-100);
+}
+
+.bank-account-icon {
+    width: 40px;
+    height: 40px;
     background-color: var(--primary-light);
+    color: var(--primary-color);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: var(--spacing-3);
+    font-size: var(--text-lg);
 }
 
-/* 文字层级 */
-.text-title {
-    font-size: 20px;
-    font-weight: 600;
-    line-height: 1.4;
-    color: var(--text-primary);
+.bank-account-title {
+    font-size: var(--text-lg);
+    font-weight: var(--font-semibold);
+    color: var(--neutral-900);
 }
 
-/* 阴影效果 */
-.shadow-soft {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.bank-account-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--spacing-3);
+    position: relative;
+}
+
+.bank-account-label {
+    font-size: var(--text-xs);
+    color: var(--neutral-500);
+    margin-bottom: 4px;
+}
+
+.bank-account-value {
+    font-size: var(--text-sm);
+    color: var(--neutral-900);
+    font-weight: var(--font-medium);
+    background-color: var(--neutral-50);
+    padding: var(--spacing-2) var(--spacing-3);
+    border-radius: var(--radius-md);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.bank-account-value .copy-icon {
+    color: var(--primary-color);
+    cursor: pointer;
+    padding: 4px;
+}
+
+.bank-account-note {
+    font-size: var(--text-xs);
+    color: var(--warning);
+    padding: var(--spacing-3);
+    background-color: #FFF9E5;
+    border-radius: var(--radius-md);
+    margin-top: var(--spacing-3);
+}
+
+/* 底部操作栏增强 */
+.bottom-action-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: var(--spacing-4);
+    border-top: 1px solid var(--neutral-100);
+    z-index: 100;
+    max-width: var(--device-width);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+}
+
+.bottom-action-link {
+    text-align: center;
+    color: var(--primary-color);
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    text-decoration: none;
 }
 
 /* 动画效果 */
-.animate-spin {
-    animation: spin 1s linear infinite;
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+.fade-in {
+    animation: fadeIn var(--transition-normal) ease-in-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.slide-up {
+    animation: slideUp var(--transition-normal) ease-out;
+}
+
+/* 标准iOS间距与排版 */
+.ios-section {
+    margin-bottom: var(--spacing-6);
+}
+
+.ios-section-title {
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    color: var(--neutral-900);
+    margin-bottom: var(--spacing-3);
+}
+
+.ios-section-subtitle {
+    font-size: var(--text-sm);
+    color: var(--neutral-500);
+    margin-bottom: var(--spacing-4);
+    line-height: 1.5;
+}
+
+/* 更精致的卡片样式 */
+.card {
+    background-color: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--ios-shadow);
+    overflow: hidden;
+    margin-bottom: var(--spacing-4);
+    border: 0.5px solid var(--neutral-100);
+    transition: all var(--transition-normal) ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
 }
 
 /* 按钮样式优化 */

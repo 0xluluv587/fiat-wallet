@@ -50,6 +50,25 @@
             
             <!-- 出金模块 (默认显示) -->
             <div id="outboundForm" class="exchange-form">
+                <!-- 银行账户卡片选择区域 -->
+                <div class="ios-section slide-up">
+                    <div class="ios-section-title">收款账户</div>
+                    <div class="bank-card bank-card-selected" id="defaultBankCard" onclick="navigateToBankList()">
+                        <div class="bank-card-main">
+                            <div class="bank-card-logo">
+                                <i class="fas fa-university"></i>
+                            </div>
+                            <div class="bank-card-content">
+                                <div class="bank-card-name">绿联国际银行 (GLDB)</div>
+                                <div class="bank-card-info">美国 | 账户尾号 6789</div>
+                            </div>
+                        </div>
+                        <div class="bank-card-switch">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="exchange-input-group">
                     <div class="exchange-label">
                         <div class="exchange-label-text">出售</div>
@@ -110,7 +129,7 @@
             <div id="inboundForm" class="exchange-form" style="display: none;">
                 <div class="exchange-input-group">
                     <div class="exchange-label">
-                        <div class="exchange-label-text">出售</div>
+                        <div class="exchange-label-text">存入</div>
                         <div class="exchange-balance">从: 美元账户</div>
                     </div>
                     <div class="exchange-input-wrapper">
@@ -165,21 +184,21 @@
             </div>
             
             <!-- 风险提示 -->
-            <div class="p-4 text-sm text-neutral-500">
-                <p>风险提示：</p>
-                <ul class="list-disc pl-4 mt-1">
-                    <li>交易一旦确认不可撤销，请确保金额无误</li>
-                    <li>交易金额请勿用于违法活动</li>
+            <div class="p-4 mt-4 text-sm text-neutral-500 bg-neutral-50 rounded-lg">
+                <p class="font-medium mb-2">风险提示：</p>
+                <ul class="list-disc pl-4">
+                    <li class="mb-1">交易一旦确认不可撤销，请确保金额无误</li>
+                    <li class="mb-1">交易金额请勿用于违法活动</li>
                     <li>最低交易金额为 100 USD / USDC</li>
                 </ul>
             </div>
-            
-            <!-- 交易按钮 -->
-            <div class="p-4 fixed bottom-0 left-0 right-0 bg-white border-t border-neutral-100">
-                <button id="exchangeButton" class="btn btn-primary btn-lg btn-block" onclick="confirmExchange()">
-                    确认兑换
-                </button>
-            </div>
+        </div>
+        
+        <!-- 底部操作栏 -->
+        <div class="bottom-action-bar">
+            <button id="exchangeButton" class="btn btn-primary btn-lg btn-block" onclick="confirmExchange()">
+                确认交易
+            </button>
         </div>
     </div>
 
@@ -219,11 +238,11 @@
                 if (direction === 'outbound') {
                     document.getElementById('outboundForm').style.display = 'block';
                     document.getElementById('inboundForm').style.display = 'none';
-                    document.getElementById('exchangeButton').textContent = '确认兑换';
+                    document.getElementById('exchangeButton').textContent = '确认交易';
                 } else {
                     document.getElementById('outboundForm').style.display = 'none';
                     document.getElementById('inboundForm').style.display = 'block';
-                    document.getElementById('exchangeButton').textContent = '确认兑换';
+                    document.getElementById('exchangeButton').textContent = '确认交易';
                 }
             });
         });
@@ -292,9 +311,26 @@
                     window.location.href = `coin-exchange-insufficient.html?amount=${amount}&balance=${availableBalance}`;
                     return;
                 }
+                
+                // 保存选择的银行卡信息
+                const bankCard = document.getElementById('defaultBankCard');
+                sessionStorage.setItem('selectedBankName', '绿联国际银行 (GLDB)');
+                sessionStorage.setItem('selectedBankInfo', '美国 | 账户尾号 6789');
             } else {
                 amount = document.getElementById('sellUsdAmount').value.replace(/,/g, '');
                 currency = 'USD';
+                
+                // 入金流程直接跳转到"存入USD"页面
+                sessionStorage.setItem('exchangeAmount', amount);
+                sessionStorage.setItem('exchangeCurrency', currency);
+                sessionStorage.setItem('exchangeDirection', direction);
+                
+                const receiveAmount = document.getElementById('receiveUsdcAmount').value;
+                sessionStorage.setItem('receiveAmount', receiveAmount);
+                sessionStorage.setItem('receiveCurrency', 'USDC');
+                
+                window.location.href = 'coin-exchange-deposit-usd.html';
+                return;
             }
             
             // 存储交易数据到会话存储，用于在确认页面显示
@@ -314,6 +350,11 @@
             
             // 跳转到确认页面
             window.location.href = 'coin-exchange-confirm.html';
+        }
+        
+        // 导航到银行卡列表
+        function navigateToBankList() {
+            window.location.href = 'coin-exchange-bank-list.html';
         }
     </script>
 </body>

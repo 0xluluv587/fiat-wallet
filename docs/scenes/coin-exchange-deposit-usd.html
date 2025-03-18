@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matrix USD - 存入USD</title>
+    <link href="../styles/main.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* 专用样式 */
+        .copy-toast {
+            position: fixed;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .copy-toast.show {
+            opacity: 1;
+        }
+        
+        .section-divider {
+            height: 8px;
+            background-color: var(--neutral-50);
+            margin: 24px -16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- iOS设备模拟 -->
+    <div class="ios-device">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-bar-content">
+                <div class="status-bar-time" id="statusBarTime">9:41</div>
+                <div class="status-bar-icons">
+                    <div class="status-bar-signal">
+                        <i class="fas fa-signal"></i>
+                    </div>
+                    <div class="status-bar-wifi">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <div class="status-bar-battery">
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 导航栏 -->
+        <div class="nav-bar">
+            <div class="nav-back" id="navBack">
+                <i class="fas fa-chevron-left"></i>
+                <span>返回</span>
+            </div>
+            <div class="nav-title">存入USD</div>
+            <div class="nav-action">
+                <i class="fas fa-info-circle"></i>
+            </div>
+        </div>
+
+        <!-- 主要内容区 -->
+        <div class="content">
+            <!-- 交易信息摘要 -->
+            <div class="card p-4 mb-4 fade-in">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="font-semibold">交易金额</div>
+                    <div class="font-bold text-xl" id="transactionAmount">5,000.00 USD</div>
+                </div>
+                <div class="flex items-center justify-between text-sm">
+                    <div class="text-neutral-500">预计获得</div>
+                    <div class="font-medium text-success" id="receiveAmount">4,985.00 USDC</div>
+                </div>
+            </div>
+            
+            <!-- 银行账户信息 -->
+            <div class="ios-section slide-up">
+                <div class="ios-section-title flex items-center">
+                    <i class="fas fa-university text-primary mr-2"></i>
+                    汇款银行信息
+                </div>
+                <div class="ios-section-subtitle">
+                    请使用以下银行账户信息进行美元转账，并务必填写正确的转账附言以确保资金快速到账。
+                </div>
+                
+                <div class="bank-account-info slide-up">
+                    <div class="bank-account-header">
+                        <div class="bank-account-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div class="bank-account-title">
+                            Matrix USD 收款账户
+                        </div>
+                    </div>
+                    
+                    <!-- 收款人信息部分 -->
+                    <div class="bank-info-section">
+                        <div class="bank-info-title">收款人信息</div>
+                        
+                        <div class="bank-info-group">
+                            <div class="bank-info-item">
+                                <div class="bank-info-label">银行名称</div>
+                                <div class="bank-info-value">绿联国际银行 (GLDB)
+                                    <span class="copy-value" onclick="copyToClipboard('绿联国际银行 (GLDB)')">
+                                        <i class="fas fa-copy"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bank-info-item">
+                                <div class="bank-info-label">银行账户名称</div>
+                                <div class="bank-info-value">Matrix Financial Technologies Ltd.
+                                    <span class="copy-value" onclick="copyToClipboard('Matrix Financial Technologies Ltd.')">
+                                        <i class="fas fa-copy"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bank-info-item">
+                                <div class="bank-info-label">收款账号</div>
+                                <div class="bank-info-value">8567 2901 4488 3344
+                                    <span class="copy-value" onclick="copyToClipboard('8567 2901 4488 3344')">
+                                        <i class="fas fa-copy"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bank-info-item">
+                                <div class="bank-info-label">收款人姓名</div>
+                                <div class="bank-info-value">Matrix Financial Technologies Ltd.
+                                    <span class="copy-value" onclick="copyToClipboard('Matrix Financial Technologies Ltd.')">
+                                        <i class="fas fa-copy"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bank-info-item">
+                                <div class="bank-info-label">转账附言</div>
+                                <div class="bank-info-value" id="transferReference">MTX78912345
+                                    <span class="copy-value" onclick="copyToClipboard('MTX78912345')">
+                                        <i class="fas fa-copy"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-divider"></div>
+                    
+                    <!-- 收款银行信息部分 -->
+                    <div class="bank-info-section">
+                        <div class="bank-info-title">收款银行信息</div>
+                        
+                        <div class="bank-info-group">
+                            <div class="bank-info-item">
+                                <div class="bank-info-label">收款人国家/地区</div>
+                                <div class="bank-info-value">美国
+                                    <span class="copy-value" onclick="copyToClipboard('美国')">
+                                        <i class="fas fa-copy"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bank-info-item">
+                                <div class="bank-info-label">收款人地址</div>
+                                <div class="bank-info-value">1 Financial Plaza, New York, NY 10005, USA
+                                    <span class="copy-value" onclick="copyToClipboard('1 Financial Plaza, New York, NY 10005, USA')">
+                                        <i class="fas fa-copy"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bank-info-item">
+                                <div class="bank-info-label">收款银行</div>
+                                <div class="bank-info-value">Green Link Digital Bank
+                                    <span class="copy-value" onclick="copyToClipboard('Green Link Digital Bank')">
+                                        <i class="fas fa-copy"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bank-info-item">
+                                <div class="bank-info-label">收款行SWIFT代码</div>
+                                <div class="bank-info-value">GLDBUS33XXX
+                                    <span class="copy-value" onclick="copyToClipboard('GLDBUS33XXX')">
+                                        <i class="fas fa-copy"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bank-info-item">
+                                <div class="bank-info-label">收款行所在国家/地区</div>
+                                <div class="bank-info-value">美国
+                                    <span class="copy-value" onclick="copyToClipboard('美国')">
+                                        <i class="fas fa-copy"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bank-info-item">
+                                <div class="bank-info-label">收款银行地址</div>
+                                <div class="bank-info-value">2 Wall Street, New York, NY 10005, USA
+                                    <span class="copy-value" onclick="copyToClipboard('2 Wall Street, New York, NY 10005, USA')">
+                                        <i class="fas fa-copy"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 重要提示 -->
+                <div class="bank-account-note">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    <strong>请务必正确填写转账附言</strong>，否则可能导致您的资金无法及时到账。
+                </div>
+            </div>
+
+            <!-- 复制成功提示 -->
+            <div id="copyToast" class="copy-toast">已复制到剪贴板</div>
+        </div>
+        
+        <!-- 底部操作栏 -->
+        <div class="bottom-action-bar">
+            <button id="confirmButton" class="btn btn-primary btn-lg btn-block" onclick="confirmTransfer()">
+                我已汇款
+            </button>
+            <a href="coin-exchange-history.html" class="bottom-action-link">
+                查看提交记录
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // 设置状态栏时间
+        function updateStatusBarTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            hours = hours < 10 ? `0${hours}` : hours;
+            minutes = minutes < 10 ? `0${minutes}` : minutes;
+            document.getElementById('statusBarTime').textContent = `${hours}:${minutes}`;
+        }
+        
+        // 初始化时间并每分钟更新一次
+        updateStatusBarTime();
+        setInterval(updateStatusBarTime, 60000);
+        
+        // 返回按钮事件
+        document.getElementById('navBack').addEventListener('click', function() {
+            window.location.href = 'coin-exchange.html';
+        });
+        
+        // 从会话存储中加载交易数据
+        window.addEventListener('DOMContentLoaded', function() {
+            // 获取交易金额和收款金额
+            const exchangeAmount = sessionStorage.getItem('exchangeAmount') || '5,000.00';
+            const exchangeCurrency = sessionStorage.getItem('exchangeCurrency') || 'USD';
+            const receiveAmount = sessionStorage.getItem('receiveAmount') || '4,985.00';
+            const receiveCurrency = sessionStorage.getItem('receiveCurrency') || 'USDC';
+            
+            // 显示金额
+            document.getElementById('transactionAmount').textContent = `${exchangeAmount} ${exchangeCurrency}`;
+            document.getElementById('receiveAmount').textContent = `${receiveAmount} ${receiveCurrency}`;
+            
+            // 生成唯一的转账附言
+            const uniqueId = 'MTX' + Math.floor(Math.random() * 90000000 + 10000000);
+            document.getElementById('transferReference').innerHTML = uniqueId +
+                `<span class="copy-value" onclick="copyToClipboard('${uniqueId}')">
+                    <i class="fas fa-copy"></i>
+                </span>`;
+            
+            // 存储转账附言，以便在后续步骤中使用
+            sessionStorage.setItem('transferReference', uniqueId);
+        });
+        
+        // 复制到剪贴板
+        function copyToClipboard(text) {
+            // 创建临时输入框
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            
+            // 选择文本并复制
+            tempInput.select();
+            document.execCommand('copy');
+            
+            // 移除临时输入框
+            document.body.removeChild(tempInput);
+            
+            // 显示复制成功提示
+            const toast = document.getElementById('copyToast');
+            toast.classList.add('show');
+            
+            // 2秒后隐藏提示
+            setTimeout(function() {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+        
+        // 确认已汇款
+        function confirmTransfer() {
+            // 存储交易状态
+            sessionStorage.setItem('paymentConfirmed', 'true');
+            
+            // 跳转到交易处理中页面
+            window.location.href = 'coin-exchange-waiting.html';
+        }
+    </script>
+</body>
+</html>

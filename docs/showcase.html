@@ -359,7 +359,13 @@
                             <a href="#exchange" class="nav-link">法币交易</a>
                         </li>
                         <li class="nav-item">
+                            <a href="#exchange-bank-list" class="nav-link">银行账户选择</a>
+                        </li>
+                        <li class="nav-item">
                             <a href="#exchange-confirm" class="nav-link">交易确认</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#exchange-deposit-usd" class="nav-link">存入USD</a>
                         </li>
                         <li class="nav-item">
                             <a href="#exchange-insufficient" class="nav-link">资金不足</a>
@@ -491,12 +497,25 @@
                     <div class="scene" id="exchange">
                         <div class="scene-header">
                             <div class="scene-title">法币交易</div>
-                            <div class="scene-desc">提供入金（买USDC）和出金（卖USDC）交易功能，含汇率显示</div>
+                            <div class="scene-desc">提供入金（买USDC）和出金（卖USDC）交易功能，含汇率显示和银行账户选择</div>
                         </div>
                         <div class="iphone-frame">
                             <div class="dynamic-island"></div>
                             <div class="iphone-screen">
                                 <iframe src="./scenes/coin-exchange.html" class="scene-frame"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="scene" id="exchange-bank-list">
+                        <div class="scene-header">
+                            <div class="scene-title">银行账户选择</div>
+                            <div class="scene-desc">显示用户银行账户列表，支持选择、编辑和添加银行账户</div>
+                        </div>
+                        <div class="iphone-frame">
+                            <div class="dynamic-island"></div>
+                            <div class="iphone-screen">
+                                <iframe src="./scenes/coin-exchange-bank-list.html" class="scene-frame"></iframe>
                             </div>
                         </div>
                     </div>
@@ -510,6 +529,19 @@
                             <div class="dynamic-island"></div>
                             <div class="iphone-screen">
                                 <iframe src="./scenes/coin-exchange-confirm.html" class="scene-frame"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="scene" id="exchange-deposit-usd">
+                        <div class="scene-header">
+                            <div class="scene-title">存入USD</div>
+                            <div class="scene-desc">展示接收客户汇款的银行账户信息，包括收款人信息、银行信息等</div>
+                        </div>
+                        <div class="iphone-frame">
+                            <div class="dynamic-island"></div>
+                            <div class="iphone-screen">
+                                <iframe src="./scenes/coin-exchange-deposit-usd.html" class="scene-frame"></iframe>
                             </div>
                         </div>
                     </div>
