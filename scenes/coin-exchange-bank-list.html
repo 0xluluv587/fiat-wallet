@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matrix USD - 选择银行账户</title>
+    <link href="../styles/main.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- iOS设备模拟 -->
+    <div class="ios-device">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-bar-content">
+                <div class="status-bar-time" id="statusBarTime">9:41</div>
+                <div class="status-bar-icons">
+                    <div class="status-bar-signal">
+                        <i class="fas fa-signal"></i>
+                    </div>
+                    <div class="status-bar-wifi">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <div class="status-bar-battery">
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 导航栏 -->
+        <div class="nav-bar">
+            <div class="nav-back" id="navBack">
+                <i class="fas fa-chevron-left"></i>
+                <span>返回</span>
+            </div>
+            <div class="nav-title">选择银行账户</div>
+            <div class="nav-action">
+                <i class="fas fa-plus" id="addNewBankBtn"></i>
+            </div>
+        </div>
+
+        <!-- 主要内容区 -->
+        <div class="content">
+            <div class="bank-list">
+                <div class="bank-list-header">
+                    <div class="bank-list-title">银行账户</div>
+                    <div class="bank-list-action">共2个账户</div>
+                </div>
+                
+                <!-- 绿联国际银行 (GLDB) -->
+                <div class="bank-card bank-card-selected" data-bank-id="1" onclick="selectBankCard(this)">
+                    <div class="bank-card-main">
+                        <div class="bank-card-logo" style="background-color: #e9f0ff; color: #0052ff;">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div class="bank-card-content">
+                            <div class="bank-card-name">绿联国际银行 (GLDB)</div>
+                            <div class="bank-card-info">美国 | 账户尾号 6789</div>
+                        </div>
+                    </div>
+                    <div class="bank-card-status">默认</div>
+                    <div class="bank-card-switch" onclick="editBankCard(event, 1)">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                </div>
+                
+                <!-- DBS Bank -->
+                <div class="bank-card" data-bank-id="2" onclick="selectBankCard(this)">
+                    <div class="bank-card-main">
+                        <div class="bank-card-logo" style="background-color: #f0f9ff; color: #0369a1;">
+                            <i class="fas fa-landmark"></i>
+                        </div>
+                        <div class="bank-card-content">
+                            <div class="bank-card-name">DBS Bank</div>
+                            <div class="bank-card-info">新加坡 | 账户尾号 3421</div>
+                        </div>
+                    </div>
+                    <div class="bank-card-switch" onclick="editBankCard(event, 2)">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ios-section mt-6">
+                <div class="ios-section-subtitle">
+                    <i class="fas fa-info-circle text-primary mr-2"></i>
+                    所选银行账户将作为交易收款账户，请确保账户信息正确无误。
+                </div>
+            </div>
+            
+            <!-- 无银行账户时的提示 -->
+            <div id="noAccountsMessage" class="text-center py-8" style="display: none;">
+                <div class="text-neutral-500 mb-4">
+                    <i class="fas fa-university text-5xl opacity-50 mb-4"></i>
+                    <p class="mt-4">暂无银行账户</p>
+                </div>
+                <button class="btn btn-primary mt-4" onclick="showAddNewBankModal()">
+                    <i class="fas fa-plus mr-2"></i> 添加银行账户
+                </button>
+            </div>
+        </div>
+        
+        <!-- 底部操作栏 -->
+        <div class="bottom-action-bar">
+            <button id="confirmButton" class="btn btn-primary btn-lg btn-block" onclick="confirmBankSelection()">
+                确认选择
+            </button>
+        </div>
+        
+        <!-- 编辑菜单 (隐藏) -->
+        <div id="editMenu" class="modal-backdrop" style="display: none;">
+            <div class="card p-0 w-full mx-4 slide-up">
+                <div class="p-4 font-semibold border-b border-neutral-100">
+                    银行账户操作
+                </div>
+                <div class="p-0">
+                    <div class="p-4 border-b border-neutral-100 flex items-center" onclick="setDefaultBank()">
+                        <i class="fas fa-check-circle text-primary mr-3"></i>
+                        <span>设为默认账户</span>
+                    </div>
+                    <div class="p-4 border-b border-neutral-100 flex items-center" onclick="editBankDetails()">
+                        <i class="fas fa-edit text-primary mr-3"></i>
+                        <span>编辑账户信息</span>
+                    </div>
+                    <div class="p-4 flex items-center text-error" onclick="deleteBankAccount()">
+                        <i class="fas fa-trash-alt mr-3"></i>
+                        <span>删除账户</span>
+                    </div>
+                </div>
+                <div class="p-4 border-t border-neutral-100">
+                    <button class="btn btn-outline btn-block" onclick="closeEditMenu()">
+                        取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 设置状态栏时间
+        function updateStatusBarTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            hours = hours < 10 ? `0${hours}` : hours;
+            minutes = minutes < 10 ? `0${minutes}` : minutes;
+            document.getElementById('statusBarTime').textContent = `${hours}:${minutes}`;
+        }
+        
+        // 初始化时间并每分钟更新一次
+        updateStatusBarTime();
+        setInterval(updateStatusBarTime, 60000);
+        
+        // 返回按钮事件
+        document.getElementById('navBack').addEventListener('click', function() {
+            window.location.href = 'coin-exchange.html';
+        });
+        
+        // 当前编辑的银行卡ID
+        let currentBankId = null;
+        
+        // 选择银行卡
+        function selectBankCard(element) {
+            // 移除所有卡片的选中状态
+            document.querySelectorAll('.bank-card').forEach(card => {
+                card.classList.remove('bank-card-selected');
+            });
+            
+            // 给当前卡片添加选中状态
+            element.classList.add('bank-card-selected');
+        }
+        
+        // 编辑银行卡
+        function editBankCard(event, bankId) {
+            event.stopPropagation(); // 阻止事件冒泡
+            currentBankId = bankId;
+            
+            // 显示编辑菜单
+            document.getElementById('editMenu').style.display = 'flex';
+        }
+        
+        // 关闭编辑菜单
+        function closeEditMenu() {
+            document.getElementById('editMenu').style.display = 'none';
+        }
+        
+        // 设为默认银行账户
+        function setDefaultBank() {
+            // 移除所有默认标记
+            document.querySelectorAll('.bank-card-status').forEach(status => {
+                status.remove();
+            });
+            
+            // 给当前卡片添加默认标记
+            const bankCard = document.querySelector(`.bank-card[data-bank-id="${currentBankId}"]`);
+            const statusDiv = document.createElement('div');
+            statusDiv.className = 'bank-card-status';
+            statusDiv.textContent = '默认';
+            bankCard.appendChild(statusDiv);
+            
+            // 关闭编辑菜单
+            closeEditMenu();
+        }
+        
+        // 编辑银行账户详情
+        function editBankDetails() {
+            alert('编辑账户信息功能将在下一版本开放');
+            closeEditMenu();
+        }
+        
+        // 删除银行账户
+        function deleteBankAccount() {
+            if (confirm('确定要删除该银行账户吗？')) {
+                const bankCard = document.querySelector(`.bank-card[data-bank-id="${currentBankId}"]`);
+                
+                // 如果删除的是默认账户，则将第一个账户设为默认
+                if (bankCard.querySelector('.bank-card-status')) {
+                    const firstCard = document.querySelector('.bank-card');
+                    if (firstCard && firstCard !== bankCard) {
+                        const statusDiv = document.createElement('div');
+                        statusDiv.className = 'bank-card-status';
+                        statusDiv.textContent = '默认';
+                        firstCard.appendChild(statusDiv);
+                    }
+                }
+                
+                // 删除该银行卡
+                bankCard.remove();
+                
+                // 检查是否还有银行卡
+                checkNoAccounts();
+            }
+            
+            closeEditMenu();
+        }
+        
+        // 添加新银行卡按钮事件
+        document.getElementById('addNewBankBtn').addEventListener('click', function() {
+            showAddNewBankModal();
+        });
+        
+        // 显示添加新银行账户弹窗
+        function showAddNewBankModal() {
+            alert('添加新银行账户功能将在下一版本开放');
+        }
+        
+        // 确认银行卡选择
+        function confirmBankSelection() {
+            const selectedCard = document.querySelector('.bank-card-selected');
+            
+            if (selectedCard) {
+                const bankName = selectedCard.querySelector('.bank-card-name').textContent;
+                const bankInfo = selectedCard.querySelector('.bank-card-info').textContent;
+                
+                // 将选择的银行卡信息存储到会话存储
+                sessionStorage.setItem('selectedBankName', bankName);
+                sessionStorage.setItem('selectedBankInfo', bankInfo);
+                
+                // 返回上一页
+                window.location.href = 'coin-exchange.html';
+            } else {
+                alert('请选择一个银行账户');
+            }
+        }
+        
+        // 检查是否没有银行账户
+        function checkNoAccounts() {
+            const bankCards = document.querySelectorAll('.bank-card');
+            const noAccountsMessage = document.getElementById('noAccountsMessage');
+            const confirmButton = document.getElementById('confirmButton');
+            
+            if (bankCards.length === 0) {
+                noAccountsMessage.style.display = 'block';
+                confirmButton.disabled = true;
+                confirmButton.classList.add('opacity-50');
+            } else {
+                noAccountsMessage.style.display = 'none';
+                confirmButton.disabled = false;
+                confirmButton.classList.remove('opacity-50');
+                
+                // 更新银行账户数量
+                document.querySelector('.bank-list-action').textContent = `共${bankCards.length}个账户`;
+            }
+        }
+        
+        // 页面加载时检查
+        window.addEventListener('DOMContentLoaded', checkNoAccounts);
+        
+        // 点击背景关闭编辑菜单
+        document.getElementById('editMenu').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeEditMenu();
+            }
+        });
+    </script>
+</body>
+</html> 
