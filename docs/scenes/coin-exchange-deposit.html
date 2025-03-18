@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USDC充值 - Matrix USD</title>
+    <link href="../styles/output.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0052ff;
+            --primary-hover: #0039c6;
+            --bg-light: #f5f8ff;
+            --text-primary: #0a0b0d;
+            --text-secondary: #5b616e;
+            --border-color: #e5e5e5;
+            --warning-color: #ff9500;
+            --warning-bg: #fff8e6;
+        }
+        body {
+            background-color: #f7f8fa;
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        .page-container {
+            padding: 1rem;
+            padding-bottom: 6rem;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+        }
+        .section-title {
+            font-weight: 600;
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+        }
+        .text-subtitle {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+        .text-body {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        .primary-button {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            padding: 0.875rem 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+        .primary-button:hover {
+            background-color: var(--primary-hover);
+        }
+        .secondary-button {
+            background-color: transparent;
+            color: var(--text-primary);
+            font-weight: 600;
+            padding: 0.875rem 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            width: 100%;
+            border: 1px solid var(--border-color);
+        }
+        .bottom-action-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 0.75rem;
+            z-index: 20;
+        }
+        .countdown {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--warning-color);
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .qr-container {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .qr-code {
+            width: 180px;
+            height: 180px;
+            background-color: white;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .address-container {
+            position: relative;
+            width: 100%;
+            margin: 1rem 0;
+        }
+        .address-input {
+            width: 100%;
+            font-size: 0.875rem;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            background-color: #f7f8fa;
+            color: var(--text-primary);
+            font-family: monospace;
+        }
+        .copy-button {
+            position: absolute;
+            right: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--warning-bg);
+            color: var(--warning-color);
+            font-weight: 500;
+            font-size: 0.875rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+        }
+        .step-container {
+            display: flex;
+            margin: 1rem 0;
+        }
+        .step-number {
+            width: 24px;
+            height: 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+        }
+        .step-content {
+            flex: 1;
+        }
+        .network-badge {
+            display: inline-block;
+            background-color: #e5f5ff;
+            color: #0091ff;
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 0.25rem 0.5rem;
+            border-radius: 1rem;
+            margin-left: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="mx-auto max-w-md">
+        <!-- 顶部导航栏 -->
+        <div class="sticky top-0 bg-white z-10 pt-12 pb-2 border-b border-gray-100">
+            <div class="px-4 flex items-center justify-between">
+                <a href="javascript:history.back()" class="w-8 h-8 flex items-center justify-center">
+                    <i class="fas fa-arrow-left text-black"></i>
+                </a>
+                <h1 class="text-xl font-semibold">充值USDC</h1>
+                <div class="w-8 h-8"></div>
+            </div>
+        </div>
+
+        <div class="page-container">
+            <!-- 汇率锁定和倒计时 -->
+            <div class="card mb-6">
+                <div class="p-5">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="section-title mb-0">汇率锁定</h3>
+                        <div class="flex items-center">
+                            <i class="fas fa-clock text-warning-color mr-2"></i>
+                            <span class="countdown" id="countdown">29:59</span>
+                        </div>
+                    </div>
+                    <p class="text-body mb-3">请在倒计时结束前完成充值，否则订单将自动取消。</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-body">锁定汇率</span>
+                        <span class="text-subtitle">1 USDC = 1.003 USD</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 状态标签 -->
+            <div class="text-center">
+                <div class="status-badge">
+                    <i class="fas fa-spinner fa-spin mr-2"></i>
+                    等待充值
+                </div>
+            </div>
+            
+            <!-- 充值地址和二维码 -->
+            <div class="qr-container">
+                <h3 class="text-subtitle mb-3">
+                    USDC充值地址
+                    <span class="network-badge">ERC20</span>
+                </h3>
+                
+                <div class="qr-code">
+                    <!-- 使用实际的QR码图片替换 -->
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b" alt="USDC充值地址二维码">
+                </div>
+                
+                <div class="address-container">
+                    <input type="text" value="0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b" class="address-input" readonly id="address-input">
+                    <button class="copy-button" id="copy-button">复制</button>
+                </div>
+                
+                <p class="text-body text-center">
+                    <span class="font-medium">充值金额：</span>
+                    <span class="text-primary-color font-medium" id="required-amount">5,000 USDC</span>
+                </p>
+            </div>
+            
+            <!-- 充值步骤说明 -->
+            <div class="card mb-6">
+                <div class="p-5">
+                    <h3 class="section-title">充值步骤</h3>
+                    
+                    <div class="step-container">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <p class="text-subtitle mb-1">复制充值地址</p>
+                            <p class="text-body">点击上方的复制按钮，获取USDC的充值地址</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <p class="text-subtitle mb-1">前往您的钱包</p>
+                            <p class="text-body">打开您的加密货币钱包或交易所应用</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <p class="text-subtitle mb-1">发起转账</p>
+                            <p class="text-body">选择USDC代币，发起转账到上方提供的地址</p>
+                        </div>
+                    </div>
+                    
+                    <div class="step-container">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <p class="text-subtitle mb-1">等待确认</p>
+                            <p class="text-body">转账成功后，系统将自动确认并完成订单</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 注意事项 -->
+            <div class="bg-blue-50 rounded-xl p-4 mb-6">
+                <div class="flex">
+                    <i class="fas fa-exclamation-circle text-blue-600 mt-1 mr-3"></i>
+                    <div>
+                        <p class="text-blue-800 font-medium mb-1">注意事项</p>
+                        <p class="text-blue-800 text-sm">• 仅支持ERC20网络的USDC，其他网络充值可能导致资产丢失</p>
+                        <p class="text-blue-800 text-sm">• 最低充值金额为所需的USDC金额，小于该金额可能无法完成订单</p>
+                        <p class="text-blue-800 text-sm">• 充值到账后，系统将自动完成出金订单</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部操作栏 -->
+        <div class="bottom-action-bar">
+            <button class="secondary-button" onclick="window.location.href='./coin-exchange.html'">
+                取消交易
+            </button>
+            <button class="primary-button" id="check-status-button">
+                检查充值状态
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        // 获取URL参数
+        const urlParams = new URLSearchParams(window.location.search);
+        const amount = urlParams.get('amount') || '5,000';
+        
+        // 更新页面显示的金额
+        document.getElementById('required-amount').textContent = amount + ' USDC';
+        
+        // 设置倒计时
+        let countdown = 30 * 60; // 30分钟，以秒为单位
+        const countdownElement = document.getElementById('countdown');
+        
+        const timer = setInterval(function() {
+            countdown--;
+            if (countdown <= 0) {
+                clearInterval(timer);
+                alert('订单已超时，汇率锁定已失效');
+                window.location.href = './coin-exchange.html';
+            }
+            
+            const minutes = Math.floor(countdown / 60);
+            const seconds = countdown % 60;
+            countdownElement.textContent = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+        }, 1000);
+        
+        // 复制按钮功能
+        document.getElementById('copy-button').addEventListener('click', function() {
+            const addressInput = document.getElementById('address-input');
+            addressInput.select();
+            document.execCommand('copy');
+            
+            this.textContent = '已复制';
+            setTimeout(() => {
+                this.textContent = '复制';
+            }, 2000);
+        });
+        
+        // 检查充值状态
+        document.getElementById('check-status-button').addEventListener('click', function() {
+            // 模拟API请求检查充值状态
+            // 实际项目中应该调用后端API
+            const randomStatus = Math.random();
+            
+            if (randomStatus > 0.7) {
+                // 模拟充值成功
+                alert('充值已确认！订单处理中...');
+                window.location.href = './coin-exchange-waiting.html';
+            } else {
+                // 模拟未收到充值
+                alert('暂未检测到充值，请确认转账是否成功，或等待区块确认。');
+            }
+        });
+        
+        // 模拟自动检测充值成功（仅用于演示）
+        // 实际项目中应使用WebSocket或轮询API
+        setTimeout(function() {
+            if (Math.random() > 0.5) {
+                alert('系统已检测到充值，订单处理中...');
+                window.location.href = './coin-exchange-waiting.html';
+            }
+        }, 20000); // 20秒后有50%的概率模拟检测到充值
+    </script>
+
+    <script src="../scripts/navigation.js"></script>
+</body>
+</html> 

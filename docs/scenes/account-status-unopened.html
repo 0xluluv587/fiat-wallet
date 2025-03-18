@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USD账户 - 未开户状态</title>
+    <link href="../styles/output.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 0;
+        }
+        .status-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 16px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .content {
+            padding: 16px;
+        }
+        .account-row {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background-color: #f9fafb;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        .account-icon {
+            width: 32px;
+            height: 32px;
+            background-color: #e0f2fe;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            color: #0284c7;
+        }
+        .account-info {
+            flex: 1;
+        }
+        .account-title {
+            font-weight: 500;
+            color: #0c4a6e;
+            margin-bottom: 4px;
+        }
+        .account-description {
+            font-size: 14px;
+            color: #64748b;
+        }
+        .action-button {
+            background-color: #0ea5e9;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .action-button:hover {
+            background-color: #0284c7;
+        }
+        .status-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .status-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        .status-icon.info {
+            background-color: #e0f2fe;
+            color: #0284c7;
+        }
+        .status-text {
+            font-size: 14px;
+            color: #334155;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container">
+        <!-- 顶部标题栏 -->
+        <div class="header">
+            <h1 class="header-title">账户状态</h1>
+        </div>
+
+        <!-- 未开户状态卡片 -->
+        <div class="status-card">
+            <div class="content">
+                <div class="account-row">
+                    <div class="account-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="account-info">
+                        <h2 class="account-title">USD机构专属账户</h2>
+                        <p class="account-description">全球资产配置首选</p>
+                    </div>
+                    <button class="action-button">立即开通</button>
+                </div>
+
+                <div class="status-step">
+                    <div class="status-icon info">
+                        <i class="fas fa-info"></i>
+                    </div>
+                    <p class="status-text">开通机构专属账户，享受专属汇率和一对一专属服务</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const openAccountBtn = document.querySelector('.action-button');
+            
+            openAccountBtn.addEventListener('click', function() {
+                // 模拟跳转到开户申请页面
+                window.location.href = 'account-application.html';
+            });
+        });
+    </script>
+</body>
+</html> 

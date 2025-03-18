@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开通USD账户 - Matrix USD</title>
+    <link href="./styles/output.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-white text-gray-900">
+    <!-- iOS 状态栏 -->
+    <div class="ios-status-bar border-b border-gray-100">
+        <div class="flex items-center">
+            <i class="fas fa-chevron-left text-gray-400 mr-2"></i>
+            <h1 class="text-lg font-medium">开通USD账户</h1>
+        </div>
+    </div>
+
+    <div class="p-4">
+        <!-- 账户类型选择 -->
+        <div class="mb-6">
+            <h2 class="text-sm text-gray-500 mb-3">选择账户类型</h2>
+            <div class="space-y-4">
+                <!-- 入金账户 -->
+                <div class="card p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center">
+                            <div class="usd-icon mr-3"></div>
+                            <div>
+                                <h3 class="font-medium">入金同名账户</h3>
+                                <p class="text-sm text-gray-500">用于法币入金和稳定币兑换</p>
+                            </div>
+                        </div>
+                        <input type="radio" name="account_type" checked 
+                               class="w-5 h-5 text-[--primary-color]">
+                    </div>
+                    <div class="bg-[--secondary-color] rounded-xl p-3">
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">开通费用</span>
+                            <span class="font-medium">$2,000（一次性）</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 出金账户 -->
+                <div class="card p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center">
+                            <div class="usd-icon mr-3"></div>
+                            <div>
+                                <h3 class="font-medium">出金同名账户</h3>
+                                <p class="text-sm text-gray-500">用于稳定币兑换和法币提现</p>
+                            </div>
+                        </div>
+                        <input type="radio" name="account_type" 
+                               class="w-5 h-5 text-[--primary-color]">
+                    </div>
+                    <div class="bg-[--secondary-color] rounded-xl p-3">
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-500">开通费用</span>
+                            <span class="font-medium">$3,000（一次性）</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 核心优势 -->
+        <div class="mb-6">
+            <h2 class="text-sm text-gray-500 mb-3">核心优势</h2>
+            <div class="space-y-4">
+                <div class="card p-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-exchange-alt text-[--primary-color] mt-1"></i>
+                        <div class="ml-3">
+                            <h4 class="font-medium">集成资金管理</h4>
+                            <p class="text-sm text-gray-500 mt-1">
+                                简化法币到稳定币的兑换流程，提供透明的资金流向追踪。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-shield-alt text-[--primary-color] mt-1"></i>
+                        <div class="ml-3">
+                            <h4 class="font-medium">降低审查风险</h4>
+                            <p class="text-sm text-gray-500 mt-1">
+                                通过同名账户降低跨行转账的银行审查风险，保护资金安全。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-bolt text-[--primary-color] mt-1"></i>
+                        <div class="ml-3">
+                            <h4 class="font-medium">便捷快速申请</h4>
+                            <p class="text-sm text-gray-500 mt-1">
+                                专业团队支持，确保快速设置和即时场外交易访问。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 申请要求 -->
+        <div class="mb-6">
+            <h2 class="text-sm text-gray-500 mb-3">申请要求</h2>
+            <div class="card p-4">
+                <div class="space-y-4">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-[--primary-color] mr-3"></i>
+                        <span class="text-sm">完成Matrixport OTC KYC认证</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-[--primary-color] mr-3"></i>
+                        <span class="text-sm">提供公司名称和注册信息</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-[--primary-color] mr-3"></i>
+                        <span class="text-sm">确认从Matrixport UID扣除开户费用</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 适用客户 -->
+        <div class="mb-6">
+            <h2 class="text-sm text-gray-500 mb-3">适用客户</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="card p-4">
+                    <div class="flex flex-col items-center text-center">
+                        <i class="fas fa-users text-[--primary-color] text-xl mb-2"></i>
+                        <p class="text-sm">频繁场外交易者</p>
+                    </div>
+                </div>
+                <div class="card p-4">
+                    <div class="flex flex-col items-center text-center">
+                        <i class="fas fa-coins text-[--primary-color] text-xl mb-2"></i>
+                        <p class="text-sm">大规模稳定币交易者</p>
+                    </div>
+                </div>
+                <div class="card p-4">
+                    <div class="flex flex-col items-center text-center">
+                        <i class="fas fa-university text-[--primary-color] text-xl mb-2"></i>
+                        <p class="text-sm">需降低银行审计频率</p>
+                    </div>
+                </div>
+                <div class="card p-4">
+                    <div class="flex flex-col items-center text-center">
+                        <i class="fas fa-lock text-[--primary-color] text-xl mb-2"></i>
+                        <p class="text-sm">重视资金流动隐私</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 开通按钮 -->
+        <button class="btn-primary w-full mb-4">
+            立即开通
+        </button>
+
+        <!-- 联系方式 -->
+        <div class="text-center text-sm text-gray-500">
+            如需帮助，请发送邮件至 
+            <a href="mailto:otc@matrixport.com" class="text-[--primary-color]">
+                otc@matrixport.com
+            </a>
+        </div>
+    </div>
+
+    <!-- 开通确认弹窗 -->
+    <div class="confirmation-modal hidden">
+        <div class="confirmation-content">
+            <h3 class="text-xl font-bold mb-4">确认开通</h3>
+            <div class="space-y-4 mb-6">
+                <div class="flex justify-between">
+                    <span class="text-gray-500">账户类型</span>
+                    <span class="font-medium">入金同名账户</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">开通费用</span>
+                    <span class="font-medium">$2,000</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">扣费账户</span>
+                    <span class="font-medium">Matrixport UID: ****1234</span>
+                </div>
+            </div>
+            <div class="flex space-x-4">
+                <button class="btn-secondary flex-1">取消</button>
+                <button class="btn-primary flex-1">确认开通</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

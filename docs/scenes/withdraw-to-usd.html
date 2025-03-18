@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>提取为USD - Matrixport</title>
+    <link href="../styles/output.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-[#0A0A0A] text-white">
+    <div class="iphone15-frame mx-auto">
+        <div class="dynamic-island"></div>
+
+        <!-- 顶部导航栏 -->
+        <div class="sticky top-0 bg-[#0A0A0A] z-50 pt-12 pb-2">
+            <div class="px-4 flex items-center justify-between">
+                <a href="./withdraw-usdc.html" class="w-8 h-8 flex items-center justify-center">
+                    <i class="fas fa-arrow-left text-white"></i>
+                </a>
+                <h1 class="text-xl font-semibold">提取为USD</h1>
+                <div class="w-8"></div>
+            </div>
+        </div>
+
+        <div class="px-4 pb-24">
+            <!-- 转换说明 -->
+            <div class="bg-[rgba(43,124,254,0.1)] rounded-xl p-4 mb-6">
+                <div class="flex items-start">
+                    <i class="fas fa-bolt text-[--primary-color] mt-1 mr-3"></i>
+                    <div>
+                        <p class="text-body mb-2">一键提取USDC为USD</p>
+                        <p class="text-caption">无需任何手续费，直接将USDC提取到您的USD机构专属账户，同行转账，极速到账。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 账户信息 -->
+            <div class="bg-[#1E1E1E] rounded-2xl p-4 mb-6">
+                <h3 class="text-subtitle mb-4">接收账户</h3>
+                
+                <div class="bg-[#2A2A2A] rounded-xl p-4 flex items-center">
+                    <div class="usd-icon w-10 h-10 mr-3"></div>
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-subtitle">USD机构专属账户</h4>
+                            <span class="status-tag status-tag-success text-xs">
+                                <i class="fas fa-check-circle mr-1"></i>已开通
+                            </span>
+                        </div>
+                        <p class="text-caption mt-1">账户余额: $50,000.00</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 提取金额 -->
+            <div class="bg-[#1E1E1E] rounded-2xl p-4 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h3 class="text-subtitle">提取金额</h3>
+                        <p class="text-caption mt-1">可用余额: 50,000.00 USDC</p>
+                    </div>
+                    <button class="text-xs px-2 py-1 bg-[#2A2A2A] rounded-full">
+                        全部
+                    </button>
+                </div>
+                
+                <div class="bg-[#2A2A2A] rounded-xl p-3 mb-4">
+                    <div class="flex items-center justify-between">
+                        <input type="number" placeholder="0" class="bg-transparent text-xl font-semibold w-2/3 focus:outline-none">
+                        <div class="flex items-center">
+                            <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png" alt="USDC" class="w-6 h-6 mr-2">
+                            <span class="text-subtitle">USDC</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between mt-2">
+                        <p class="text-caption">≈ $1,000.00</p>
+                        <p class="text-caption">≈ ¥7,100.00</p>
+                    </div>
+                </div>
+                
+                <!-- 转换汇率 -->
+                <div class="bg-[#2A2A2A] rounded-xl p-3 mb-3">
+                    <div class="flex justify-between items-center">
+                        <p class="text-body">转换汇率</p>
+                        <div class="flex items-center">
+                            <span class="text-body">1 USDC = 1.00 USD</span>
+                            <span class="text-xs px-2 py-0.5 bg-[rgba(52,199,89,0.2)] text-[--success-color] rounded-full ml-2">最优</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 手续费 -->
+                <div class="flex justify-between items-center p-2">
+                    <p class="text-body">手续费</p>
+                    <div class="flex items-center">
+                        <span class="text-body line-through text-gray-400 mr-2">$5.00</span>
+                        <span class="text-body text-[--success-color]">$0.00</span>
+                        <span class="text-xs px-2 py-0.5 bg-[rgba(52,199,89,0.2)] text-[--success-color] rounded-full ml-2">免费</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 到账时间 -->
+            <div class="bg-[#1E1E1E] rounded-2xl p-4 mb-6">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-subtitle">预计到账时间</h3>
+                    <span class="text-caption text-[--success-color]">极速</span>
+                </div>
+                <p class="text-caption mt-2">工作日 5-30 分钟，非工作日最长 2 小时</p>
+                
+                <div class="flex items-center mt-4">
+                    <div class="w-8 h-8 rounded-full bg-[rgba(43,124,254,0.1)] flex-shrink-0 flex items-center justify-center mr-3">
+                        <i class="fas fa-clock text-[--primary-color]"></i>
+                    </div>
+                    <p class="text-caption">当日 16:00 前的交易，当天即可到账</p>
+                </div>
+            </div>
+            
+            <!-- 优势说明 -->
+            <div class="bg-[#1E1E1E] rounded-2xl p-4 mb-6">
+                <h3 class="text-subtitle mb-3">为什么选择USD专属账户?</h3>
+                
+                <div class="space-y-4 mt-4">
+                    <div class="flex items-start">
+                        <div class="w-8 h-8 rounded-full bg-[rgba(43,124,254,0.1)] flex-shrink-0 flex items-center justify-center mr-3">
+                            <i class="fas fa-bolt text-[--primary-color]"></i>
+                        </div>
+                        <div>
+                            <p class="text-subtitle">极速出入金</p>
+                            <p class="text-caption mt-1">同行转账，最快5分钟到账，比传统银行转账更快</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="w-8 h-8 rounded-full bg-[rgba(43,124,254,0.1)] flex-shrink-0 flex items-center justify-center mr-3">
+                            <i class="fas fa-dollar-sign text-[--primary-color]"></i>
+                        </div>
+                        <div>
+                            <p class="text-subtitle">零手续费</p>
+                            <p class="text-caption mt-1">无需支付链上转账和银行转账手续费，为您节省费用</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="w-8 h-8 rounded-full bg-[rgba(43,124,254,0.1)] flex-shrink-0 flex items-center justify-center mr-3">
+                            <i class="fas fa-shield-alt text-[--primary-color]"></i>
+                        </div>
+                        <div>
+                            <p class="text-subtitle">安全可靠</p>
+                            <p class="text-caption mt-1">资金由合作银行托管，多重安全保障</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部确认按钮 -->
+        <div class="fixed bottom-0 left-0 right-0 px-4 py-6 bg-[#0A0A0A] border-t border-[#2A2A2A]">
+            <button class="btn-primary w-full py-4 rounded-xl">
+                确认提取
+            </button>
+        </div>
+    </div>
+</body>
+</html> 

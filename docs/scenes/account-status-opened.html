@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USD账户 - 已开户状态</title>
+    <link href="../styles/output.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 0;
+        }
+        .status-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 16px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .content {
+            padding: 16px;
+        }
+        .account-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background-color: #f9fafb;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        .account-left {
+            display: flex;
+            align-items: center;
+        }
+        .account-icon {
+            width: 32px;
+            height: 32px;
+            background-color: #e0f2fe;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            color: #0284c7;
+        }
+        .account-info h2 {
+            font-weight: 500;
+            color: #0c4a6e;
+            margin-bottom: 4px;
+        }
+        .account-info p {
+            font-size: 14px;
+            color: #64748b;
+        }
+        .account-balance {
+            text-align: right;
+        }
+        .balance-amount {
+            font-size: 18px;
+            font-weight: 600;
+            color: #0c4a6e;
+        }
+        .balance-equivalent {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container">
+        <!-- 顶部标题栏 -->
+        <div class="header">
+            <h1 class="header-title">账户状态</h1>
+        </div>
+
+        <!-- 已开户状态卡片 -->
+        <div class="status-card">
+            <div class="content">
+                <div class="account-row">
+                    <div class="account-left">
+                        <div class="account-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="account-info">
+                            <h2>USD机构专属账户</h2>
+                            <p>已开通 专属服务经理：Sarah</p>
+                        </div>
+                    </div>
+                    <div class="account-balance">
+                        <div class="balance-amount">50,000.00</div>
+                        <div class="balance-equivalent">≈ $50,000.00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

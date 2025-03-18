@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交易状态通知 - Matrix USD</title>
+    <link href="../styles/output.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="../scripts/navigation.js" defer></script>
+    <style>
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0;
+            color: #333;
+        }
+        
+        /* 交易通知样式 */
+        .transaction-notification {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e6f7ff 100%);
+            border: 1px solid #bae6fd;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .notification-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #0284c7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        
+        .notification-icon i {
+            font-size: 20px;
+        }
+        
+        .notification-title {
+            flex-grow: 1;
+        }
+        
+        .notification-title h3 {
+            font-weight: 600;
+            font-size: 16px;
+            color: #0c4a6e;
+            margin: 0 0 4px 0;
+        }
+        
+        .notification-title p {
+            font-size: 13px;
+            color: #0369a1;
+            margin: 0;
+        }
+        
+        .notification-close {
+            color: #0369a1;
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .notification-close:hover {
+            background: rgba(3, 105, 161, 0.1);
+        }
+        
+        .notification-content {
+            padding-left: 52px;
+        }
+        
+        .notification-details {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+        
+        .notification-detail-item {
+            flex: 1 0 50%;
+            margin-bottom: 8px;
+        }
+        
+        .detail-label {
+            font-size: 12px;
+            color: #0369a1;
+            margin-bottom: 2px;
+        }
+        
+        .detail-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: #0c4a6e;
+        }
+        
+        .notification-progress {
+            margin-bottom: 12px;
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #bae6fd;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 4px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: #0284c7;
+            border-radius: 4px;
+            width: 65%;
+            transition: width 1s ease;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #0369a1;
+        }
+        
+        .notification-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .action-btn i {
+            margin-right: 6px;
+        }
+        
+        .primary-action {
+            background: #0284c7;
+            color: white;
+            border: none;
+        }
+        
+        .primary-action:hover {
+            background: #0369a1;
+        }
+        
+        .secondary-action {
+            background: transparent;
+            color: #0284c7;
+            border: 1px solid #0284c7;
+        }
+        
+        .secondary-action:hover {
+            background: rgba(2, 132, 199, 0.05);
+        }
+        
+        .transaction-notification::after {
+            content: '';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.1) 0%, rgba(2, 132, 199, 0.05) 100%);
+            border-radius: 50%;
+            z-index: 0;
+        }
+        
+        /* 不同类型交易的颜色变化 */
+        .transaction-notification.outbound {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e6f7ff 100%);
+            border-color: #bae6fd;
+        }
+        
+        .transaction-notification.outbound .notification-icon {
+            background: #0284c7;
+        }
+        
+        .transaction-notification.outbound .notification-title h3,
+        .transaction-notification.outbound .detail-value {
+            color: #0c4a6e;
+        }
+        
+        .transaction-notification.outbound .notification-title p,
+        .transaction-notification.outbound .detail-label,
+        .transaction-notification.outbound .progress-label {
+            color: #0369a1;
+        }
+        
+        .transaction-notification.outbound .progress-bar-container {
+            background: #bae6fd;
+        }
+        
+        .transaction-notification.outbound .progress-bar {
+            background: #0284c7;
+        }
+        
+        .transaction-notification.inbound {
+            background: linear-gradient(135deg, #f0fdf4 0%, #e5f7e9 100%);
+            border-color: #bbf7d0;
+        }
+        
+        .transaction-notification.inbound .notification-icon {
+            background: #16a34a;
+        }
+        
+        .transaction-notification.inbound .notification-title h3,
+        .transaction-notification.inbound .detail-value {
+            color: #166534;
+        }
+        
+        .transaction-notification.inbound .notification-title p,
+        .transaction-notification.inbound .detail-label,
+        .transaction-notification.inbound .progress-label {
+            color: #16a34a;
+        }
+        
+        .transaction-notification.inbound .progress-bar-container {
+            background: #bbf7d0;
+        }
+        
+        .transaction-notification.inbound .progress-bar {
+            background: #16a34a;
+        }
+        
+        .transaction-notification.inbound .primary-action {
+            background: #16a34a;
+        }
+        
+        .transaction-notification.inbound .primary-action:hover {
+            background: #166534;
+        }
+        
+        .transaction-notification.inbound .secondary-action {
+            color: #16a34a;
+            border-color: #16a34a;
+        }
+        
+        .transaction-notification.inbound .secondary-action:hover {
+            background: rgba(22, 163, 74, 0.05);
+        }
+        
+        .transaction-notification.inbound .notification-close {
+            color: #16a34a;
+        }
+        
+        .transaction-notification.inbound .notification-close:hover {
+            background: rgba(22, 163, 74, 0.1);
+        }
+        
+        .transaction-notification.inbound::after {
+            background: linear-gradient(135deg, rgba(22, 163, 74, 0.1) 0%, rgba(22, 163, 74, 0.05) 100%);
+        }
+        
+        /* 增加动画效果 */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .notification-icon i {
+            animation: pulse 2s infinite;
+        }
+        
+        /* 示例切换按钮 */
+        .demo-controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .demo-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            color: #475569;
+        }
+        
+        .demo-btn:hover {
+            background: #e2e8f0;
+        }
+        
+        .demo-btn.active {
+            background: #0284c7;
+            color: white;
+            border-color: #0284c7;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container">
+        <div class="header">
+            <h1>交易状态通知</h1>
+        </div>
+        
+        <div class="demo-controls">
+            <button class="demo-btn active" id="outboundBtn">出金交易通知</button>
+            <button class="demo-btn" id="inboundBtn">入金交易通知</button>
+        </div>
+        
+        <!-- 出金交易通知 -->
+        <div class="transaction-notification outbound" id="outboundNotification">
+            <div class="notification-header">
+                <div class="notification-icon">
+                    <i class="fas fa-arrow-right"></i>
+                </div>
+                <div class="notification-title">
+                    <h3>出金交易进行中</h3>
+                    <p>您有一笔正在处理的USDC出金交易</p>
+                </div>
+                <button class="notification-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="notification-content">
+                <div class="notification-details">
+                    <div class="notification-detail-item">
+                        <div class="detail-label">交易金额</div>
+                        <div class="detail-value">5,000 USDC</div>
+                    </div>
+                    <div class="notification-detail-item">
+                        <div class="detail-label">交易时间</div>
+                        <div class="detail-value">2023-03-18 14:25</div>
+                    </div>
+                    <div class="notification-detail-item">
+                        <div class="detail-label">当前状态</div>
+                        <div class="detail-value">等待USDC支付</div>
+                    </div>
+                    <div class="notification-detail-item">
+                        <div class="detail-label">预计完成</div>
+                        <div class="detail-value">约30分钟</div>
+                    </div>
+                </div>
+                
+                <div class="notification-progress">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 35%"></div>
+                    </div>
+                    <div class="progress-label">
+                        <span>剩余时间：25分钟</span>
+                        <span>35%</span>
+                    </div>
+                </div>
+                
+                <div class="notification-actions">
+                    <button class="action-btn primary-action">
+                        <i class="fas fa-eye"></i>
+                        查看详情
+                    </button>
+                    <button class="action-btn secondary-action">
+                        <i class="fas fa-question-circle"></i>
+                        联系客服
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 入金交易通知 -->
+        <div class="transaction-notification inbound" id="inboundNotification" style="display: none;">
+            <div class="notification-header">
+                <div class="notification-icon">
+                    <i class="fas fa-arrow-left"></i>
+                </div>
+                <div class="notification-title">
+                    <h3>入金交易进行中</h3>
+                    <p>您有一笔正在处理的USD入金交易</p>
+                </div>
+                <button class="notification-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="notification-content">
+                <div class="notification-details">
+                    <div class="notification-detail-item">
+                        <div class="detail-label">交易金额</div>
+                        <div class="detail-value">5,000 USD</div>
+                    </div>
+                    <div class="notification-detail-item">
+                        <div class="detail-label">交易时间</div>
+                        <div class="detail-value">2023-03-18 14:25</div>
+                    </div>
+                    <div class="notification-detail-item">
+                        <div class="detail-label">当前状态</div>
+                        <div class="detail-value">等待银行入账</div>
+                    </div>
+                    <div class="notification-detail-item">
+                        <div class="detail-label">预计完成</div>
+                        <div class="detail-value">1-2个工作日</div>
+                    </div>
+                </div>
+                
+                <div class="notification-progress">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 65%"></div>
+                    </div>
+                    <div class="progress-label">
+                        <span>凭证已提交，等待银行入账</span>
+                        <span>65%</span>
+                    </div>
+                </div>
+                
+                <div class="notification-actions">
+                    <button class="action-btn primary-action">
+                        <i class="fas fa-eye"></i>
+                        查看详情
+                    </button>
+                    <button class="action-btn secondary-action">
+                        <i class="fas fa-question-circle"></i>
+                        联系客服
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">使用说明</h2>
+            <p style="font-size: 14px; line-height: 1.6; color: #4b5563; margin-bottom: 12px;">
+                交易状态通知组件提供直观的交易进行状态展示，主要特点：
+            </p>
+            <ul style="font-size: 14px; line-height: 1.6; color: #4b5563; padding-left: 20px; margin-bottom: 16px;">
+                <li>根据交易类型自动调整颜色主题（出金蓝色，入金绿色）</li>
+                <li>显示交易关键信息：金额、时间、状态、预计完成时间</li>
+                <li>进度条直观展示交易进度</li>
+                <li>提供快捷操作按钮：查看详情、联系客服</li>
+                <li>响应式设计，在移动端和桌面端均有良好表现</li>
+            </ul>
+            <p style="font-size: 14px; line-height: 1.6; color: #4b5563;">
+                该组件可嵌入到主页、账户页或交易相关页面，为用户提供实时的交易状态反馈。
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const outboundBtn = document.getElementById('outboundBtn');
+            const inboundBtn = document.getElementById('inboundBtn');
+            const outboundNotification = document.getElementById('outboundNotification');
+            const inboundNotification = document.getElementById('inboundNotification');
+            
+            // 切换交易类型显示
+            outboundBtn.addEventListener('click', function() {
+                outboundBtn.classList.add('active');
+                inboundBtn.classList.remove('active');
+                outboundNotification.style.display = 'block';
+                inboundNotification.style.display = 'none';
+            });
+            
+            inboundBtn.addEventListener('click', function() {
+                inboundBtn.classList.add('active');
+                outboundBtn.classList.remove('active');
+                inboundNotification.style.display = 'block';
+                outboundNotification.style.display = 'none';
+            });
+            
+            // 关闭通知按钮功能
+            document.querySelectorAll('.notification-close').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const notification = this.closest('.transaction-notification');
+                    notification.style.display = 'none';
+                    // 为演示重新显示被关闭的通知
+                    setTimeout(() => {
+                        notification.style.display = 'block';
+                    }, 2000);
+                });
+            });
+            
+            // 动画进度条
+            const progressBars = document.querySelectorAll('.progress-bar');
+            progressBars.forEach(bar => {
+                const currentWidth = parseFloat(bar.style.width);
+                setInterval(() => {
+                    if (currentWidth < 100) {
+                        const newWidth = Math.min(currentWidth + Math.random() * 5, 100);
+                        bar.style.width = newWidth + '%';
+                        bar.closest('.notification-progress').querySelector('.progress-label span:last-child').textContent = Math.round(newWidth) + '%';
+                    }
+                }, 3000);
+            });
+        });
+    </script>
+</body>
+</html> 

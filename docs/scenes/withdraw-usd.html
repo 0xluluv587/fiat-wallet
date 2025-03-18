@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USD出金 - Matrixport</title>
+    <link href="../styles/output.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-[#0A0A0A] text-white">
+    <div class="iphone15-frame mx-auto">
+        <div class="dynamic-island"></div>
+
+        <!-- 顶部导航栏 -->
+        <div class="sticky top-0 bg-[#0A0A0A] z-50 pt-12 pb-2">
+            <div class="px-4 flex items-center justify-between">
+                <a href="./wallet-home.html" class="w-8 h-8 flex items-center justify-center">
+                    <i class="fas fa-arrow-left text-white"></i>
+                </a>
+                <h1 class="text-xl font-semibold">USD出金</h1>
+                <div class="w-8"></div>
+            </div>
+        </div>
+
+        <div class="p-4 pb-24">
+            <!-- 账户信息 -->
+            <div class="bg-[#1E1E1E] rounded-2xl p-4 mb-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="usd-icon w-10 h-10 mr-3"></div>
+                        <div>
+                            <h4 class="text-subtitle">USD机构专属账户</h4>
+                            <p class="text-caption mt-1">可用余额: $50,000.00</p>
+                        </div>
+                    </div>
+                    <span class="status-tag status-tag-success text-xs">
+                        <i class="fas fa-check-circle mr-1"></i>已开通
+                    </span>
+                </div>
+            </div>
+
+            <!-- 出金方式选项卡 -->
+            <div class="bg-[#1E1E1E] rounded-2xl p-4 mb-6">
+                <div class="flex border-b border-[#2A2A2A] mb-4">
+                    <button class="py-2 px-4 text-white font-medium border-b-2 border-[--primary-color]">
+                        银行转账
+                    </button>
+                    <button class="py-2 px-4 text-gray-400 font-medium">
+                        转换为USDC
+                    </button>
+                </div>
+
+                <!-- 收款银行 -->
+                <div>
+                    <h3 class="text-subtitle mb-4">选择收款银行</h3>
+                    
+                    <!-- 已绑定银行卡 -->
+                    <div class="bg-[#2A2A2A] rounded-xl p-4 mb-4">
+                        <div class="flex justify-between items-center mb-3">
+                            <div class="flex items-center">
+                                <div class="w-6 h-6 rounded-full bg-white flex-shrink-0 flex items-center justify-center mr-3">
+                                    <div class="w-4 h-4 rounded-full bg-[--primary-color]"></div>
+                                </div>
+                                <div class="flex items-center">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Bank_of_America_logo.svg/2560px-Bank_of_America_logo.svg.png" alt="Bank of America" class="w-6 h-6 object-contain mr-2">
+                                    <span class="text-subtitle">Bank of America</span>
+                                </div>
+                            </div>
+                            <span class="text-xs px-2 py-0.5 bg-[rgba(43,124,254,0.2)] text-[--primary-color] rounded-full">
+                                常用
+                            </span>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-caption">账户类型</span>
+                                <span class="text-body">个人账户</span>
+                            </div>
+                            
+                            <div class="flex justify-between">
+                                <span class="text-caption">账号</span>
+                                <span class="text-body">**** **** **** 1234</span>
+                            </div>
+                            
+                            <div class="flex justify-between">
+                                <span class="text-caption">持卡人</span>
+                                <span class="text-body">John Doe</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 添加银行卡 -->
+                    <button class="w-full py-3 flex items-center justify-center bg-[#2A2A2A] rounded-xl">
+                        <i class="fas fa-plus text-[--primary-color] mr-2"></i>
+                        <span class="text-[--primary-color]">添加新银行卡</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 提取金额 -->
+            <div class="bg-[#1E1E1E] rounded-2xl p-4 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h3 class="text-subtitle">提取金额</h3>
+                        <p class="text-caption mt-1">可用余额: $50,000.00</p>
+                    </div>
+                    <button class="text-xs px-2 py-1 bg-[#2A2A2A] rounded-full">
+                        全部
+                    </button>
+                </div>
+                
+                <div class="bg-[#2A2A2A] rounded-xl p-3 mb-4">
+                    <div class="flex items-center">
+                        <span class="text-xl font-semibold mr-2">$</span>
+                        <input type="number" placeholder="0" class="bg-transparent text-xl font-semibold w-full focus:outline-none">
+                    </div>
+                    <div class="flex justify-between mt-2">
+                        <p class="text-caption">最小提取金额: $100.00</p>
+                        <p class="text-caption">≈ ¥7,100.00</p>
+                    </div>
+                </div>
+                
+                <!-- 手续费 -->
+                <div class="flex justify-between items-center p-2">
+                    <p class="text-body">手续费</p>
+                    <div class="flex items-center">
+                        <span class="text-body">$0.00</span>
+                        <span class="text-xs px-2 py-0.5 bg-[rgba(52,199,89,0.2)] text-[--success-color] rounded-full ml-2">免费</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 到账时间 -->
+            <div class="bg-[#1E1E1E] rounded-2xl p-4 mb-6">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-subtitle">预计到账时间</h3>
+                    <span class="text-caption text-[--success-color]">极速</span>
+                </div>
+                <p class="text-caption mt-2">工作日 5-30 分钟，非工作日最长 2 小时</p>
+                
+                <div class="flex items-center mt-4">
+                    <div class="w-8 h-8 rounded-full bg-[rgba(43,124,254,0.1)] flex-shrink-0 flex items-center justify-center mr-3">
+                        <i class="fas fa-clock text-[--primary-color]"></i>
+                    </div>
+                    <p class="text-caption">当日 16:00 前的交易，当天即可到账</p>
+                </div>
+            </div>
+            
+            <!-- 备注信息 -->
+            <div class="bg-[#1E1E1E] rounded-2xl p-4 mb-6">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-subtitle">备注信息</h3>
+                    <span class="text-caption">选填</span>
+                </div>
+                <input type="text" placeholder="请输入备注信息" class="bg-[#2A2A2A] rounded-xl p-3 w-full focus:outline-none">
+            </div>
+
+            <!-- 温馨提示 -->
+            <div class="bg-[rgba(43,124,254,0.1)] rounded-xl p-4 mb-6">
+                <div class="flex items-start">
+                    <i class="fas fa-info-circle text-[--primary-color] mt-1 mr-3"></i>
+                    <div>
+                        <p class="text-body mb-2">温馨提示</p>
+                        <div class="space-y-2">
+                            <p class="text-caption">• 仅支持提现至本人名下银行账户</p>
+                            <p class="text-caption">• 首次提现需人工审核，后续提现自动处理</p>
+                            <p class="text-caption">• 单笔最高提现限额为 $1,000,000 USD</p>
+                            <p class="text-caption">• 如有问题请联系客服</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部确认按钮 -->
+        <div class="fixed bottom-0 left-0 right-0 px-4 py-6 bg-[#0A0A0A] border-t border-[#2A2A2A]">
+            <button class="btn-primary w-full py-4 rounded-xl opacity-50" disabled>
+                确认提取
+            </button>
+        </div>
+    </div>
+</body>
+</html> 
