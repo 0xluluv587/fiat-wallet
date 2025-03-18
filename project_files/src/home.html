@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页 - Matrix USD</title>
+    <link href="./styles/output.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="p-4">
+        <!-- 用户信息 -->
+        <div class="flex justify-between items-center mb-6">
+            <div class="flex items-center">
+                <img src="https://i.pravatar.cc/40" alt="avatar" class="rounded-full w-10 h-10">
+                <div class="ml-3">
+                    <h2 class="font-bold">Hi, Alex</h2>
+                    <p class="text-sm text-gray-400">欢迎回来</p>
+                </div>
+            </div>
+            <div class="flex space-x-3">
+                <button class="p-2 bg-gray-800 rounded-full">
+                    <i class="fas fa-bell text-gray-400"></i>
+                </button>
+                <button class="p-2 bg-gray-800 rounded-full">
+                    <i class="fas fa-cog text-gray-400"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 资产总览 -->
+        <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-2xl mb-6">
+            <p class="text-gray-200 mb-2">总资产 (USD)</p>
+            <h1 class="text-3xl font-bold mb-4">$268,345.00</h1>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p class="text-gray-200 text-sm">加密货币</p>
+                    <p class="font-bold">$218,345.00</p>
+                </div>
+                <div>
+                    <p class="text-gray-200 text-sm">USD账户</p>
+                    <p class="font-bold">$50,000.00</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快捷操作 -->
+        <div class="grid grid-cols-4 gap-4 mb-6">
+            <div class="text-center">
+                <div class="bg-gray-800 p-4 rounded-xl mb-2">
+                    <i class="fas fa-university text-blue-500 text-xl"></i>
+                </div>
+                <p class="text-sm">USD充值</p>
+            </div>
+            <div class="text-center">
+                <a href="/coin-exchange" class="block">
+                    <div class="bg-gray-800 p-4 rounded-xl mb-2">
+                        <i class="fas fa-exchange-alt text-green-500 text-xl"></i>
+                    </div>
+                    <p class="text-sm">币币兑换</p>
+                </a>
+            </div>
+            <div class="text-center">
+                <a href="/scenes/otc-trade.html" class="block">
+                    <div class="bg-gray-800 p-4 rounded-xl mb-2">
+                        <i class="fas fa-money-bill-wave text-purple-500 text-xl"></i>
+                    </div>
+                    <p class="text-sm">OTC交易</p>
+                </a>
+            </div>
+            <div class="text-center">
+                <a href="/history.html" class="block">
+                    <div class="bg-gray-800 p-4 rounded-xl mb-2">
+                        <i class="fas fa-history text-orange-500 text-xl"></i>
+                    </div>
+                    <p class="text-sm">交易记录</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- 市场行情 -->
+        <div class="mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold">市场行情</h3>
+                <a href="#" class="text-blue-500 text-sm">查看全部</a>
+            </div>
+            <div class="space-y-4">
+                <div class="bg-gray-800 p-4 rounded-xl flex justify-between items-center">
+                    <div class="flex items-center">
+                        <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png" alt="USDC" class="w-8 h-8 mr-3">
+                        <div>
+                            <p class="font-bold">USDC/USD</p>
+                            <p class="text-sm text-gray-400">USD Coin</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-bold">$0.9972</p>
+                        <p class="text-sm text-green-500">+0.03%</p>
+                    </div>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-xl flex justify-between items-center">
+                    <div class="flex items-center">
+                        <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" alt="ETH" class="w-8 h-8 mr-3">
+                        <div>
+                            <p class="font-bold">ETH/USD</p>
+                            <p class="text-sm text-gray-400">Ethereum</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-bold">$2,245.00</p>
+                        <p class="text-sm text-green-500">+1.56%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

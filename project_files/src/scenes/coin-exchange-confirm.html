@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>确认兑换 - Matrix USD</title>
+    <link href="../styles/output.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0052ff;
+            --primary-hover: #0039c6;
+            --bg-light: #f5f8ff;
+            --text-primary: #0a0b0d;
+            --text-secondary: #5b616e;
+            --border-color: #e5e5e5;
+        }
+        body {
+            background-color: #f7f8fa;
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        .page-container {
+            padding: 1rem;
+            padding-bottom: 6rem;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+        }
+        .section-title {
+            font-weight: 600;
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+        }
+        .text-subtitle {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+        .text-body {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        .primary-button {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            padding: 0.875rem 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+        .primary-button:hover {
+            background-color: var(--primary-hover);
+        }
+        .secondary-button {
+            background-color: transparent;
+            color: var(--text-primary);
+            font-weight: 600;
+            padding: 0.875rem 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            width: 100%;
+            border: 1px solid var(--border-color);
+        }
+        .bottom-action-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            padding: 1rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 0.75rem;
+            z-index: 20;
+        }
+        .exchange-summary {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 0;
+        }
+        .exchange-amount {
+            font-size: 2rem;
+            font-weight: 600;
+            margin: 0.5rem 0;
+        }
+        .exchange-for {
+            display: flex;
+            align-items: center;
+            margin: 0.5rem 0;
+        }
+        .exchange-arrow {
+            width: 24px;
+            height: 24px;
+            background-color: var(--bg-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 0.75rem;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .currency-tag {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            background-color: var(--bg-light);
+            border-radius: 1.5rem;
+        }
+        .currency-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="mx-auto max-w-md">
+        <!-- 顶部导航栏 -->
+        <div class="sticky top-0 bg-white z-10 pt-12 pb-2 border-b border-gray-100">
+            <div class="px-4 flex items-center justify-between">
+                <a href="javascript:history.back()" class="w-8 h-8 flex items-center justify-center">
+                    <i class="fas fa-arrow-left text-black"></i>
+                </a>
+                <h1 class="text-xl font-semibold">确认兑换</h1>
+                <div class="w-8 h-8"></div>
+            </div>
+        </div>
+
+        <div class="page-container">
+            <!-- 兑换总览 -->
+            <div class="card mb-6">
+                <div class="p-5">
+                    <div class="exchange-summary">
+                        <div class="currency-tag" id="from-tag">
+                            <div class="currency-icon bg-blue-100">
+                                <i class="fas fa-dollar-sign text-blue-600" id="from-icon"></i>
+                            </div>
+                            <span class="font-medium" id="from-label">USD</span>
+                        </div>
+                        
+                        <p class="exchange-amount" id="from-amount">5,000.00</p>
+                        
+                        <div class="exchange-for">
+                            <span class="text-body">兑换为</span>
+                            <div class="exchange-arrow">
+                                <i class="fas fa-arrow-down text-blue-600 text-sm"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="currency-tag" id="to-tag">
+                            <div class="currency-icon bg-blue-100">
+                                <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png" alt="USDC" class="w-4 h-4" id="to-icon">
+                            </div>
+                            <span class="font-medium" id="to-label">USDC</span>
+                        </div>
+                        
+                        <p class="exchange-amount" id="to-amount">4,985.00</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 兑换详情 -->
+            <div class="card mb-6">
+                <div class="p-5">
+                    <h2 class="section-title">兑换详情</h2>
+                    
+                    <div class="info-row">
+                        <span class="text-body">兑换类型</span>
+                        <span class="text-subtitle" id="exchange-type">入金 (买入USDC)</span>
+                    </div>
+                    
+                    <div class="info-row">
+                        <span class="text-body">兑换汇率</span>
+                        <span class="text-subtitle" id="exchange-rate">1 USD = 0.997 USDC</span>
+                    </div>
+                    
+                    <div class="info-row">
+                        <span class="text-body">手续费</span>
+                        <span class="text-green-500 font-medium">免费</span>
+                    </div>
+                    
+                    <div class="info-row">
+                        <span class="text-body">预计完成时间</span>
+                        <span class="text-subtitle">即时</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 付款方式 -->
+            <div class="card mb-6">
+                <div class="p-5">
+                    <h2 class="section-title">支付方式</h2>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3" id="from-account-icon">
+                                <i class="fas fa-dollar-sign text-blue-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-subtitle" id="from-account-name">USD账户</p>
+                                <p class="text-body" id="from-account-balance">余额: $50,000.00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 接收账户 -->
+            <div class="card mb-6">
+                <div class="p-5">
+                    <h2 class="section-title">接收账户</h2>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3" id="to-account-icon">
+                                <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png" alt="USDC" class="w-6 h-6">
+                            </div>
+                            <div>
+                                <p class="text-subtitle" id="to-account-name">USDC钱包</p>
+                                <p class="text-body" id="to-account-balance">余额: 15,000 USDC</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 交易提示 -->
+            <div class="bg-blue-50 rounded-xl p-4 mb-6">
+                <div class="flex">
+                    <i class="fas fa-info-circle text-blue-600 mt-1 mr-3"></i>
+                    <div>
+                        <p class="text-blue-800 text-sm">确认交易后，您将以当前显示的汇率完成兑换。该操作不可撤销，请仔细确认交易信息。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部操作栏 -->
+        <div class="bottom-action-bar">
+            <button class="secondary-button" onclick="window.location.href='./coin-exchange.html'">
+                返回修改
+            </button>
+            <button class="primary-button" id="confirm-button">
+                确认兑换
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        // 获取URL参数
+        document.addEventListener('DOMContentLoaded', function() {
+            // 从sessionStorage获取数据
+            const fromCurrency = sessionStorage.getItem('fromCurrency') || 'USD';
+            const toCurrency = sessionStorage.getItem('toCurrency') || 'USDC';
+            const fromAmount = sessionStorage.getItem('fromAmount') || '5000';
+            const toAmount = sessionStorage.getItem('toAmount') || '4985';
+            const isBuyMode = sessionStorage.getItem('isBuyMode') === 'true';
+            
+            // 格式化金额显示
+            const formattedFromAmount = parseFloat(fromAmount).toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            
+            const formattedToAmount = parseFloat(toAmount).toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            
+            // 更新UI
+            document.getElementById('from-label').textContent = fromCurrency;
+            document.getElementById('to-label').textContent = toCurrency;
+            document.getElementById('from-amount').textContent = formattedFromAmount;
+            document.getElementById('to-amount').textContent = formattedToAmount;
+            
+            // 设置兑换类型
+            if (isBuyMode) {
+                document.getElementById('exchange-type').textContent = '入金 (买入USDC)';
+                document.getElementById('exchange-rate').textContent = '1 USD = 0.997 USDC';
+                
+                // 更新图标和账户信息
+                document.getElementById('from-icon').className = 'fas fa-dollar-sign text-blue-600';
+                document.getElementById('from-account-name').textContent = 'USD账户';
+                document.getElementById('from-account-balance').textContent = '余额: $50,000.00';
+                document.getElementById('to-account-name').textContent = 'USDC钱包';
+                document.getElementById('to-account-balance').textContent = '余额: 15,000 USDC';
+            } else {
+                document.getElementById('exchange-type').textContent = '出金 (卖出USDC)';
+                document.getElementById('exchange-rate').textContent = '1 USDC = 1.003 USD';
+                
+                // 更新图标和账户信息
+                const fromIconContainer = document.getElementById('from-icon');
+                fromIconContainer.parentNode.innerHTML = '<img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png" alt="USDC" class="w-4 h-4">';
+                
+                const toIconContainer = document.getElementById('to-icon');
+                toIconContainer.parentNode.innerHTML = '<i class="fas fa-dollar-sign text-blue-600"></i>';
+                
+                document.getElementById('from-account-name').textContent = 'USDC钱包';
+                document.getElementById('from-account-balance').textContent = '余额: 15,000 USDC';
+                document.getElementById('to-account-name').textContent = 'USD账户';
+                document.getElementById('to-account-balance').textContent = '余额: $50,000.00';
+                
+                // 更新账户图标
+                document.getElementById('from-account-icon').innerHTML = '<img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png" alt="USDC" class="w-6 h-6">';
+                document.getElementById('to-account-icon').innerHTML = '<i class="fas fa-dollar-sign text-blue-600"></i>';
+            }
+            
+            // 确认按钮点击事件
+            document.getElementById('confirm-button').addEventListener('click', function() {
+                // 获取交易类型
+                const isBuyMode = sessionStorage.getItem('isBuyMode') === 'true';
+                
+                if (isBuyMode) {
+                    // 入金流程：USD转USDC，直接完成
+                    window.location.href = './coin-exchange-result.html?type=inbound&status=success';
+                } else {
+                    // 出金流程：USDC转USD
+                    // 需要先检查USDC余额
+                    const amount = sessionStorage.getItem('fromAmount') || '5000';
+                    const usdcBalance = 2500; // 假设当前USDC余额为2,500
+                    
+                    if (parseFloat(amount) > usdcBalance) {
+                        // USDC余额不足，需要提示充值
+                        sessionStorage.setItem('hasActiveTransaction', 'true');
+                        sessionStorage.setItem('activeTxType', '出金 (卖出USDC)');
+                        sessionStorage.setItem('activeTxAmount', amount + ' USDC');
+                        sessionStorage.setItem('activeTxStatus', '等待USDC支付');
+                        sessionStorage.setItem('activeTxRemainingTime', '1800'); // 30分钟
+                        
+                        window.location.href = `./coin-exchange-insufficient.html?amount=${amount}&balance=${usdcBalance}`;
+                    } else {
+                        // USDC余额充足，直接进入处理状态
+                        window.location.href = './coin-exchange-waiting.html';
+                    }
+                }
+                
+                // 注意：实际项目中，这些数据应该保存到后端数据库
+                // 这里使用sessionStorage仅用于演示
+            });
+        });
+    </script>
+
+    <script src="../scripts/navigation.js"></script>
+</body>
+</html> 

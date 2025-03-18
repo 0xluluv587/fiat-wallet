@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USD账户 - 审核中状态</title>
+    <link href="../styles/output.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 0;
+        }
+        .status-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 16px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .content {
+            padding: 16px;
+        }
+        .account-row {
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            background-color: #f9fafb;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        .account-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .account-title-section {
+            display: flex;
+            align-items: center;
+        }
+        .account-icon {
+            width: 32px;
+            height: 32px;
+            background-color: #e0f2fe;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            color: #0284c7;
+        }
+        .account-info h2 {
+            font-weight: 500;
+            color: #0c4a6e;
+            margin-bottom: 4px;
+        }
+        .account-info p {
+            font-size: 14px;
+            color: #64748b;
+        }
+        .progress-text {
+            font-size: 14px;
+            color: #64748b;
+            text-align: right;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background-color: #e2e8f0;
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #0ea5e9;
+            border-radius: 2px;
+            width: 60%;
+        }
+        .status-steps {
+            margin-top: 8px;
+        }
+        .status-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .status-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        .status-icon.completed {
+            background-color: #dcfce7;
+            color: #16a34a;
+        }
+        .status-icon.in-progress {
+            background-color: #fef9c3;
+            color: #ca8a04;
+        }
+        .status-text {
+            font-size: 14px;
+            color: #334155;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container">
+        <!-- 顶部标题栏 -->
+        <div class="header">
+            <h1 class="header-title">账户状态</h1>
+        </div>
+
+        <!-- 审核中状态卡片 -->
+        <div class="status-card">
+            <div class="content">
+                <div class="account-row">
+                    <div class="account-header">
+                        <div class="account-title-section">
+                            <div class="account-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="account-info">
+                                <h2>USD机构专属账户</h2>
+                                <p>开户审核中 预计24小时内完成</p>
+                            </div>
+                        </div>
+                        <div class="progress-text">60%</div>
+                    </div>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    
+                    <div class="status-steps">
+                        <div class="status-step">
+                            <div class="status-icon completed">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="status-text">已完成身份认证</div>
+                        </div>
+                        <div class="status-step">
+                            <div class="status-icon in-progress">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="status-text">银行账户验证中</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

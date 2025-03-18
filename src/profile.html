@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心 - Matrixport</title>
+    <link href="./styles/output.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-white text-black">
+    <div class="iphone15-frame mx-auto">
+        <div class="dynamic-island"></div>
+
+        <!-- 顶部导航栏 -->
+        <div class="sticky top-0 bg-white z-50 pt-12 pb-2 border-b border-gray-100">
+            <div class="px-4 flex items-center justify-between">
+                <div class="w-8 h-8"></div>
+                <h1 class="text-xl font-semibold text-black">个人中心</h1>
+                <a href="javascript:void(0)" class="w-8 h-8 flex items-center justify-center">
+                    <i class="fas fa-bell text-black"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="page-container">
+            <!-- 用户信息 -->
+            <div class="card mb-6">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="w-16 h-16 rounded-full bg-primary-light overflow-hidden mr-4">
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="用户头像" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-semibold">Michael Chen</h2>
+                            <p class="text-body">ID: 8723****5612</p>
+                        </div>
+                        <a href="javascript:void(0)" class="ml-auto">
+                            <i class="fas fa-chevron-right text-body"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 安全设置 -->
+            <div class="card mb-6">
+                <div class="p-5">
+                    <h3 class="text-lg font-semibold mb-4">安全设置</h3>
+                    <div class="space-y-5">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
+                                    <i class="fas fa-shield-alt text-primary-color"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-subtitle">账户安全等级</h4>
+                                    <p class="text-body text-success-color">高</p>
+                                </div>
+                            </div>
+                            <a href="javascript:void(0)" class="text-primary-color">
+                                查看
+                            </a>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
+                                    <i class="fas fa-fingerprint text-primary-color"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-subtitle">生物识别</h4>
+                                    <p class="text-body">面容ID和指纹解锁</p>
+                                </div>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
+                                    <i class="fas fa-lock text-primary-color"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-subtitle">修改密码</h4>
+                                    <p class="text-body">上次修改: 90天前</p>
+                                </div>
+                            </div>
+                            <a href="javascript:void(0)">
+                                <i class="fas fa-chevron-right text-body"></i>
+                            </a>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
+                                    <i class="fas fa-mobile-alt text-primary-color"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-subtitle">两步验证</h4>
+                                    <p class="text-body">Google验证器</p>
+                                </div>
+                            </div>
+                            <a href="javascript:void(0)">
+                                <i class="fas fa-chevron-right text-body"></i>
+                            </a>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
+                                    <i class="fas fa-id-card text-primary-color"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-subtitle">身份认证</h4>
+                                    <p class="text-body">已完成高级认证</p>
+                                </div>
+                            </div>
+                            <a href="javascript:void(0)">
+                                <i class="fas fa-chevron-right text-body"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 账户与支持 -->
+            <div class="card mb-6">
+                <div class="p-5">
+                    <h3 class="text-lg font-semibold mb-4">账户与支持</h3>
+                    <div class="space-y-5">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
+                                    <i class="fas fa-university text-primary-color"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-subtitle">银行账户</h4>
+                                    <p class="text-body">管理您的银行账户</p>
+                                </div>
+                            </div>
+                            <a href="javascript:void(0)">
+                                <i class="fas fa-chevron-right text-body"></i>
+                            </a>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
+                                    <i class="fas fa-cog text-primary-color"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-subtitle">系统设置</h4>
+                                    <p class="text-body">语言、通知和隐私设置</p>
+                                </div>
+                            </div>
+                            <a href="javascript:void(0)">
+                                <i class="fas fa-chevron-right text-body"></i>
+                            </a>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-primary-light flex items-center justify-center mr-3">
+                                    <i class="fas fa-headset text-primary-color"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-subtitle">在线客服</h4>
+                                    <p class="text-body">7x24小时专属客服</p>
+                                </div>
+                            </div>
+                            <a href="javascript:void(0)">
+                                <i class="fas fa-chevron-right text-body"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 登出按钮 -->
+            <div class="mb-16">
+                <button class="btn-outline w-full py-3 font-medium">
+                    退出登录
+                </button>
+            </div>
+        </div>
+
+        <!-- 底部导航 -->
+        <nav class="bottom-nav">
+            <a href="javascript:void(0)" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>首页</span>
+            </a>
+            <a href="javascript:void(0)" class="nav-item">
+                <i class="fas fa-exchange-alt"></i>
+                <span>交易</span>
+            </a>
+            <a href="javascript:void(0)" class="nav-item">
+                <i class="fas fa-wallet"></i>
+                <span>资产</span>
+            </a>
+            <a href="javascript:void(0)" class="nav-item nav-item-active">
+                <i class="fas fa-user"></i>
+                <span>我的</span>
+            </a>
+        </nav>
+    </div>
+</body>
+</html> 

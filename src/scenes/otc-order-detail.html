@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单详情 - Matrixport</title>
+    <link href="../styles/output.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="iphone15-frame mx-auto">
+        <div class="dynamic-island"></div>
+
+        <!-- 顶部导航栏 -->
+        <div class="sticky top-0 bg-white z-50 pt-12 pb-2 border-b border-gray-100">
+            <div class="px-4 flex items-center justify-between">
+                <a href="./otc-trade.html" class="w-8 h-8 flex items-center justify-center">
+                    <i class="fas fa-arrow-left text-black"></i>
+                </a>
+                <h1 class="text-xl font-semibold text-black">订单详情</h1>
+                <a href="javascript:void(0)" class="w-8 h-8 flex items-center justify-center">
+                    <i class="fas fa-ellipsis-v text-black"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="page-container">
+            <!-- 订单状态卡片 -->
+            <div class="card mb-6">
+                <div class="p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-primary-light flex items-center justify-center mr-3">
+                            <i class="fas fa-hourglass-half text-2xl text-primary-color"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center">
+                                <h2 class="text-lg font-bold mr-2">等待付款</h2>
+                                <span class="status-tag status-tag-processing">
+                                    处理中
+                                </span>
+                            </div>
+                            <p class="text-body">请在 <span class="text-primary-color font-medium">14:25</span> 前完成付款，超时订单将自动取消</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 倒计时 -->
+                    <div class="bg-card-background-darker rounded-xl p-4 mb-4">
+                        <div class="flex justify-between items-center">
+                            <p class="text-body">倒计时</p>
+                            <div class="flex items-center">
+                                <div class="bg-primary-color text-white px-2 py-1 rounded text-lg font-bold">14</div>
+                                <span class="mx-1 text-lg">:</span>
+                                <div class="bg-primary-color text-white px-2 py-1 rounded text-lg font-bold">35</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 交易信息 -->
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-body">订单编号</span>
+                            <div class="flex items-center">
+                                <span class="text-subtitle mr-2">OT23082700562</span>
+                                <button class="text-primary-color">
+                                    <i class="far fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-body">订单类型</span>
+                            <span class="text-subtitle">入金 (买入USDC)</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-body">下单时间</span>
+                            <span class="text-subtitle">2023-08-27 15:45:18</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 付款信息 -->
+            <div class="card mb-6">
+                <div class="p-5">
+                    <h2 class="text-lg font-bold mb-4">付款信息</h2>
+                    
+                    <div class="space-y-3 mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="text-body">支付方式</span>
+                            <span class="text-subtitle">USD专属账户</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-body">支付金额</span>
+                            <span class="text-subtitle">4,985 USD</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-body">手续费</span>
+                            <span class="text-subtitle text-success-color">免费</span>
+                        </div>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <!-- 兑换信息 -->
+                    <div class="space-y-3 mt-4">
+                        <div class="flex justify-between items-center">
+                            <span class="text-body">币对</span>
+                            <span class="text-subtitle">USDC/USD</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-body">接收数量</span>
+                            <span class="text-subtitle">5,000 USDC</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-body">实时汇率</span>
+                            <span class="text-subtitle">1 USDC = 0.997 USD</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-body">交易类型</span>
+                            <span class="text-subtitle">卖出USD买入USDC (入金)</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-body">接收地址</span>
+                            <span class="text-subtitle">Matrixport钱包</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 提示信息 -->
+            <div class="notification mb-16">
+                <div class="flex items-start">
+                    <i class="fas fa-info-circle text-primary-color mt-1 mr-3"></i>
+                    <div>
+                        <p class="text-body font-medium mb-2">订单说明</p>
+                        <p class="text-body">请在倒计时结束前完成付款。如有任何问题，请联系客服。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部操作栏 -->
+        <div class="bottom-action-bar">
+            <button class="btn-outline flex-1 py-3 font-medium flex items-center justify-center">
+                <i class="fas fa-headset mr-2"></i>
+                联系客服
+            </button>
+            <button class="btn-primary flex-1 py-3 font-medium">
+                我已付款
+            </button>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>身份认证 - Matrixport</title>
+    <link href="./styles/output.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-white text-black">
+    <div class="iphone15-frame mx-auto">
+        <div class="dynamic-island"></div>
+
+        <!-- 顶部导航栏 -->
+        <div class="sticky top-0 bg-white z-50 pt-12 pb-2 border-b border-gray-100">
+            <div class="px-4 flex items-center justify-between">
+                <a href="javascript:history.back()" class="w-8 h-8 flex items-center justify-center">
+                    <i class="fas fa-arrow-left text-black"></i>
+                </a>
+                <h1 class="text-xl font-semibold text-black">身份认证</h1>
+                <div class="w-8 h-8"></div>
+            </div>
+        </div>
+
+        <div class="page-container">
+            <!-- 进度条 -->
+            <div class="steps-progress mb-6">
+                <div class="flex justify-between items-center mb-2">
+                    <div class="step-item step-active">
+                        <div class="step-circle">1</div>
+                        <span class="step-text">基本信息</span>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step-item">
+                        <div class="step-circle">2</div>
+                        <span class="step-text">证件上传</span>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step-item">
+                        <div class="step-circle">3</div>
+                        <span class="step-text">人脸识别</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 表单 -->
+            <div class="card mb-6">
+                <div class="p-5">
+                    <form>
+                        <div class="form-group mb-4">
+                            <label class="form-label">全名(与证件一致)</label>
+                            <input type="text" class="form-input" placeholder="请输入您的全名">
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label class="form-label">国籍</label>
+                            <div class="select-wrapper">
+                                <select class="form-select">
+                                    <option value="" disabled selected>请选择您的国籍</option>
+                                    <option value="CN">中国</option>
+                                    <option value="US">美国</option>
+                                    <option value="SG">新加坡</option>
+                                    <option value="HK">中国香港</option>
+                                </select>
+                                <i class="fas fa-chevron-down select-icon"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label class="form-label">居住地</label>
+                            <div class="select-wrapper">
+                                <select class="form-select">
+                                    <option value="" disabled selected>请选择您的居住地</option>
+                                    <option value="CN">中国</option>
+                                    <option value="US">美国</option>
+                                    <option value="SG">新加坡</option>
+                                    <option value="HK">中国香港</option>
+                                </select>
+                                <i class="fas fa-chevron-down select-icon"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label class="form-label">证件类型</label>
+                            <div class="flex space-x-2">
+                                <button type="button" class="btn-select-active flex-1">
+                                    身份证
+                                </button>
+                                <button type="button" class="btn-select flex-1">
+                                    护照
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-6">
+                            <label class="form-label">证件号码</label>
+                            <input type="text" class="form-input" placeholder="请输入您的证件号码">
+                        </div>
+
+                        <!-- 提示信息 -->
+                        <div class="notification">
+                            <div class="flex items-start">
+                                <i class="fas fa-info-circle text-primary-color mt-1 mr-3"></i>
+                                <div>
+                                    <p class="text-body">根据银行合规要求，我们需要收集您的身份信息以开通USD专属账户。所有信息将严格保密并安全加密存储。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部操作栏 -->
+        <div class="bottom-action-bar">
+            <button class="btn-primary w-full py-3 font-medium" onclick="window.location.href='./account-documents.html'">
+                下一步
+            </button>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USD账户 - 审核被拒状态</title>
+    <link href="../styles/output.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 0;
+        }
+        .status-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 16px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .content {
+            padding: 16px;
+        }
+        .account-row {
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            background-color: #f9fafb;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        .account-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .account-icon {
+            width: 32px;
+            height: 32px;
+            background-color: #e0f2fe;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            color: #0284c7;
+        }
+        .account-info {
+            flex: 1;
+        }
+        .account-info h2 {
+            font-weight: 500;
+            color: #0c4a6e;
+            margin-bottom: 4px;
+        }
+        .account-info-label {
+            display: inline-flex;
+            align-items: center;
+            background-color: #fee2e2;
+            color: #b91c1c;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .account-info-label i {
+            margin-right: 4px;
+        }
+        .error-box {
+            background-color: #fff5f5;
+            border-left: 3px solid #dc2626;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 16px;
+        }
+        .error-box-title {
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            color: #b91c1c;
+        }
+        .error-box-title i {
+            margin-right: 8px;
+        }
+        .error-details {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .error-item {
+            display: flex;
+            margin-bottom: 8px;
+        }
+        .error-item:last-child {
+            margin-bottom: 0;
+        }
+        .error-item-number {
+            margin-right: 8px;
+            color: #b91c1c;
+        }
+        .error-item-text {
+            color: #991b1b;
+            font-size: 14px;
+        }
+        .action-button {
+            background-color: #0ea5e9;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-weight: 500;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-top: 16px;
+        }
+        .action-button:hover {
+            background-color: #0284c7;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container">
+        <!-- 顶部标题栏 -->
+        <div class="header">
+            <h1 class="header-title">账户状态</h1>
+        </div>
+
+        <!-- 审核被拒状态卡片 -->
+        <div class="status-card">
+            <div class="content">
+                <div class="account-row">
+                    <div class="account-header">
+                        <div class="account-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="account-info">
+                            <h2>USD机构专属账户</h2>
+                            <div class="account-info-label">
+                                <i class="fas fa-times-circle"></i>
+                                <span>审核未通过</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="error-box">
+                        <div class="error-box-title">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <span>审核未通过原因</span>
+                        </div>
+                        <ul class="error-details">
+                            <li class="error-item">
+                                <span class="error-item-number">1.</span>
+                                <span class="error-item-text">提供的银行账户证明文件不清晰，请重新上传高清晰度的文件</span>
+                            </li>
+                            <li class="error-item">
+                                <span class="error-item-number">2.</span>
+                                <span class="error-item-text">银行账户名称与认证姓名不一致，请确保使用本人名下的银行账户</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <button class="action-button">重新申请</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

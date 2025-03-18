@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交易状态 - Matrix USD</title>
+    <link href="./styles/output.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-white text-gray-900">
+    <!-- iOS 状态栏 -->
+    <div class="ios-status-bar border-b border-gray-100">
+        <div class="flex items-center">
+            <i class="fas fa-chevron-left text-gray-400 mr-2"></i>
+            <h1 class="text-lg font-medium">交易状态</h1>
+        </div>
+        <button class="text-gray-400">
+            <i class="fas fa-ellipsis-h"></i>
+        </button>
+    </div>
+
+    <div class="p-4">
+        <!-- 交易信息卡片 -->
+        <div class="card p-4 mb-6">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center">
+                    <div class="usd-icon mr-3"></div>
+                    <div>
+                        <h3 class="font-medium">USD提现</h3>
+                        <p class="text-sm text-gray-500">交易编号：TX123456789</p>
+                    </div>
+                </div>
+                <span class="status-tag status-tag-processing">
+                    <i class="fas fa-spinner fa-spin mr-1"></i>处理中
+                </span>
+            </div>
+            <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
+                <span>提现金额</span>
+                <span class="font-medium text-gray-900">10,000.00 USD</span>
+            </div>
+            <div class="flex items-center justify-between text-sm text-gray-500">
+                <span>预计到账时间</span>
+                <span>今日 16:30 前</span>
+            </div>
+        </div>
+
+        <!-- 进度时间线 -->
+        <div class="space-y-6 relative before:content-[''] before:absolute before:left-3 before:top-3 before:w-[2px] before:h-[calc(100%-24px)] before:bg-gray-100">
+            <!-- 当前步骤 -->
+            <div class="flex">
+                <div class="w-6 h-6 rounded-full bg-blue-500 flex-shrink-0 flex items-center justify-center">
+                    <i class="fas fa-spinner fa-spin text-white text-xs"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="font-medium">银行处理中</p>
+                    <p class="text-sm text-gray-500 mt-1">预计10-30分钟完成</p>
+                    <p class="text-xs text-gray-400 mt-1">2024-03-10 15:45:30</p>
+                </div>
+            </div>
+
+            <!-- 已完成步骤 -->
+            <div class="flex">
+                <div class="w-6 h-6 rounded-full bg-green-500 flex-shrink-0 flex items-center justify-center">
+                    <i class="fas fa-check text-white text-xs"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="font-medium">安全验证通过</p>
+                    <p class="text-sm text-gray-500 mt-1">身份验证和风控审核已完成</p>
+                    <p class="text-xs text-gray-400 mt-1">2024-03-10 15:44:20</p>
+                </div>
+            </div>
+
+            <div class="flex">
+                <div class="w-6 h-6 rounded-full bg-green-500 flex-shrink-0 flex items-center justify-center">
+                    <i class="fas fa-check text-white text-xs"></i>
+                </div>
+                <div class="ml-4">
+                    <p class="font-medium">提交提现申请</p>
+                    <p class="text-sm text-gray-500 mt-1">已确认提现信息</p>
+                    <p class="text-xs text-gray-400 mt-1">2024-03-10 15:43:10</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 收款信息 -->
+        <div class="mt-8">
+            <h3 class="text-sm text-gray-500 mb-3">收款信息</h3>
+            <div class="card p-4">
+                <div class="space-y-3">
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-500">收款银行</span>
+                        <span class="text-sm">Chase Bank</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-500">收款账号</span>
+                        <span class="text-sm">****8234</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-500">收款人</span>
+                        <span class="text-sm">Sarah Williams</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部按钮 -->
+        <div class="mt-8 space-y-4">
+            <button class="btn-primary w-full">
+                <i class="fas fa-headset mr-2"></i>联系客服
+            </button>
+            <button class="btn-secondary w-full">
+                <i class="fas fa-copy mr-2"></i>复制交易号
+            </button>
+        </div>
+    </div>
+</body>
+</html> 

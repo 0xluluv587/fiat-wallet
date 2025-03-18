@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交易结果 - Matrixport</title>
+    <link href="./styles/output.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-white text-black">
+    <div class="iphone15-frame mx-auto">
+        <div class="dynamic-island"></div>
+
+        <!-- 顶部导航栏 -->
+        <div class="sticky top-0 bg-white z-50 pt-12 pb-2 border-b border-gray-100">
+            <div class="px-4 flex items-center justify-between">
+                <a href="javascript:history.back()" class="w-8 h-8 flex items-center justify-center">
+                    <i class="fas fa-arrow-left text-black"></i>
+                </a>
+                <h1 class="text-xl font-semibold text-black">交易详情</h1>
+                <a href="javascript:void(0)" class="w-8 h-8 flex items-center justify-center">
+                    <i class="fas fa-ellipsis-v text-black"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="page-container">
+            <!-- 交易状态 -->
+            <div class="card mb-6">
+                <div class="p-5">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-success-light flex items-center justify-center mr-3">
+                            <i class="fas fa-check text-2xl text-success-color"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-lg font-bold text-success-color mb-1">交易成功</h2>
+                            <p class="text-body">您已成功完成入金交易</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-body">交易类型</span>
+                            <span class="text-subtitle">入金 (买入USDC)</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-body">交易金额</span>
+                            <span class="text-subtitle">5,000 USDC</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-body">支付金额</span>
+                            <span class="text-subtitle">4,985 USD</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-body">交易编号</span>
+                            <div class="flex items-center">
+                                <span class="text-subtitle mr-2">TX23082700562</span>
+                                <button class="text-primary-color">
+                                    <i class="far fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 交易时间轴 -->
+            <div class="card mb-6">
+                <div class="p-5">
+                    <h3 class="text-lg font-semibold mb-4">交易进度</h3>
+                    
+                    <div class="timeline">
+                        <div class="timeline-item timeline-complete">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <h4 class="text-subtitle">交易提交</h4>
+                                <p class="text-body">2023-08-27 15:45:18</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item timeline-complete">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <h4 class="text-subtitle">支付确认</h4>
+                                <p class="text-body">2023-08-27 15:47:36</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item timeline-complete">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <h4 class="text-subtitle">资产到账</h4>
+                                <p class="text-body">2023-08-27 15:48:02</p>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item timeline-complete">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <h4 class="text-subtitle">交易完成</h4>
+                                <p class="text-body">2023-08-27 15:48:10</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 交易详情 -->
+            <div class="card mb-6">
+                <div class="p-5">
+                    <h3 class="text-lg font-semibold mb-4">交易详情</h3>
+                    
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-body">币对</span>
+                            <span class="text-subtitle">USDC/USD</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-body">兑换汇率</span>
+                            <span class="text-subtitle">1 USDC = 0.997 USD</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-body">支付方式</span>
+                            <span class="text-subtitle">USD专属账户</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-body">手续费</span>
+                            <span class="text-success-color">免费</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <span class="text-body">接收地址</span>
+                            <span class="text-subtitle">Matrixport钱包</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 分享区域 -->
+            <div class="card mb-16">
+                <div class="p-5">
+                    <p class="text-body text-center mb-4">分享您的交易体验</p>
+                    <div class="flex justify-center space-x-6">
+                        <button class="share-btn">
+                            <i class="fab fa-weixin text-xl text-[#09BB07]"></i>
+                            <span class="text-subtitle">微信</span>
+                        </button>
+                        <button class="share-btn">
+                            <i class="fab fa-telegram text-xl text-[#0088CC]"></i>
+                            <span class="text-subtitle">Telegram</span>
+                        </button>
+                        <button class="share-btn">
+                            <i class="fab fa-twitter text-xl text-[#1DA1F2]"></i>
+                            <span class="text-subtitle">Twitter</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部操作栏 -->
+        <div class="bottom-action-bar">
+            <button class="btn-outline flex-1 py-3 font-medium flex items-center justify-center" onclick="window.location.href='./transactions.html'">
+                <i class="fas fa-list-alt mr-2"></i>
+                查看全部订单
+            </button>
+            <button class="btn-primary flex-1 py-3 font-medium" onclick="window.location.href='./trade.html'">
+                继续交易
+            </button>
+        </div>
+    </div>
+</body>
+</html> 
