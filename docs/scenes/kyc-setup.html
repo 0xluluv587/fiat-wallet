@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matrix USD - OTC KYC开通准备</title>
+    <link href="../styles/main.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .kyc-container {
+            padding: 16px;
+        }
+        
+        .kyc-header {
+            margin-bottom: 20px;
+        }
+        
+        .kyc-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--neutral-900);
+            margin-bottom: 8px;
+        }
+        
+        .kyc-desc {
+            font-size: 14px;
+            color: var(--neutral-600);
+            line-height: 1.5;
+        }
+        
+        .steps-container {
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        
+        .steps-container::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 80px;
+            position: relative;
+        }
+        
+        .step-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 16px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background-color: var(--neutral-200);
+        }
+        
+        .step-item.active:not(:last-child)::after {
+            background-color: var(--primary-color);
+        }
+        
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--neutral-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            margin-bottom: 8px;
+            z-index: 1;
+        }
+        
+        .step-item.active .step-circle {
+            background-color: var(--primary-color);
+        }
+        
+        .step-item.completed .step-circle {
+            background-color: var(--success);
+        }
+        
+        .step-label {
+            font-size: 12px;
+            color: var(--neutral-600);
+            text-align: center;
+            line-height: 1.2;
+        }
+        
+        .step-item.active .step-label {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .info-card {
+            background-color: var(--primary-light);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .info-card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-bottom: 12px;
+        }
+        
+        .info-card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--neutral-900);
+            margin-bottom: 8px;
+        }
+        
+        .info-card-desc {
+            font-size: 14px;
+            color: var(--neutral-700);
+            line-height: 1.5;
+        }
+        
+        .docs-section {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        
+        .docs-header {
+            padding: 16px;
+            background-color: var(--neutral-50);
+            border-bottom: 1px solid var(--neutral-100);
+        }
+        
+        .docs-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--neutral-900);
+            display: flex;
+            align-items: center;
+        }
+        
+        .docs-title i {
+            margin-right: 8px;
+            color: var(--primary-color);
+        }
+        
+        .docs-list {
+            padding: 8px 0;
+        }
+        
+        .doc-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--neutral-100);
+        }
+        
+        .doc-item:last-child {
+            border-bottom: none;
+        }
+        
+        .doc-title {
+            display: flex;
+            align-items: flex-start;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--neutral-800);
+            margin-bottom: 6px;
+        }
+        
+        .doc-number {
+            min-width: 24px;
+            margin-right: 8px;
+        }
+        
+        .doc-required {
+            color: var(--error);
+            margin-left: 4px;
+        }
+        
+        .doc-desc {
+            padding-left: 32px;
+            font-size: 13px;
+            color: var(--neutral-600);
+            line-height: 1.4;
+        }
+        
+        .doc-links {
+            padding-left: 32px;
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .doc-link {
+            display: inline-flex;
+            align-items: center;
+            font-size: 13px;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .doc-link i {
+            margin-right: 4px;
+        }
+        
+        .doc-applicability {
+            padding-left: 32px;
+            margin-top: 6px;
+            font-size: 13px;
+            color: var(--neutral-500);
+            font-style: italic;
+        }
+        
+        .doc-sub-items {
+            margin-top: 8px;
+            padding-left: 32px;
+        }
+        
+        .doc-sub-item {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--neutral-700);
+        }
+        
+        .doc-sub-item::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--neutral-400);
+        }
+        
+        .action-button {
+            display: block;
+            width: 100%;
+            height: 48px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 8px;
+            margin-bottom: 32px;
+            cursor: pointer;
+        }
+        
+        .contact-support {
+            text-align: center;
+            margin-top: 16px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: var(--neutral-600);
+        }
+        
+        .contact-support a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="ios-device">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-bar-content">
+                <div class="status-bar-time" id="statusBarTime">9:41</div>
+                <div class="status-bar-icons">
+                    <div class="status-bar-signal">
+                        <i class="fas fa-signal"></i>
+                    </div>
+                    <div class="status-bar-wifi">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <div class="status-bar-battery">
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 导航栏 -->
+        <div class="nav-bar">
+            <div class="nav-back" id="backButton">
+                <i class="fas fa-chevron-left"></i>
+                <span>返回</span>
+            </div>
+            <div class="nav-title">OTC KYC开通准备</div>
+            <div class="nav-action"></div>
+        </div>
+        
+        <!-- 主要内容区 -->
+        <div class="content">
+            <div class="kyc-container">
+                <!-- KYC介绍 -->
+                <div class="kyc-header">
+                    <div class="kyc-title">企业 KYC 认证</div>
+                    <div class="kyc-desc">
+                        为了符合相关法规要求，使用OTC法币交易服务需要完成企业KYC认证流程。请准备好下列资料，以便快速完成认证。
+                    </div>
+                </div>
+                
+                <!-- USD账户信息 -->
+                <div class="account-card" style="background-color: white; border-radius: 12px; padding: 16px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                    <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                        <div class="list-item-icon" style="width: 32px; height: 32px; margin-right: 12px; display: flex; align-items: center; justify-content: center;">
+                            <div style="width: 32px; height: 32px; background-color: #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #333; font-weight: 600; font-size: 18px;">$</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 15px; font-weight: 500; color: var(--neutral-800);">USD</div>
+                            <div style="font-size: 12px; color: var(--neutral-600);">美元账户</div>
+                        </div>
+                        <div style="margin-left: auto; text-align: right;">
+                            <div style="font-size: 16px; font-weight: 600; color: var(--neutral-900);">1,750.00</div>
+                            <div style="font-size: 12px; color: var(--neutral-600);">= $1,750.00</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- KYC步骤 -->
+                <div class="steps-container">
+                    <div class="step-item completed">
+                        <div class="step-circle">1</div>
+                        <div class="step-label">准备资料</div>
+                    </div>
+                    <div class="step-item active">
+                        <div class="step-circle">2</div>
+                        <div class="step-label">提交申请</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">资料审核</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-circle">4</div>
+                        <div class="step-label">完成认证</div>
+                    </div>
+                </div>
+                
+                <!-- 重要信息卡片 -->
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <i class="fas fa-info"></i>
+                    </div>
+                    <div class="info-card-title">重要提示</div>
+                    <div class="info-card-desc">
+                        请确保所有文件是最新的官方版本，并且清晰可读。文件格式支持PDF、JPG和PNG，单个文件大小不超过10MB。所有文件需使用英文或中文，其他语言请提供官方翻译版本。
+                    </div>
+                </div>
+                
+                <!-- 所需文件列表 -->
+                <div class="docs-section">
+                    <div class="docs-header">
+                        <div class="docs-title">
+                            <i class="fas fa-file-alt"></i>
+                            所需资料清单
+                        </div>
+                    </div>
+                    
+                    <div class="docs-list">
+                        <!-- 1. 公司注册证明 -->
+                        <div class="doc-item">
+                            <div class="doc-title">
+                                <span class="doc-number">1.</span>
+                                <span>公司注册证明/营业执照</span>
+                                <span class="doc-required">*</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 2. 公司章程 -->
+                        <div class="doc-item">
+                            <div class="doc-title">
+                                <span class="doc-number">2.</span>
+                                <span>公司章程文件（如：公司章程、协会条款等）</span>
+                                <span class="doc-required">*</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 3. 董事和股东名单 -->
+                        <div class="doc-item">
+                            <div class="doc-title">
+                                <span class="doc-number">3.</span>
+                                <span>董事和股东名单</span>
+                                <span class="doc-required">*</span>
+                            </div>
+                            <div class="doc-sub-items">
+                                <div class="doc-sub-item">在职证明/公司查询</div>
+                                <div class="doc-sub-item">董事和成员名册</div>
+                            </div>
+                        </div>
+                        
+                        <!-- 4. 公司结构和股权 -->
+                        <div class="doc-item">
+                            <div class="doc-title">
+                                <span class="doc-number">4.</span>
+                                <span>公司结构和股权情况</span>
+                                <span class="doc-required">*</span>
+                            </div>
+                            <div class="doc-desc">
+                                显示所有持股超过25%的最终受益人，描述中间层，说明公司名称、注册地点和每一层的所有权百分比。必须由现任董事认证。
+                            </div>
+                            <div class="doc-links">
+                                <a href="#" class="doc-link">
+                                    <i class="fas fa-eye"></i>
+                                    <span>查看参考图表</span>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- 5. 授权书 -->
+                        <div class="doc-item">
+                            <div class="doc-title">
+                                <span class="doc-number">5.</span>
+                                <span>授权书/董事会决议</span>
+                                <span class="doc-required">*</span>
+                            </div>
+                            <div class="doc-desc">
+                                授权书可以是董事会决议或其他形式
+                            </div>
+                            <div class="doc-links">
+                                <a href="#" class="doc-link">
+                                    <i class="fas fa-download"></i>
+                                    <span>下载模板01</span>
+                                </a>
+                                <a href="#" class="doc-link">
+                                    <i class="fas fa-download"></i>
+                                    <span>下载模板02</span>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- 6. 授权代表身份证明 -->
+                        <div class="doc-item">
+                            <div class="doc-title">
+                                <span class="doc-number">6.</span>
+                                <span>授权代表身份证明文件</span>
+                                <span class="doc-required">*</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 7. 最终受益人身份证明 -->
+                        <div class="doc-item">
+                            <div class="doc-title">
+                                <span class="doc-number">7.</span>
+                                <span>最终受益人/控制人身份证明文件</span>
+                                <span class="doc-required">*</span>
+                            </div>
+                            <div class="doc-desc">
+                                持股或受益权超过25%的个人最终股东/受益人
+                            </div>
+                        </div>
+                        
+                        <!-- 8. 董事身份证明 -->
+                        <div class="doc-item">
+                            <div class="doc-title">
+                                <span class="doc-number">8.</span>
+                                <span>董事身份证明文件</span>
+                            </div>
+                            <div class="doc-applicability">（适用于新加坡OTC业务）</div>
+                        </div>
+                        
+                        <!-- 9. 营业注册证 -->
+                        <div class="doc-item">
+                            <div class="doc-title">
+                                <span class="doc-number">9.</span>
+                                <span>营业注册证或同等文件</span>
+                            </div>
+                            <div class="doc-applicability">（适用于香港企业）</div>
+                        </div>
+                        
+                        <!-- 10. 财务报表 -->
+                        <div class="doc-item">
+                            <div class="doc-title">
+                                <span class="doc-number">10.</span>
+                                <span>经审计的财务报表</span>
+                            </div>
+                            <div class="doc-applicability">（适用于抵押贷款和保证金贷款）</div>
+                        </div>
+                        
+                        <!-- 11. 企业AML/KYC政策 -->
+                        <div class="doc-item">
+                            <div class="doc-title">
+                                <span class="doc-number">11.</span>
+                                <span>企业反洗钱/KYC政策</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 12. IRS EIN确认函 -->
+                        <div class="doc-item">
+                            <div class="doc-title">
+                                <span class="doc-number">12.</span>
+                                <span>IRS EIN确认函</span>
+                            </div>
+                            <div class="doc-applicability">（适用于美国企业）</div>
+                        </div>
+                        
+                        <!-- 13. 钱包地址所有权证明 -->
+                        <div class="doc-item">
+                            <div class="doc-title">
+                                <span class="doc-number">13.</span>
+                                <span>钱包地址所有权证明</span>
+                            </div>
+                            <div class="doc-applicability">（适用于新加坡OTC业务）</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 开始认证按钮 -->
+                <button class="action-button" onclick="location.href='kyc-form.html'">
+                    开始KYC认证
+                </button>
+                
+                <!-- 联系支持 -->
+                <div class="contact-support">
+                    如有任何问题，请联系 <a href="mailto:kyc@matrixport.com">kyc@matrixport.com</a>
+                </div>
+                
+            </div>
+        </div>
+        
+        <!-- 底部标签栏 -->
+        <div class="tab-bar">
+            <div class="tab-item" data-tab="home">
+                <div class="tab-icon"><i class="fas fa-home"></i></div>
+                <div class="tab-text">首页</div>
+            </div>
+            <div class="tab-item" data-tab="exchange">
+                <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div>
+                <div class="tab-text">法币交易</div>
+            </div>
+            <div class="tab-item active" data-tab="account">
+                <div class="tab-icon"><i class="fas fa-university"></i></div>
+                <div class="tab-text">美元账户</div>
+            </div>
+            <div class="tab-item" data-tab="profile">
+                <div class="tab-icon"><i class="fas fa-user"></i></div>
+                <div class="tab-text">我的</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 更新状态栏时间
+        function updateStatusBarTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('statusBarTime').textContent = `${hours}:${minutes}`;
+        }
+        
+        // 初始化时间并每分钟更新一次
+        updateStatusBarTime();
+        setInterval(updateStatusBarTime, 60000);
+        
+        // 处理返回按钮
+        document.getElementById('backButton').addEventListener('click', function() {
+            window.location.href = 'account-setup.html';
+        });
+        
+        // 底部标签栏切换
+        const tabItems = document.querySelectorAll('.tab-item');
+        tabItems.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabName = this.getAttribute('data-tab');
+                if (tabName === 'home') {
+                    window.location.href = 'wallet-home.html';
+                } else if (tabName === 'exchange') {
+                    window.location.href = 'coin-exchange.html';
+                } else if (tabName === 'account') {
+                    window.location.href = 'account-status.html';
+                } else if (tabName === 'profile') {
+                    window.location.href = 'profile.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

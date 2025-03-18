@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matrix USD - 账户申请</title>
+    <link href="../styles/main.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .application-container {
+            padding: 16px;
+        }
+        
+        .form-section {
+            margin-bottom: 24px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--neutral-800);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--neutral-200);
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--neutral-700);
+            margin-bottom: 6px;
+        }
+        
+        .form-required {
+            color: var(--danger);
+            margin-left: 4px;
+        }
+        
+        .form-input {
+            width: 100%;
+            height: 44px;
+            padding: 0 14px;
+            border: 1px solid var(--neutral-300);
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.2s;
+            background-color: white;
+        }
+        
+        .form-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        .form-select {
+            width: 100%;
+            height: 44px;
+            padding: 0 14px;
+            border: 1px solid var(--neutral-300);
+            border-radius: 8px;
+            font-size: 15px;
+            background-color: white;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+        }
+        
+        .form-select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        .form-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px 14px;
+            border: 1px solid var(--neutral-300);
+            border-radius: 8px;
+            font-size: 15px;
+            resize: vertical;
+        }
+        
+        .form-textarea:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        .checkbox-group {
+            margin-top: 8px;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            cursor: pointer;
+            margin-bottom: 12px;
+        }
+        
+        .checkbox-input {
+            margin-top: 3px;
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .checkbox-text {
+            font-size: 14px;
+            color: var(--neutral-700);
+            line-height: 1.4;
+        }
+        
+        .form-hint {
+            font-size: 13px;
+            color: var(--neutral-600);
+            margin-top: 6px;
+        }
+        
+        .doc-upload {
+            border: 1px dashed var(--neutral-400);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            background-color: var(--neutral-50);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .doc-upload:hover {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+        
+        .upload-icon {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+        
+        .upload-text {
+            font-size: 14px;
+            color: var(--neutral-700);
+            margin-bottom: 4px;
+        }
+        
+        .upload-hint {
+            font-size: 12px;
+            color: var(--neutral-600);
+        }
+        
+        .form-error {
+            color: var(--danger);
+            font-size: 13px;
+            margin-top: 6px;
+            display: none;
+        }
+        
+        .btn-fixed-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 16px;
+            background-color: white;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 10;
+        }
+        
+        .main-content {
+            padding-bottom: 80px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ios-device">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-bar-time" id="statusBarTime">12:30</div>
+            <div class="status-bar-icons">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+        
+        <!-- 导航栏 -->
+        <div class="nav-bar">
+            <div class="nav-back" id="backButton">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+            <div class="nav-title">美元账户申请</div>
+            <div class="nav-actions"></div>
+        </div>
+        
+        <!-- 主内容区 -->
+        <div class="main-content">
+            <div class="application-container">
+                <form id="accountApplicationForm">
+                    <!-- 企业基本信息 -->
+                    <div class="form-section">
+                        <div class="section-title">企业基本信息</div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                公司全称<span class="form-required">*</span>
+                            </label>
+                            <input type="text" class="form-input" name="companyName" required placeholder="请输入公司全称（须与营业执照一致）">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                公司英文名称<span class="form-required">*</span>
+                            </label>
+                            <input type="text" class="form-input" name="companyEnglishName" required placeholder="请输入公司英文名称">
+                            <div class="form-hint">请提供公司正确的英文名称，将用于美元账户开立</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                公司注册地址<span class="form-required">*</span>
+                            </label>
+                            <input type="text" class="form-input" name="companyAddress" required placeholder="请输入公司注册地址">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                公司营业年限<span class="form-required">*</span>
+                            </label>
+                            <select class="form-select" name="businessYears" required>
+                                <option value="">请选择</option>
+                                <option value="<1">1年以下</option>
+                                <option value="1-3">1-3年</option>
+                                <option value="3-5">3-5年</option>
+                                <option value="5-10">5-10年</option>
+                                <option value=">10">10年以上</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                公司行业类型<span class="form-required">*</span>
+                            </label>
+                            <select class="form-select" name="industryType" required>
+                                <option value="">请选择</option>
+                                <option value="finance">金融服务</option>
+                                <option value="tech">科技/互联网</option>
+                                <option value="blockchain">区块链/Web3</option>
+                                <option value="manufacturing">制造业</option>
+                                <option value="trading">贸易/进出口</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- 联系人信息 -->
+                    <div class="form-section">
+                        <div class="section-title">联系人信息</div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                联系人姓名<span class="form-required">*</span>
+                            </label>
+                            <input type="text" class="form-input" name="contactName" required placeholder="请输入联系人姓名">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                联系人职位<span class="form-required">*</span>
+                            </label>
+                            <input type="text" class="form-input" name="contactPosition" required placeholder="请输入联系人职位">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                联系电话<span class="form-required">*</span>
+                            </label>
+                            <input type="tel" class="form-input" name="contactPhone" required placeholder="请输入联系电话">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                电子邮箱<span class="form-required">*</span>
+                            </label>
+                            <input type="email" class="form-input" name="contactEmail" required placeholder="请输入电子邮箱">
+                        </div>
+                    </div>
+                    
+                    <!-- 业务信息 -->
+                    <div class="form-section">
+                        <div class="section-title">业务信息</div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                主要业务地区<span class="form-required">*</span>
+                            </label>
+                            <select class="form-select" name="businessRegion" required>
+                                <option value="">请选择</option>
+                                <option value="domestic">主要国内</option>
+                                <option value="asia">亚洲地区</option>
+                                <option value="europe">欧洲地区</option>
+                                <option value="northamerica">北美地区</option>
+                                <option value="global">全球业务</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                预计月交易额 (USD)<span class="form-required">*</span>
+                            </label>
+                            <select class="form-select" name="monthlyVolume" required>
+                                <option value="">请选择</option>
+                                <option value="<10k">10,000以下</option>
+                                <option value="10k-50k">10,000 - 50,000</option>
+                                <option value="50k-100k">50,000 - 100,000</option>
+                                <option value="100k-500k">100,000 - 500,000</option>
+                                <option value="500k-1m">500,000 - 1,000,000</option>
+                                <option value=">1m">1,000,000以上</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                业务描述<span class="form-required">*</span>
+                            </label>
+                            <textarea class="form-textarea" name="businessDescription" required placeholder="请简要描述您的业务模式和申请美元账户的用途"></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- 文件上传 -->
+                    <div class="form-section">
+                        <div class="section-title">文件上传</div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                营业执照<span class="form-required">*</span>
+                            </label>
+                            <div class="doc-upload" id="businessLicenseUpload">
+                                <div class="upload-icon">
+                                    <i class="fas fa-file-upload"></i>
+                                </div>
+                                <div class="upload-text">点击上传营业执照</div>
+                                <div class="upload-hint">支持 JPG, PNG, PDF 格式，大小不超过10MB</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                公司章程<span class="form-required">*</span>
+                            </label>
+                            <div class="doc-upload" id="companyConstitutionUpload">
+                                <div class="upload-icon">
+                                    <i class="fas fa-file-upload"></i>
+                                </div>
+                                <div class="upload-text">点击上传公司章程</div>
+                                <div class="upload-hint">支持 PDF 格式，大小不超过10MB</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">
+                                法人身份证明<span class="form-required">*</span>
+                            </label>
+                            <div class="doc-upload" id="legalRepIdUpload">
+                                <div class="upload-icon">
+                                    <i class="fas fa-file-upload"></i>
+                                </div>
+                                <div class="upload-text">点击上传法人身份证明</div>
+                                <div class="upload-hint">支持 JPG, PNG, PDF 格式，大小不超过5MB</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 合规声明 -->
+                    <div class="form-section">
+                        <div class="section-title">合规声明</div>
+                        
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" name="compliance1" required>
+                                <span class="checkbox-text">
+                                    我确认所提供的所有信息真实、准确、完整，并承担因提供虚假信息而导致的所有法律责任。
+                                </span>
+                            </label>
+                            
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" name="compliance2" required>
+                                <span class="checkbox-text">
+                                    我确认公司的业务活动完全合法，不涉及任何违反所在国家/地区法律法规的行为。
+                                </span>
+                            </label>
+                            
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="checkbox-input" name="compliance3" required>
+                                <span class="checkbox-text">
+                                    我已阅读并同意《美元账户服务协议》和《反洗钱条款》，并承诺遵守相关规定。
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- 底部固定按钮 -->
+        <div class="btn-fixed-bottom">
+            <button class="btn btn-primary btn-block" id="submitButton">
+                提交申请
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        // 更新状态栏时间
+        function updateStatusBarTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('statusBarTime').textContent = `${hours}:${minutes}`;
+        }
+        
+        // 处理返回按钮
+        function setupBackButton() {
+            document.getElementById('backButton').addEventListener('click', function() {
+                window.location.href = './account-status.html?status=unopened';
+            });
+        }
+        
+        // 处理文件上传
+        function setupFileUploads() {
+            const uploadElements = document.querySelectorAll('.doc-upload');
+            
+            uploadElements.forEach(element => {
+                element.addEventListener('click', function() {
+                    // 在正式环境中，这里会打开文件选择器
+                    // 但在原型中，我们只是模拟上传成功
+                    const uploadIcon = this.querySelector('.upload-icon i');
+                    const uploadText = this.querySelector('.upload-text');
+                    
+                    uploadIcon.className = 'fas fa-check-circle';
+                    uploadText.textContent = '文件上传成功';
+                    this.style.borderColor = 'var(--success)';
+                    this.style.backgroundColor = 'var(--success-light)';
+                });
+            });
+        }
+        
+        // 处理表单提交
+        function setupFormSubmission() {
+            const form = document.getElementById('accountApplicationForm');
+            const submitButton = document.getElementById('submitButton');
+            
+            submitButton.addEventListener('click', function() {
+                // 模拟表单验证
+                const isValid = validateForm();
+                
+                if (isValid) {
+                    // 在原型中，直接跳转到审核中状态
+                    window.location.href = './account-status.html?status=reviewing';
+                }
+            });
+            
+            function validateForm() {
+                // 在真实场景下会有复杂的表单验证
+                // 在原型中简单检查必填项是否已填
+                const requiredInputs = form.querySelectorAll('[required]');
+                let isValid = true;
+                
+                requiredInputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        isValid = false;
+                        
+                        // 模拟错误提示
+                        input.style.borderColor = 'var(--danger)';
+                        
+                        // 查找并显示错误消息
+                        const formGroup = input.closest('.form-group');
+                        let errorMessage = formGroup.querySelector('.form-error');
+                        
+                        if (!errorMessage) {
+                            errorMessage = document.createElement('div');
+                            errorMessage.className = 'form-error';
+                            errorMessage.textContent = '此项为必填项';
+                            formGroup.appendChild(errorMessage);
+                        }
+                        
+                        errorMessage.style.display = 'block';
+                    }
+                });
+                
+                return isValid;
+            }
+        }
+        
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStatusBarTime();
+            setInterval(updateStatusBarTime, 60000);
+            
+            setupBackButton();
+            setupFileUploads();
+            setupFormSubmission();
+        });
+    </script>
+</body>
+</html> 

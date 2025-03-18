@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix USD - 原型展示</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0052ff;
+            --primary-light: #e9f0ff;
+            --primary-dark: #0039c6;
+            --neutral-50: #f7f8fa;
+            --neutral-100: #eef1f5;
+            --neutral-200: #e5e7eb;
+            --neutral-300: #d1d5db;
+            --neutral-400: #9ca3af;
+            --neutral-500: #6b7280;
+            --neutral-600: #4b5563;
+            --neutral-700: #374151;
+            --neutral-800: #1f2937;
+            --neutral-900: #111827;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            background-color: var(--neutral-50);
+            color: var(--neutral-700);
+        }
+        
+        header {
+            background-color: white;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .layout {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .nav-sidebar {
+            width: 280px;
+            background-color: white;
+            border-right: 1px solid var(--neutral-100);
+            padding: 1.5rem;
+            height: calc(100vh - 5rem);
+            position: sticky;
+            top: 5rem;
+            overflow-y: auto;
+        }
+
+        .nav-title {
+            font-weight: 600;
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+            color: var(--neutral-900);
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-section-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--neutral-700);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-item {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        .nav-item.active:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 1rem;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .nav-link {
+            color: inherit;
+            text-decoration: none;
+            display: block;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+        
+        .container {
+            flex: 1;
+            padding: 0 1.5rem 3rem;
+            overflow-y: auto;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+            scroll-margin-top: 6rem;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--neutral-100);
+            display: flex;
+            align-items: center;
+            color: var(--neutral-900);
+        }
+        
+        p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 2rem;
+        }
+        
+        .scene {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+            padding: 1rem;
+        }
+        
+        .scene:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .scene-header {
+            padding: 1rem;
+            background-color: var(--primary-light);
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .scene-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--neutral-900);
+        }
+        
+        .scene-desc {
+            font-size: 0.875rem;
+            color: var(--neutral-700);
+        }
+        
+        /* iPhone 15 Pro 样式 */
+        .iphone-frame {
+            width: 393px;
+            height: 852px;
+            background-color: #1a1a1a;
+            border-radius: 45px;
+            padding: 10px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            margin: 2rem auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .iphone-screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 35px;
+            overflow: hidden;
+            background-color: white;
+            position: relative;
+        }
+
+        .dynamic-island {
+            width: 120px;
+            height: 35px;
+            background-color: #000;
+            border-radius: 20px;
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .scene-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .icon {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--neutral-700);
+            font-size: 0.875rem;
+            background-color: white;
+            border-top: 1px solid var(--neutral-100);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .layout {
+                flex-direction: column;
+            }
+
+            .nav-sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                top: 0;
+                border-right: none;
+                border-bottom: 1px solid var(--neutral-100);
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .iphone-frame {
+                transform: scale(0.9);
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Matrix USD - OTC法币交易与美元账户服务</h1>
+        <p>高保真交互原型展示 (iPhone 15 Pro 样式)</p>
+    </header>
+    
+    <div class="layout">
+        <!-- 导航侧边栏 -->
+        <nav class="nav-sidebar">
+            <div class="nav-title">
+                <i class="fas fa-sitemap icon"></i> 页面导航
+            </div>
+
+            <ul class="nav-list">
+                <li class="nav-section">
+                    <div class="nav-section-title">
+                        <i class="fas fa-info-circle"></i> 项目介绍
+                    </div>
+                    <ul>
+                        <li class="nav-item">
+                            <a href="#intro" class="nav-link">项目概述</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-section">
+                    <div class="nav-section-title">
+                        <i class="fas fa-sign-in-alt"></i> 用户登录
+                    </div>
+                    <ul>
+                        <li class="nav-item">
+                            <a href="#login" class="nav-link">登录页面</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-section">
+                    <div class="nav-section-title">
+                        <i class="fas fa-home"></i> 场景一：首页
+                    </div>
+                    <ul>
+                        <li class="nav-item">
+                            <a href="#home" class="nav-link">钱包首页</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-section">
+                    <div class="nav-section-title">
+                        <i class="fas fa-university"></i> 场景二：美元账户服务
+                    </div>
+                    <ul>
+                        <li class="nav-item">
+                            <a href="#account-unopened" class="nav-link">账户状态 - 未开通</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#account-setup" class="nav-link">美元账户开通设置</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#account-opened" class="nav-link">账户状态 - 已开通</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-section">
+                    <div class="nav-section-title">
+                        <i class="fas fa-dollar-sign"></i> 场景三：OTC法币交易
+                    </div>
+                    <ul>
+                        <li class="nav-item">
+                            <a href="#exchange" class="nav-link">法币交易</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#exchange-confirm" class="nav-link">交易确认</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#exchange-insufficient" class="nav-link">资金不足</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#exchange-deposit" class="nav-link">USDC充值</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#exchange-waiting" class="nav-link">交易处理中</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#exchange-result" class="nav-link">交易结果</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#kyc-setup" class="nav-link">企业KYC认证</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-section">
+                    <div class="nav-section-title">
+                        <i class="fas fa-user"></i> 场景四：个人中心
+                    </div>
+                    <ul>
+                        <li class="nav-item">
+                            <a href="#profile" class="nav-link">个人中心</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="container">
+            <div class="section" id="intro">
+                <h2><i class="fas fa-info-circle icon"></i>项目介绍</h2>
+                <p>Matrix USD是一个类似Coinbase的法币交易和专属美元账户管理应用，提供以下核心功能：</p>
+                <ul style="margin-left: 2rem; margin-bottom: 1rem;">
+                    <li>OTC法币交易：支持入金（买入USDC）和出金（卖出USDC）</li>
+                    <li>机构专属美元账户：为机构用户提供专属美元账户服务</li>
+                    <li>KYC认证：为法币交易和美元账户开通提供资质认证</li>
+                </ul>
+                <p>以下展示了应用的各个核心场景，所有界面均采用 iPhone 15 Pro 样式呈现，带有手机外壳和状态栏。</p>
+            </div>
+            
+            <div class="section" id="login">
+                <h2><i class="fas fa-sign-in-alt icon"></i>用户登录</h2>
+                <div class="scene">
+                    <div class="scene-header">
+                        <div class="scene-title">登录页面</div>
+                        <div class="scene-desc">提供企业用户登录入口，带有账号密码登录和记住登录状态功能</div>
+                    </div>
+                    <div class="iphone-frame">
+                        <div class="dynamic-island"></div>
+                        <div class="iphone-screen">
+                            <iframe src="./index.html" class="scene-frame"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section" id="home">
+                <h2><i class="fas fa-home icon"></i>场景一：首页</h2>
+                <div class="scene">
+                    <div class="scene-header">
+                        <div class="scene-title">钱包首页</div>
+                        <div class="scene-desc">展示用户资产概览、快捷功能入口和最近交易记录</div>
+                    </div>
+                    <div class="iphone-frame">
+                        <div class="dynamic-island"></div>
+                        <div class="iphone-screen">
+                            <iframe src="./scenes/wallet-home.html" class="scene-frame"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section" id="account">
+                <h2><i class="fas fa-university icon"></i>场景二：美元账户服务</h2>
+                <p>Matrix USD提供全球金融网络的美元账户服务，支持跨境收付款、交易清算等功能。</p>
+                
+                <div class="grid">
+                    <!-- 美元账户状态页面 -->
+                    <div class="scene">
+                        <div class="scene-header">
+                            <div class="scene-title">美元账户状态页面</div>
+                            <div class="scene-desc">展示用户美元账户状态，包括未开通和已开通两种状态。</div>
+                        </div>
+                        <div class="iphone-frame">
+                            <div class="dynamic-island"></div>
+                            <div class="iphone-screen">
+                                <iframe src="scenes/account-status.html" class="scene-frame"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 美元账户申请页面 -->
+                    <div class="scene">
+                        <div class="scene-header">
+                            <div class="scene-title">美元账户开通设置页面</div>
+                            <div class="scene-desc">配置美元账户服务，包括KYC状态、账户选择和费用支付等。</div>
+                        </div>
+                        <div class="iphone-frame">
+                            <div class="dynamic-island"></div>
+                            <div class="iphone-screen">
+                                <iframe src="scenes/account-setup.html" class="scene-frame"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 美元账户开通设置页面 -->
+                    <div class="scene">
+                        <div class="scene-header">
+                            <div class="scene-title">美元账户已开通状态</div>
+                            <div class="scene-desc">展示已开通的美元账户状态，包括账户余额和操作功能。</div>
+                        </div>
+                        <div class="iphone-frame">
+                            <div class="dynamic-island"></div>
+                            <div class="iphone-screen">
+                                <iframe src="scenes/account-status.html?status=opened" class="scene-frame"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section" id="otc">
+                <h2><i class="fas fa-dollar-sign icon"></i>场景三：OTC法币交易</h2>
+                <div class="grid">
+                    <div class="scene" id="exchange">
+                        <div class="scene-header">
+                            <div class="scene-title">法币交易</div>
+                            <div class="scene-desc">提供入金（买USDC）和出金（卖USDC）交易功能，含汇率显示</div>
+                        </div>
+                        <div class="iphone-frame">
+                            <div class="dynamic-island"></div>
+                            <div class="iphone-screen">
+                                <iframe src="./scenes/coin-exchange.html" class="scene-frame"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="scene" id="exchange-confirm">
+                        <div class="scene-header">
+                            <div class="scene-title">交易确认</div>
+                            <div class="scene-desc">确认交易详情和服务条款，显示交易汇率和手续费</div>
+                        </div>
+                        <div class="iphone-frame">
+                            <div class="dynamic-island"></div>
+                            <div class="iphone-screen">
+                                <iframe src="./scenes/coin-exchange-confirm.html" class="scene-frame"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="scene" id="exchange-insufficient">
+                        <div class="scene-header">
+                            <div class="scene-title">资金不足</div>
+                            <div class="scene-desc">处理余额不足的情况，提供充值选项</div>
+                        </div>
+                        <div class="iphone-frame">
+                            <div class="dynamic-island"></div>
+                            <div class="iphone-screen">
+                                <iframe src="./scenes/coin-exchange-insufficient.html?amount=5000&balance=2500" class="scene-frame"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="scene" id="exchange-deposit">
+                        <div class="scene-header">
+                            <div class="scene-title">USDC充值</div>
+                            <div class="scene-desc">展示USDC充值地址和二维码，提供充值指引</div>
+                        </div>
+                        <div class="iphone-frame">
+                            <div class="dynamic-island"></div>
+                            <div class="iphone-screen">
+                                <iframe src="./scenes/coin-exchange-deposit.html" class="scene-frame"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="scene" id="exchange-waiting">
+                        <div class="scene-header">
+                            <div class="scene-title">交易处理中</div>
+                            <div class="scene-desc">展示交易进行状态，倒计时和处理步骤提示</div>
+                        </div>
+                        <div class="iphone-frame">
+                            <div class="dynamic-island"></div>
+                            <div class="iphone-screen">
+                                <iframe src="./scenes/coin-exchange-waiting.html" class="scene-frame"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="scene" id="exchange-result">
+                        <div class="scene-header">
+                            <div class="scene-title">交易成功</div>
+                            <div class="scene-desc">展示交易成功结果，含交易详情和后续操作</div>
+                        </div>
+                        <div class="iphone-frame">
+                            <div class="dynamic-island"></div>
+                            <div class="iphone-screen">
+                                <iframe src="./scenes/coin-exchange-result.html?status=success" class="scene-frame"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="scene" id="kyc-setup">
+                        <div class="scene-header">
+                            <div class="scene-title">企业KYC认证页面</div>
+                            <div class="scene-desc">企业用户进行KYC认证，查看需要准备的资料清单。</div>
+                        </div>
+                        <div class="iphone-frame">
+                            <div class="dynamic-island"></div>
+                            <div class="iphone-screen">
+                                <iframe src="scenes/kyc-setup.html" class="scene-frame"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section" id="profile">
+                <h2><i class="fas fa-user icon"></i>场景四：个人中心</h2>
+                <div class="scene">
+                    <div class="scene-header">
+                        <div class="scene-title">个人中心</div>
+                        <div class="scene-desc">用户信息、账户安全设置和其他系统设置</div>
+                    </div>
+                    <div class="iphone-frame">
+                        <div class="dynamic-island"></div>
+                        <div class="iphone-screen">
+                            <iframe src="./scenes/profile.html" class="scene-frame"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Matrix USD - OTC法币交易与美元账户服务 &copy; 2024 版权所有</p>
+    </footer>
+
+    <script>
+        // 处理导航高亮
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            // 点击导航链接高亮
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.forEach(l => l.parentElement.classList.remove('active'));
+                    this.parentElement.classList.add('active');
+                });
+            });
+            
+            // 初始状态下高亮第一个导航项
+            if (navLinks.length > 0) {
+                navLinks[0].parentElement.classList.add('active');
+            }
+            
+            // 滚动时更新导航高亮
+            window.addEventListener('scroll', function() {
+                const sections = document.querySelectorAll('.section');
+                let current = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (pageYOffset >= (sectionTop - 300)) {
+                        current = '#' + section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.parentElement.classList.remove('active');
+                    if (link.getAttribute('href') === current) {
+                        link.parentElement.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

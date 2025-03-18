@@ -2,84 +2,461 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>账户状态 - Matrix USD</title>
-    <link href="../styles/output.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matrix USD - 美元账户</title>
+    <link href="../styles/main.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        .loading {
+        .status-container {
+            padding: 20px;
+        }
+        
+        .status-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .status-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 16px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            background-color: #f9fafb;
         }
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #e5e7eb;
-            border-top: 4px solid #0ea5e9;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
+        
+        .status-icon i {
+            font-size: 40px;
+            color: var(--primary-color);
         }
-        .loading-text {
-            color: #64748b;
+        
+        .status-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .status-subtitle {
             font-size: 16px;
+            color: var(--neutral-600);
+            margin-bottom: 24px;
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        
+        .kyc-card {
+            background-color: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .kyc-card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .kyc-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background-color: var(--success-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+        }
+        
+        .kyc-icon i {
+            color: var(--success);
+            font-size: 24px;
+        }
+        
+        .kyc-title {
+            font-size: 17px;
+            font-weight: 600;
+        }
+        
+        .kyc-status {
+            font-size: 15px;
+            color: var(--success);
+            margin-top: 4px;
+        }
+        
+        .kyc-status.pending {
+            color: var(--warning);
+        }
+        
+        .kyc-status.failed {
+            color: var(--danger);
+        }
+        
+        .step-list {
+            margin-top: 24px;
+        }
+        
+        .step-item {
+            display: flex;
+            position: relative;
+            padding: 0 0 24px 32px;
+        }
+        
+        .step-item:last-child {
+            padding-bottom: 0;
+        }
+        
+        .step-item::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 0;
+            width: 1px;
+            height: 100%;
+            background-color: var(--neutral-300);
+        }
+        
+        .step-item:last-child::before {
+            height: 0;
+        }
+        
+        .step-number {
+            position: absolute;
+            left: 0;
+            top: -4px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: var(--neutral-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--neutral-600);
+        }
+        
+        .step-item.completed .step-number {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .step-description {
+            font-size: 14px;
+            color: var(--neutral-600);
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .account-details {
+            background-color: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .account-info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--neutral-100);
+        }
+        
+        .account-info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .account-info-label {
+            font-size: 15px;
+            color: var(--neutral-600);
+        }
+        
+        .account-info-value {
+            font-size: 15px;
+            font-weight: 500;
+            text-align: right;
+        }
+        
+        .account-balance {
+            text-align: center;
+            margin: 24px 0;
+        }
+        
+        .balance-label {
+            font-size: 15px;
+            color: var(--neutral-600);
+            margin-bottom: 8px;
+        }
+        
+        .balance-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--neutral-900);
+        }
+        
+        .balance-currency {
+            font-size: 16px;
+            font-weight: normal;
+            color: var(--neutral-600);
+            margin-left: 4px;
+        }
+        
+        .account-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        
+        .account-actions .btn {
+            flex: 1;
+        }
+        
+        #unopenedView,
+        #openedView {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="loading">
-        <div class="spinner"></div>
-        <div class="loading-text">正在检查账户状态...</div>
+    <div class="ios-device">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-bar-time" id="statusBarTime">12:30</div>
+            <div class="status-bar-icons">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+        
+        <!-- 导航栏 -->
+        <div class="nav-bar">
+            <div class="nav-back" id="backButton">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+            <div class="nav-title">美元账户</div>
+            <div class="nav-actions"></div>
+        </div>
+        
+        <!-- 主内容区 -->
+        <div class="main-content">
+            <!-- 未开通账户视图 -->
+            <div class="status-container" id="unopenedView">
+                <div class="status-header">
+                    <div class="status-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <div class="status-title">您尚未开通美元账户</div>
+                    <div class="status-subtitle">为您的企业和机构开通专属美元账户</div>
+                </div>
+                
+                <div class="kyc-card">
+                    <div class="kyc-card-header">
+                        <div class="kyc-icon">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <div>
+                            <div class="kyc-title">KYC认证</div>
+                            <div class="kyc-status completed">已完成</div>
+                        </div>
+                    </div>
+                    <div class="kyc-description">
+                        您已完成KYC认证，可以申请开通美元账户
+                    </div>
+                </div>
+                
+                <div class="step-list">
+                    <div class="step-item completed">
+                        <div class="step-number"><i class="fas fa-check"></i></div>
+                        <div class="step-content">
+                            <div class="step-title">完成KYC认证</div>
+                            <div class="step-description">提供企业营业执照、法人身份等信息</div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <div class="step-title">提交账户申请</div>
+                            <div class="step-description">填写公司信息、联系方式和合规声明</div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <div class="step-title">等待审核</div>
+                            <div class="step-description">我们会在1-3个工作日内完成审核</div>
+                        </div>
+                    </div>
+                    
+                    <div class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <div class="step-title">账户开通</div>
+                            <div class="step-description">通过审核后即可使用美元账户</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary btn-block" onclick="navigateTo('./account-application.html')">
+                    立即申请开通
+                </button>
+            </div>
+            
+            <!-- 已开通账户视图 -->
+            <div class="status-container" id="openedView">
+                <div class="status-header">
+                    <div class="status-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="status-title">美元账户已开通</div>
+                    <div class="status-subtitle">您可以开始使用美元账户进行交易</div>
+                </div>
+                
+                <div class="account-balance">
+                    <div class="balance-label">账户余额</div>
+                    <div class="balance-value">125,000<span class="balance-currency">USD</span></div>
+                </div>
+                
+                <div class="account-details">
+                    <div class="account-info-row">
+                        <div class="account-info-label">账号</div>
+                        <div class="account-info-value">0924 1578 3692 0001</div>
+                    </div>
+                    
+                    <div class="account-info-row">
+                        <div class="account-info-label">开户机构</div>
+                        <div class="account-info-value">Silvergate Bank</div>
+                    </div>
+                    
+                    <div class="account-info-row">
+                        <div class="account-info-label">SWIFT代码</div>
+                        <div class="account-info-value">SILVER12XXX</div>
+                    </div>
+                    
+                    <div class="account-info-row">
+                        <div class="account-info-label">开户时间</div>
+                        <div class="account-info-value">2023-06-15</div>
+                    </div>
+                    
+                    <div class="account-info-row">
+                        <div class="account-info-label">账户状态</div>
+                        <div class="account-info-value" style="color: var(--success)">正常</div>
+                    </div>
+                </div>
+                
+                <div class="account-actions">
+                    <button class="btn btn-primary">充值</button>
+                    <button class="btn btn-outline">提现</button>
+                    <button class="btn btn-outline">交易记录</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部标签栏 -->
+        <div class="tab-bar">
+            <div class="tab-item active" data-tab="home">
+                <i class="fas fa-home"></i>
+                <span>首页</span>
+            </div>
+            <div class="tab-item" data-tab="exchange">
+                <i class="fas fa-exchange-alt"></i>
+                <span>OTC交易</span>
+            </div>
+            <div class="tab-item" data-tab="account">
+                <i class="fas fa-university"></i>
+                <span>美元账户</span>
+            </div>
+            <div class="tab-item" data-tab="profile">
+                <i class="fas fa-user"></i>
+                <span>我的</span>
+            </div>
+        </div>
     </div>
-
+    
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 模拟检查账户状态
-            // 在实际应用中，这里应该是API调用来获取用户的真实账户状态
+        // 更新状态栏时间
+        function updateStatusBarTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('statusBarTime').textContent = `${hours}:${minutes}`;
+        }
+        
+        // 处理底部标签切换
+        function setupTabBar() {
+            const tabItems = document.querySelectorAll('.tab-item');
+            tabItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    tabItems.forEach(tab => tab.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 根据标签执行相应操作
+                    const tabName = this.getAttribute('data-tab');
+                    if (tabName === 'home') {
+                        navigateTo('./wallet-home.html');
+                    } else if (tabName === 'exchange') {
+                        navigateTo('./coin-exchange.html');
+                    } else if (tabName === 'account') {
+                        // 当前页面，不跳转
+                    } else if (tabName === 'profile') {
+                        // 跳转到个人页面
+                    }
+                });
+            });
             
-            // 为了演示不同状态，我们使用URL参数来模拟不同状态
-            // 例如：account-status.html?status=unopened
-            //       account-status.html?status=reviewing
-            //       account-status.html?status=rejected
-            //       account-status.html?status=opened
+            // 设置当前标签为活跃
+            document.querySelector('.tab-item[data-tab="account"]').classList.add('active');
+            document.querySelector('.tab-item[data-tab="home"]').classList.remove('active');
+        }
+        
+        // 处理返回按钮
+        function setupBackButton() {
+            document.getElementById('backButton').addEventListener('click', function() {
+                navigateTo('./wallet-home.html');
+            });
+        }
+        
+        // 导航函数
+        function navigateTo(url) {
+            window.location.href = url;
+        }
+        
+        // 根据URL参数确定显示哪个视图
+        function determineViewState() {
+            const params = new URLSearchParams(window.location.search);
+            const status = params.get('status') || 'unopened';
             
-            const urlParams = new URLSearchParams(window.location.search);
-            const status = urlParams.get('status') || getRandomStatus();
-            
-            // 延迟1秒后跳转，以便显示加载动画
-            setTimeout(() => {
-                switch(status) {
-                    case 'unopened':
-                        window.location.href = 'account-status-unopened.html';
-                        break;
-                    case 'reviewing':
-                        window.location.href = 'account-status-reviewing.html';
-                        break;
-                    case 'rejected':
-                        window.location.href = 'account-status-rejected.html';
-                        break;
-                    case 'opened':
-                        window.location.href = 'account-status-opened.html';
-                        break;
-                    default:
-                        // 默认未开户状态
-                        window.location.href = 'account-status-unopened.html';
-                }
-            }, 1000);
-            
-            // 随机选择一个状态（用于演示）
-            function getRandomStatus() {
-                const statuses = ['unopened', 'reviewing', 'rejected', 'opened'];
-                const randomIndex = Math.floor(Math.random() * statuses.length);
-                return statuses[randomIndex];
+            if (status === 'opened') {
+                document.getElementById('openedView').style.display = 'block';
+                document.getElementById('unopenedView').style.display = 'none';
+            } else {
+                document.getElementById('unopenedView').style.display = 'block';
+                document.getElementById('openedView').style.display = 'none';
             }
+        }
+        
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStatusBarTime();
+            setInterval(updateStatusBarTime, 60000);
+            
+            setupTabBar();
+            setupBackButton();
+            determineViewState();
         });
     </script>
 </body>

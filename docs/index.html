@@ -2,659 +2,464 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matrix USD - 原型展示</title>
-    <link href="./styles/output.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matrix USD - 登录</title>
+    <link href="styles/main.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #f7f8fa;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            padding: 20px;
-            transition: margin-left 0.3s;
+        :root {
+            --primary-color: #0052ff;
+            --primary-light: #e9f0ff;
+            --neutral-50: #f7f8fa;
+            --neutral-100: #eef1f5;
+            --neutral-700: #374151;
         }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            background-color: var(--neutral-50);
+            color: var(--neutral-700);
+        }
+        
+        header {
+            background-color: white;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 0 1.5rem 3rem;
         }
-        h1 {
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #333;
+        
+        .section {
+            margin-bottom: 2rem;
         }
+        
         h2 {
-            font-size: 24px;
-            font-weight: 600;
-            margin: 30px 0 15px;
-            color: #0052ff;
-            border-bottom: 2px solid #0052ff;
-            padding-bottom: 10px;
-        }
-        h3 {
-            font-size: 18px;
-            font-weight: 600;
-            margin: 20px 0 10px;
-            color: #333;
-        }
-        .scenes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-            margin-bottom: 50px;
-        }
-        .scene-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid #e5e7eb;
-        }
-        .scene-header {
-            background: #0052ff;
-            color: white;
-            padding: 12px 15px;
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .scene-content {
-            padding: 0;
-            flex-grow: 1;
-            display: flex;
-        }
-        .scene-content iframe {
-            width: 100%;
-            height: 650px;
-            border: none;
-        }
-        .description {
-            margin-bottom: 30px;
-            color: #666;
-            line-height: 1.6;
-        }
-        .back-to-top {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #0052ff;
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-        .back-to-top:hover {
-            background: #0039c6;
-            transform: translateY(-3px);
-        }
-        
-        /* 导航栏样式 */
-        .nav-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: #0052ff;
-            color: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            cursor: pointer;
-            z-index: 1000;
-            transition: all 0.3s;
-        }
-        .nav-toggle:hover {
-            background: #0039c6;
-            transform: scale(1.05);
-        }
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: -300px;
-            width: 300px;
-            height: 100%;
-            background: white;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-            z-index: 999;
-            transition: left 0.3s;
-            overflow-y: auto;
-            padding-top: 70px;
-        }
-        .sidebar.open {
-            left: 0;
-        }
-        .sidebar-header {
-            position: fixed;
-            top: 0;
-            left: -300px;
-            width: 300px;
-            padding: 15px 20px;
-            background: #0052ff;
-            color: white;
-            font-weight: 600;
-            z-index: 1000;
-            transition: left 0.3s;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .sidebar.open .sidebar-header {
-            left: 0;
-        }
-        .close-sidebar {
-            cursor: pointer;
-            font-size: 20px;
-        }
-        .nav-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .nav-item {
-            border-bottom: 1px solid #eee;
-        }
-        .nav-link {
-            display: block;
-            padding: 12px 20px;
-            color: #333;
-            text-decoration: none;
-            transition: background 0.2s;
-        }
-        .nav-link:hover {
-            background: #f5f8ff;
-        }
-        .nav-link.active {
-            background: #e6f0ff;
-            color: #0052ff;
-            border-left: 4px solid #0052ff;
-        }
-        .nav-dropdown {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            background: #f9f9f9;
-            display: none;
-        }
-        .nav-dropdown.open {
-            display: block;
-        }
-        .nav-dropdown .nav-link {
-            padding-left: 40px;
-            font-size: 0.9em;
-        }
-        .has-dropdown {
-            position: relative;
-        }
-        .dropdown-toggle {
-            position: absolute;
-            right: 0;
-            top: 0;
-            padding: 12px 20px;
-            cursor: pointer;
-            color: #666;
-        }
-        body.sidebar-open {
-            margin-left: 300px;
-        }
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.4);
-            display: none;
-            z-index: 998;
-        }
-        .overlay.visible {
-            display: block;
-        }
-        
-        /* 原首页样式 */
-        .prototype-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, 393px);
-            gap: 2rem;
-            padding: 2rem;
-        }
-        .scene-title {
             font-size: 1.5rem;
             font-weight: 600;
-            margin: 2rem 0 1rem 2rem;
-            color: #1C1C1E;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--neutral-100);
+        }
+        
+        p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 2rem;
+        }
+        
+        .scene {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .scene:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .scene-header {
+            padding: 1rem;
+            background-color: var(--primary-light);
+            border-bottom: 1px solid var(--neutral-100);
+        }
+        
+        .scene-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .scene-desc {
+            font-size: 0.875rem;
+            color: var(--neutral-700);
+        }
+        
+        .scene-frame {
+            width: 100%;
+            height: 730px;
+            border: none;
+        }
+        
+        .icon {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--neutral-700);
+            font-size: 0.875rem;
+            background-color: white;
+            border-top: 1px solid var(--neutral-100);
+        }
+        
+        .login-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 24px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 48px;
+            color: white;
+        }
+        
+        .login-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 16px;
+            background-color: white;
+            border-radius: 20px;
             display: flex;
             align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        .scene-title::before {
-            content: '';
-            width: 4px;
-            height: 1em;
-            background: var(--primary-color);
-            margin-right: 0.5rem;
-            border-radius: 2px;
+        
+        .login-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
         }
-        .prototype-card {
-            background: #F7F9FC;
-            border-radius: 1rem;
-            padding: 1rem;
+        
+        .login-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
         }
-        .prototype-title {
-            font-size: 1rem;
-            font-weight: 500;
-            margin-bottom: 1rem;
-            color: #1C1C1E;
-        }
-        .feature-list {
-            margin-top: 1rem;
-            padding: 1rem;
+        
+        .login-form {
             background: white;
-            border-radius: 0.5rem;
+            border-radius: 24px;
+            padding: 32px 24px;
+            margin-bottom: 24px;
         }
-        .section-divider {
-            border-top: 1px solid #e5e7eb;
-            margin: 40px 0;
+        
+        .form-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: var(--neutral-900);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            color: var(--neutral-600);
+            margin-bottom: 8px;
+        }
+        
+        .form-input {
+            width: 100%;
+            height: 48px;
+            padding: 0 16px;
+            border: 1px solid var(--neutral-200);
+            border-radius: 12px;
+            font-size: 16px;
+            color: var(--neutral-900);
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
+            outline: none;
+        }
+        
+        .password-input-wrapper {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neutral-400);
+            cursor: pointer;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .remember-me input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        
+        .remember-me label {
+            font-size: 14px;
+            color: var(--neutral-600);
+        }
+        
+        .login-button {
+            width: 100%;
+            height: 48px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .login-button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .login-button:disabled {
+            background-color: var(--neutral-300);
+            cursor: not-allowed;
+        }
+        
+        .login-footer {
+            text-align: center;
+            margin-top: auto;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 16px;
+        }
+        
+        .footer-link {
+            color: white;
+            font-size: 14px;
+            text-decoration: none;
+            opacity: 0.9;
+        }
+        
+        .footer-text {
+            color: white;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+        
+        .error-message {
+            color: var(--error);
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
         }
     </style>
 </head>
 <body>
-    <!-- 导航开关按钮 -->
-    <div class="nav-toggle" id="navToggle">
-        <i class="fas fa-bars"></i>
-    </div>
-
-    <!-- 遮罩层 -->
-    <div class="overlay" id="overlay"></div>
-
-    <!-- 侧边导航栏 -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <span>Matrix USD 原型导航</span>
-            <span class="close-sidebar" id="closeSidebar"><i class="fas fa-times"></i></span>
-        </div>
-        <ul class="nav-list">
-            <li class="nav-item has-dropdown">
-                <a href="#" class="nav-link">首页</a>
-                <span class="dropdown-toggle"><i class="fas fa-chevron-down"></i></span>
-                <ul class="nav-dropdown">
-                    <li><a href="/" class="nav-link" target="_blank">钱包首页</a></li>
-                </ul>
-            </li>
-            <li class="nav-item has-dropdown">
-                <a href="#" class="nav-link">账户开通流程</a>
-                <span class="dropdown-toggle"><i class="fas fa-chevron-down"></i></span>
-                <ul class="nav-dropdown">
-                    <li><a href="./scenes/account-status.html?status=unopened" class="nav-link" target="_blank">未开户状态</a></li>
-                    <li><a href="./scenes/account-status.html?status=reviewing" class="nav-link" target="_blank">审核中状态</a></li>
-                    <li><a href="./scenes/account-status.html?status=rejected" class="nav-link" target="_blank">审核被拒状态</a></li>
-                    <li><a href="./scenes/account-status.html?status=opened" class="nav-link" target="_blank">已开户状态</a></li>
-                </ul>
-            </li>
-            <li class="nav-item has-dropdown">
-                <a href="#" class="nav-link">账户管理</a>
-                <span class="dropdown-toggle"><i class="fas fa-chevron-down"></i></span>
-                <ul class="nav-dropdown">
-                    <li><a href="./scenes/account-status.html?status=opened" class="nav-link" target="_blank">已开户账户总览</a></li>
-                </ul>
-            </li>
-            <li class="nav-item has-dropdown">
-                <a href="#" class="nav-link">场景三：交易功能</a>
-                <span class="dropdown-toggle"><i class="fas fa-chevron-down"></i></span>
-                <ul class="nav-dropdown">
-                    <li><a href="./scenes/coin-exchange.html" class="nav-link" target="_blank">币币兑换页面</a></li>
-                    <li><a href="./scenes/coin-exchange-confirm.html" class="nav-link" target="_blank">兑换确认页面</a></li>
-                    <li><a href="./scenes/coin-exchange-insufficient.html?amount=5000&balance=2500" class="nav-link" target="_blank">余额不足提示页面</a></li>
-                    <li><a href="./scenes/coin-exchange-deposit.html?amount=5000" class="nav-link" target="_blank">USDC充值地址页面</a></li>
-                    <li><a href="./scenes/coin-exchange-waiting.html" class="nav-link" target="_blank">交易处理中页面</a></li>
-                    <li><a href="./scenes/coin-exchange-result.html?type=outbound&status=success" class="nav-link" target="_blank">出金交易结果页面</a></li>
-                    <li><a href="./scenes/coin-exchange-result.html?type=inbound&status=success" class="nav-link" target="_blank">入金交易结果页面</a></li>
-                </ul>
-            </li>
-            <li class="nav-item has-dropdown">
-                <a href="#" class="nav-link">场景四：安全管理</a>
-                <span class="dropdown-toggle"><i class="fas fa-chevron-down"></i></span>
-                <ul class="nav-dropdown">
-                    <li><a href="profile.html" class="nav-link" target="_blank">4.1 安全设置</a></li>
-                    <li><a href="bank-cards.html" class="nav-link" target="_blank">4.2 银行卡管理</a></li>
-                </ul>
-            </li>
-            <li class="nav-item has-dropdown">
-                <a href="#" class="nav-link">其他页面</a>
-                <span class="dropdown-toggle"><i class="fas fa-chevron-down"></i></span>
-                <ul class="nav-dropdown">
-                    <li><a href="./scenes/account.html" class="nav-link" target="_blank">账户页面</a></li>
-                    <li><a href="./otc-history.html" class="nav-link" target="_blank">交易历史记录</a></li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-    
-    <div class="container">
-        <h1>Matrix USD 原型展示</h1>
-        <p class="description">
-            本页面展示了各种账户状态和交易场景的原型，方便直观查看整体效果和提出意见反馈。
-            每个场景都是独立的，无需点击交互和跳转。
-        </p>
-
-        <h2 id="account-status">场景一：账户开通流程</h2>
-        <p class="description">
-            以下展示了账户开通流程中的不同状态页面，每种状态都有独立的展示，不再混合展示多种状态。
-        </p>
-
-        <h3>1.1 账户各种状态</h3>
-        <div class="scenes-grid" style="grid-template-columns: repeat(4, 1fr);">
-            <div class="scene-card">
-                <div class="scene-header">
-                    <span>未开户状态</span>
-                    <a href="./scenes/account-status-unopened.html" target="_blank" style="color:white;"><i class="fas fa-external-link-alt"></i></a>
-                </div>
-                <div class="scene-content">
-                    <iframe src="./scenes/account-status-unopened.html"></iframe>
-                </div>
-            </div>
-
-            <div class="scene-card">
-                <div class="scene-header">
-                    <span>审核中状态</span>
-                    <a href="./scenes/account-status-reviewing.html" target="_blank" style="color:white;"><i class="fas fa-external-link-alt"></i></a>
-                </div>
-                <div class="scene-content">
-                    <iframe src="./scenes/account-status-reviewing.html"></iframe>
-                </div>
-            </div>
-            
-            <div class="scene-card">
-                <div class="scene-header">
-                    <span>审核被拒状态</span>
-                    <a href="./scenes/account-status-rejected.html" target="_blank" style="color:white;"><i class="fas fa-external-link-alt"></i></a>
-                </div>
-                <div class="scene-content">
-                    <iframe src="./scenes/account-status-rejected.html"></iframe>
-                </div>
-            </div>
-            
-            <div class="scene-card">
-                <div class="scene-header">
-                    <span>已开户状态</span>
-                    <a href="./scenes/account-status-opened.html" target="_blank" style="color:white;"><i class="fas fa-external-link-alt"></i></a>
-                </div>
-                <div class="scene-content">
-                    <iframe src="./scenes/account-status-opened.html"></iframe>
-                </div>
-            </div>
-        </div>
-        
-        <h3>1.2 状态分发页面</h3>
-        <div class="scenes-grid" style="grid-template-columns: repeat(4, 1fr);">
-            <div class="scene-card">
-                <div class="scene-header">
-                    <span>状态分发页面</span>
-                    <a href="./scenes/account-status.html" target="_blank" style="color:white;"><i class="fas fa-external-link-alt"></i></a>
-                </div>
-                <div class="scene-content">
-                    <iframe src="./scenes/account-status.html"></iframe>
-                </div>
-            </div>
-            
-            <div class="scene-card">
-                <div class="scene-header">
-                    <span>钱包首页(显示账户入口)</span>
-                    <a href="./scenes/wallet-home.html" target="_blank" style="color:white;"><i class="fas fa-external-link-alt"></i></a>
-                </div>
-                <div class="scene-content">
-                    <iframe src="./scenes/wallet-home.html"></iframe>
-                </div>
-            </div>
-        </div>
-
-        <!-- 场景二：账户管理 -->
-        <h2 id="section2">场景二：账户管理</h2>
-        <div class="scenes-grid" style="grid-template-columns: repeat(4, 1fr);">
-            <!-- 账户总览 -->
-            <div class="scene-card">
-                <div class="scene-header">
-                    <span>2.1 已开户账户总览</span>
-                    <a href="./scenes/account-status.html?status=opened" target="_blank" style="color:white;"><i class="fas fa-external-link-alt"></i></a>
-                </div>
-                <div class="scene-content">
-                    <iframe src="./scenes/account-status-opened.html"></iframe>
-                </div>
-            </div>
-
-            <!-- 充值功能 -->
-            <div class="scene-card">
-                <div class="scene-header">
-                    <span>2.2 账户充值</span>
-                    <a href="deposit.html" target="_blank" style="color:white;"><i class="fas fa-external-link-alt"></i></a>
-                </div>
-                <div class="scene-content">
-                    <iframe src="deposit.html"></iframe>
-                </div>
-            </div>
-
-            <!-- 提现功能 -->
-            <div class="scene-card">
-                <div class="scene-header">
-                    <span>2.3 账户提现</span>
-                    <a href="withdraw.html" target="_blank" style="color:white;"><i class="fas fa-external-link-alt"></i></a>
-                </div>
-                <div class="scene-content">
-                    <iframe src="withdraw.html"></iframe>
-                </div>
-            </div>
-        </div>
-
-        <!-- 场景三：交易功能 -->
-        <h2 id="section3">场景三：交易功能</h2>
-        <p class="description">
-            本次新增了出金流程中USDC不足的子场景，包括余额不足提示、充值地址、交易等待和结果页面等。
-            还在钱包首页和账户页面增加了进行中交易提示，提供实时状态反馈。
-        </p>
-
-        <h3>3.1 币币兑换与确认</h3>
-        <div class="scenes-grid">
-            <div class="scene-card">
-                <div class="scene-header">
-                    <span>币币兑换页面</span>
-                    <a href="./scenes/coin-exchange.html" target="_blank" style="color:white;"><i class="fas fa-external-link-alt"></i></a>
-                </div>
-                <div class="scene-content">
-                    <iframe src="./scenes/coin-exchange.html"></iframe>
-                </div>
-            </div>
-
-            <div class="scene-card">
-                <div class="scene-header">
-                    <span>兑换确认页面</span>
-                    <a href="./scenes/coin-exchange-confirm.html" target="_blank" style="color:white;"><i class="fas fa-external-link-alt"></i></a>
-                </div>
-                <div class="scene-content">
-                    <iframe src="./scenes/coin-exchange-confirm.html"></iframe>
-                </div>
-            </div>
-        </div>
-
-        <h3>3.2 USDC余额不足场景</h3>
-        <div class="scenes-grid">
-            <div class="scene-card">
-                <div class="scene-header">
-                    <span>余额不足提示页面</span>
-                    <a href="./scenes/coin-exchange-insufficient.html?amount=5000&balance=2500" target="_blank" style="color:white;"><i class="fas fa-external-link-alt"></i></a>
-                </div>
-                <div class="scene-content">
-                    <iframe src="./scenes/coin-exchange-insufficient.html?amount=5000&balance=2500"></iframe>
-                </div>
-            </div>
-
-            <div class="scene-card">
-                <div class="scene-header">
-                    <span>USDC充值地址页面</span>
-                    <a href="./scenes/coin-exchange-deposit.html?amount=5000" target="_blank" style="color:white;"><i class="fas fa-external-link-alt"></i></a>
-                </div>
-                <div class="scene-content">
-                    <iframe src="./scenes/coin-exchange-deposit.html?amount=5000"></iframe>
-                </div>
-            </div>
-        </div>
-
-        <h3>3.3 交易等待与结果页面</h3>
-        <div class="scenes-grid">
-            <div class="scene-card">
-                <div class="scene-header">
-                    <span>交易处理中页面</span>
-                    <a href="./scenes/coin-exchange-waiting.html" target="_blank" style="color:white;"><i class="fas fa-external-link-alt"></i></a>
-                </div>
-                <div class="scene-content">
-                    <iframe src="./scenes/coin-exchange-waiting.html"></iframe>
-                </div>
-            </div>
-
-            <div class="scene-card">
-                <div class="scene-header">
-                    <span>出金交易结果页面</span>
-                    <a href="./scenes/coin-exchange-result.html?type=outbound&status=success" target="_blank" style="color:white;"><i class="fas fa-external-link-alt"></i></a>
-                </div>
-                <div class="scene-content">
-                    <iframe src="./scenes/coin-exchange-result.html?type=outbound&status=success"></iframe>
-                </div>
-            </div>
-
-            <div class="scene-card">
-                <div class="scene-header">
-                    <span>入金交易结果页面</span>
-                    <a href="./scenes/coin-exchange-result.html?type=inbound&status=success" target="_blank" style="color:white;"><i class="fas fa-external-link-alt"></i></a>
-                </div>
-                <div class="scene-content">
-                    <iframe src="./scenes/coin-exchange-result.html?type=inbound&status=success"></iframe>
-                </div>
-            </div>
-        </div>
-
-        <h3>3.4 交易状态通知</h3>
-        <div class="scenes-grid">
-            <div class="scene-card">
-                <div class="scene-header">
-                    <span>账户页交易通知</span>
-                    <a href="./scenes/account.html" target="_blank" style="color:white;"><i class="fas fa-external-link-alt"></i></a>
-                </div>
-                <div class="scene-content">
-                    <iframe src="./scenes/account.html"></iframe>
-                </div>
-            </div>
-        </div>
-
-        <h3>3.5 交易历史记录</h3>
-        <div class="scenes-grid">
-            <div class="scene-card">
-                <div class="scene-header">
-                    <span>交易历史记录页面</span>
-                    <a href="./otc-history.html" target="_blank" style="color:white;"><i class="fas fa-external-link-alt"></i></a>
-                </div>
-                <div class="scene-content">
-                    <iframe src="./otc-history.html"></iframe>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 场景四：安全管理 -->
-        <h2 id="section4">场景四：安全管理</h2>
-        <div class="scenes-grid">
-            <!-- 安全设置 -->
-            <div class="scene-card">
-                <div class="scene-header">
-                    <span>安全设置</span>
-                    <a href="profile.html" target="_blank" style="color:white;"><i class="fas fa-external-link-alt"></i></a>
+    <div class="ios-device">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-bar-content">
+                <div class="status-bar-time" id="statusBarTime">9:41</div>
+                <div class="status-bar-icons">
+                    <div class="status-bar-signal">
+                        <i class="fas fa-signal"></i>
                     </div>
-                <div class="scene-content">
-                    <iframe src="profile.html"></iframe>
+                    <div class="status-bar-wifi">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <div class="status-bar-battery">
+                        <i class="fas fa-battery-full"></i>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <!-- 银行卡管理 -->
-            <div class="scene-card">
-                <div class="scene-header">
-                    <span>银行卡管理</span>
-                    <a href="bank-cards.html" target="_blank" style="color:white;"><i class="fas fa-external-link-alt"></i></a>
+        <div class="login-container">
+            <!-- 登录头部 -->
+            <div class="login-header">
+                <div class="login-logo">
+                    <i class="fas fa-wallet"></i>
                 </div>
-                <div class="scene-content">
-                    <iframe src="bank-cards.html"></iframe>
+                <h1 class="login-title">Matrix USD</h1>
+                <p class="login-subtitle">企业级数字美元支付解决方案</p>
+            </div>
+            
+            <!-- 登录表单 -->
+            <div class="login-form">
+                <h2 class="form-title">企业账户登录</h2>
+                
+                <form id="loginForm" onsubmit="return handleLogin(event)">
+                    <div class="form-group">
+                        <label class="form-label" for="username">用户名</label>
+                        <input type="text" id="username" class="form-input" placeholder="请输入用户名" required>
+                        <div class="error-message" id="usernameError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="password">密码</label>
+                        <div class="password-input-wrapper">
+                            <input type="password" id="password" class="form-input" placeholder="请输入密码" required>
+                            <i class="fas fa-eye-slash password-toggle" id="passwordToggle"></i>
+                        </div>
+                        <div class="error-message" id="passwordError"></div>
+                    </div>
+                    
+                    <div class="remember-me">
+                        <input type="checkbox" id="rememberMe">
+                        <label for="rememberMe">记住我</label>
+                    </div>
+                    
+                    <button type="submit" class="login-button" id="loginButton">
+                        登录
+                    </button>
+                </form>
+            </div>
+            
+            <!-- 页脚 -->
+            <div class="login-footer">
+                <div class="footer-links">
+                    <a href="#" class="footer-link">注册账户</a>
+                    <a href="#" class="footer-link">忘记密码</a>
+                    <a href="#" class="footer-link">帮助中心</a>
+                </div>
+                <div class="footer-text">
+                    © 2024 Matrix USD. All rights reserved.
                 </div>
             </div>
         </div>
     </div>
-
-    <a href="#" class="back-to-top">
-        <i class="fas fa-arrow-up"></i>
-    </a>
 
     <script>
-        // 页面加载完成后初始化
-        document.addEventListener('DOMContentLoaded', function () {
-            // 为了确保交易通知能显示，模拟创建一个进行中的交易
-            if (window.sessionStorage) {
-                sessionStorage.setItem('hasActiveTransaction', 'true');
-                sessionStorage.setItem('activeTxType', '出金 (卖出USDC)');
-                sessionStorage.setItem('activeTxAmount', '5,000 USDC');
-                sessionStorage.setItem('activeTxStatus', '等待USDC支付');
-                sessionStorage.setItem('activeTxRemainingTime', '1800');
+        // 设置状态栏时间
+        function updateStatusBarTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            hours = hours < 10 ? `0${hours}` : hours;
+            minutes = minutes < 10 ? `0${minutes}` : minutes;
+            document.getElementById('statusBarTime').textContent = `${hours}:${minutes}`;
+        }
+        
+        // 初始化时间并每分钟更新一次
+        updateStatusBarTime();
+        setInterval(updateStatusBarTime, 60000);
+        
+        // 密码显示切换
+        const passwordToggle = document.getElementById('passwordToggle');
+        const passwordInput = document.getElementById('password');
+        
+        passwordToggle.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type');
+            if (type === 'password') {
+                passwordInput.setAttribute('type', 'text');
+                this.classList.remove('fa-eye-slash');
+                this.classList.add('fa-eye');
+            } else {
+                passwordInput.setAttribute('type', 'password');
+                this.classList.remove('fa-eye');
+                this.classList.add('fa-eye-slash');
+            }
+        });
+        
+        // 表单验证和提交
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            
+            // 重置错误信息
+            document.getElementById('usernameError').classList.remove('show');
+            document.getElementById('passwordError').classList.remove('show');
+            
+            // 简单的表单验证
+            let hasError = false;
+            
+            if (!username) {
+                document.getElementById('usernameError').textContent = '请输入用户名';
+                document.getElementById('usernameError').classList.add('show');
+                hasError = true;
             }
             
-            // 导航栏功能
-            const navToggle = document.getElementById('navToggle');
-            const sidebar = document.getElementById('sidebar');
-            const closeSidebar = document.getElementById('closeSidebar');
-            const overlay = document.getElementById('overlay');
-            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
-            
-            // 打开侧边栏
-            navToggle.addEventListener('click', function() {
-                sidebar.classList.add('open');
-                overlay.classList.add('visible');
-                document.body.classList.add('sidebar-open');
-            });
-            
-            // 关闭侧边栏
-            function closeSidebarFunc() {
-                sidebar.classList.remove('open');
-                overlay.classList.remove('visible');
-                document.body.classList.remove('sidebar-open');
+            if (!password) {
+                document.getElementById('passwordError').textContent = '请输入密码';
+                document.getElementById('passwordError').classList.add('show');
+                hasError = true;
             }
             
-            closeSidebar.addEventListener('click', closeSidebarFunc);
-            overlay.addEventListener('click', closeSidebarFunc);
+            if (hasError) {
+                return false;
+            }
             
-            // 下拉菜单
-            dropdownToggles.forEach(toggle => {
-                toggle.addEventListener('click', function() {
-                    const dropdown = this.nextElementSibling;
-                    dropdown.classList.toggle('open');
-                    const icon = this.querySelector('i');
-                    if (dropdown.classList.contains('open')) {
-                        icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
-                    } else {
-                        icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
-                    }
-                });
-            });
+            // 显示加载状态
+            const loginButton = document.getElementById('loginButton');
+            loginButton.disabled = true;
+            loginButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 登录中...';
             
-            // 默认展开导航菜单
-            document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
-                dropdown.classList.add('open');
-                const icon = dropdown.previousElementSibling.querySelector('i');
-                icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
-            });
+            // 模拟登录请求
+            setTimeout(() => {
+                // 在实际应用中，这里应该调用登录API
+                
+                // 存储登录状态
+                if (rememberMe) {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('username', username);
+                } else {
+                    sessionStorage.setItem('isLoggedIn', 'true');
+                    sessionStorage.setItem('username', username);
+                }
+                
+                // 跳转到首页
+                window.location.href = 'scenes/wallet-home.html';
+            }, 1500);
+            
+            return false;
+        }
+        
+        // 检查是否已登录
+        window.addEventListener('DOMContentLoaded', () => {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || 
+                             sessionStorage.getItem('isLoggedIn') === 'true';
+            
+            if (isLoggedIn) {
+                window.location.href = 'scenes/wallet-home.html';
+            }
         });
     </script>
 </body>

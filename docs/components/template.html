@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matrix USD</title>
+    <link href="../styles/main.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- iOS设备模拟 -->
+    <div class="ios-device">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-bar-content">
+                <div class="status-bar-time" id="statusBarTime">9:41</div>
+                <div class="status-bar-icons">
+                    <div class="status-bar-signal">
+                        <i class="fas fa-signal"></i>
+                    </div>
+                    <div class="status-bar-wifi">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <div class="status-bar-battery">
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 导航栏 -->
+        <div class="nav-bar">
+            <div class="nav-back" id="navBack">
+                <i class="fas fa-chevron-left"></i>
+                <span id="backText">返回</span>
+            </div>
+            <div class="nav-title" id="pageTitle">页面标题</div>
+            <div class="nav-action" id="navAction"></div>
+        </div>
+
+        <!-- 主要内容区 -->
+        <div class="content" id="mainContent">
+            <!-- 页面内容将在这里动态插入 -->
+        </div>
+
+        <!-- 底部标签栏 -->
+        <div class="tab-bar">
+            <div class="tab-item active" data-tab="home">
+                <div class="tab-icon"><i class="fas fa-home"></i></div>
+                <div class="tab-label">首页</div>
+            </div>
+            <div class="tab-item" data-tab="otc">
+                <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div>
+                <div class="tab-label">法币交易</div>
+            </div>
+            <div class="tab-item" data-tab="account">
+                <div class="tab-icon"><i class="fas fa-university"></i></div>
+                <div class="tab-label">美元账户</div>
+            </div>
+            <div class="tab-item" data-tab="profile">
+                <div class="tab-icon"><i class="fas fa-user"></i></div>
+                <div class="tab-label">我的</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 设置状态栏时间
+        function updateStatusBarTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            
+            // 格式化时间为两位数
+            hours = hours < 10 ? `0${hours}` : hours;
+            minutes = minutes < 10 ? `0${minutes}` : minutes;
+            
+            document.getElementById('statusBarTime').textContent = `${hours}:${minutes}`;
+        }
+        
+        // 初始化时间并每分钟更新一次
+        updateStatusBarTime();
+        setInterval(updateStatusBarTime, 60000);
+        
+        // 标签栏切换
+        const tabItems = document.querySelectorAll('.tab-item');
+        tabItems.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // 移除所有活动状态
+                tabItems.forEach(t => t.classList.remove('active'));
+                // 添加当前活动状态
+                this.classList.add('active');
+                
+                // 这里可以添加页面切换逻辑
+                const tabName = this.getAttribute('data-tab');
+                console.log(`切换到 ${tabName} 标签`);
+                
+                // 根据实际需要调用页面切换函数
+                // switchToTab(tabName);
+            });
+        });
+        
+        // 返回按钮事件
+        document.getElementById('navBack').addEventListener('click', function() {
+            // 默认返回行为可以根据实际情况修改
+            console.log('返回上一页');
+            // history.back();
+        });
+        
+        // 自定义函数：设置页面标题
+        function setPageTitle(title) {
+            document.getElementById('pageTitle').textContent = title;
+        }
+        
+        // 自定义函数：隐藏/显示返回按钮
+        function toggleBackButton(show, text = '返回') {
+            const backBtn = document.getElementById('navBack');
+            backBtn.style.visibility = show ? 'visible' : 'hidden';
+            document.getElementById('backText').textContent = text;
+        }
+        
+        // 自定义函数：设置导航栏右侧操作按钮
+        function setNavAction(html) {
+            document.getElementById('navAction').innerHTML = html;
+        }
+        
+        // 自定义函数：隐藏/显示标签栏
+        function toggleTabBar(show) {
+            const tabBar = document.querySelector('.tab-bar');
+            tabBar.style.display = show ? 'flex' : 'none';
+            
+            // 调整内容区域的padding-bottom
+            const content = document.querySelector('.content');
+            if (show) {
+                content.style.paddingBottom = `calc(var(--tab-bar-height) + var(--spacing-4))`;
+            } else {
+                content.style.paddingBottom = `var(--spacing-4)`;
+            }
+        }
+    </script>
+</body>
+</html> 

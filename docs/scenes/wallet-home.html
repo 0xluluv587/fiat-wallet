@@ -2,220 +2,338 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>钱包 - Matrixport</title>
-    <link href="../styles/output.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #0052ff;
-            --background-color: #f7f8fa;
-            --card-color: #ffffff;
-            --text-primary: #1C1C1E;
-            --text-secondary: #6B7280;
-        }
-        .usd-icon {
-            background: url('https://cryptologos.cc/logos/usd-coin-usdc-logo.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-        .card-hover:hover {
-            box-shadow: 0 4px 12px rgba(0, 82, 255, 0.1);
-            transform: translateY(-2px);
-            transition: all 0.3s ease;
-        }
-        .ios-bottom-bar {
-            background-color: var(--card-color);
-            border-top: 1px solid #E5E7EB;
-        }
-        .iphone15-frame {
-            max-width: 393px;
-            position: relative;
-            background-color: var(--background-color);
-            height: 100%;
-            min-height: 100vh;
-        }
-        .dynamic-island {
-            width: 126px;
-            height: 34px;
-            background-color: #000;
-            border-radius: 24px;
-            position: absolute;
-            top: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matrix USD - 钱包首页</title>
+    <link href="../styles/main.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-[--background-color] text-[--text-primary]">
-    <div class="iphone15-frame mx-auto">
-        <div class="dynamic-island"></div>
-
-        <!-- 顶部导航栏 -->
-        <div class="sticky top-0 bg-[--background-color] z-50 pt-12 pb-2">
-            <div class="px-4 flex items-center justify-between">
-                <h1 class="text-xl font-semibold text-[--text-primary]">钱包</h1>
-                <div class="flex">
-                    <button class="w-8 h-8 rounded-full flex items-center justify-center">
-                        <i class="fas fa-eye text-[--text-primary]"></i>
-                    </button>
-                    <button class="w-8 h-8 rounded-full flex items-center justify-center ml-2">
-                        <i class="fas fa-search text-[--text-primary]"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div class="px-4">
-            <!-- 总资产展示 -->
-            <div class="mb-6">
-                <p class="text-[--text-secondary] text-sm mb-1">总资产折合（USD）</p>
-                <h1 class="text-3xl font-semibold mb-4 text-[--text-primary]">$268,345.00</h1>
-                <div class="flex space-x-3">
-                    <button class="bg-[--primary-color] text-white py-2 px-4 rounded-full text-sm font-medium">
-                        <i class="fas fa-arrow-down mr-1"></i>充值
-                    </button>
-                    <button class="border border-gray-300 bg-white text-[--text-primary] py-2 px-4 rounded-full text-sm font-medium">
-                        <i class="fas fa-arrow-up mr-1"></i>提现
-                    </button>
-                    <button class="border border-gray-300 bg-white text-[--text-primary] py-2 px-4 rounded-full text-sm font-medium">
-                        <i class="fas fa-exchange-alt mr-1"></i>兑换
-                    </button>
-                </div>
-            </div>
-
-            <!-- 资产分类选项卡 -->
-            <div class="flex space-x-4 mb-4 border-b border-gray-200">
-                <button class="py-2 px-1 text-[--primary-color] font-medium border-b-2 border-[--primary-color]">
-                    全部资产
-                </button>
-                <button class="py-2 px-1 text-[--text-secondary] font-medium">
-                    收藏
-                </button>
-            </div>
-
-            <!-- 资产列表 -->
-            <div class="space-y-3">
-                <!-- USD专属账户卡片 -->
-                <a href="./account-status.html?status=unopened" class="block bg-[--card-color] rounded-xl p-4 card-hover shadow">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <div class="bg-[#2B7CFE] bg-opacity-10 p-2 rounded-full w-12 h-12 flex items-center justify-center mr-3">
-                                <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png" alt="USD" class="w-8 h-8">
-                            </div>
-                            <div>
-                                <h4 class="text-[--text-primary] font-medium mb-1">USD机构专属账户</h4>
-                                <div class="flex items-center">
-                                    <span class="text-xs px-2 py-0.5 bg-[rgba(43,124,254,0.1)] text-[--primary-color] rounded-full mr-2">限时福利</span>
-                                    <span class="text-[--text-secondary] text-sm">立即开通</span>
-                                </div>
-                            </div>
-                        </div>
-                        <i class="fas fa-chevron-right text-[--text-secondary]"></i>
+<body>
+    <!-- iOS设备模拟 -->
+    <div class="ios-device">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-bar-content">
+                <div class="status-bar-time" id="statusBarTime">9:41</div>
+                <div class="status-bar-icons">
+                    <div class="status-bar-signal">
+                        <i class="fas fa-signal"></i>
                     </div>
-                </a>
-
-                <!-- BTC资产卡片 -->
-                <div class="bg-[--card-color] rounded-xl p-4 shadow">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" 
-                                 alt="Bitcoin" class="w-10 h-10 mr-3">
-                            <div>
-                                <div class="flex items-center">
-                                    <h4 class="text-[--text-primary] font-medium">BTC</h4>
-                                    <span class="text-[--text-secondary] text-sm ml-2">Bitcoin</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <p class="text-[--text-secondary] text-sm">4.5821 BTC</p>
-                                    <p class="text-xs text-green-500 ml-2">+2.34%</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-[--text-primary] font-medium">$198,345.00</p>
-                            <p class="text-[--text-secondary] text-sm">≈ ¥1,406,547.50</p>
-                        </div>
+                    <div class="status-bar-wifi">
+                        <i class="fas fa-wifi"></i>
                     </div>
-                </div>
-
-                <!-- ETH资产卡片 -->
-                <div class="bg-[--card-color] rounded-xl p-4 shadow">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png" 
-                                 alt="Ethereum" class="w-10 h-10 mr-3">
-                            <div>
-                                <div class="flex items-center">
-                                    <h4 class="text-[--text-primary] font-medium">ETH</h4>
-                                    <span class="text-[--text-secondary] text-sm ml-2">Ethereum</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <p class="text-[--text-secondary] text-sm">8.9234 ETH</p>
-                                    <p class="text-xs text-green-500 ml-2">+1.56%</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-[--text-primary] font-medium">$20,000.00</p>
-                            <p class="text-[--text-secondary] text-sm">≈ ¥142,000.00</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- USDC资产卡片 -->
-                <div class="bg-[--card-color] rounded-xl p-4 shadow">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png" 
-                                 alt="USDC" class="w-10 h-10 mr-3">
-                            <div>
-                                <div class="flex items-center">
-                                    <h4 class="text-[--text-primary] font-medium">USDC</h4>
-                                    <span class="text-[--text-secondary] text-sm ml-2">USD Coin</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <p class="text-[--text-secondary] text-sm">50,000.00 USDC</p>
-                                    <p class="text-xs text-green-500 ml-2">+0.01%</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-[--text-primary] font-medium">$50,000.00</p>
-                            <p class="text-[--text-secondary] text-sm">≈ ¥355,000.00</p>
-                        </div>
+                    <div class="status-bar-battery">
+                        <i class="fas fa-battery-full"></i>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 底部导航栏 -->
-        <div class="ios-bottom-bar fixed bottom-0 left-0 right-0 px-6 py-4">
-            <div class="grid grid-cols-5 gap-4">
-                <button class="flex flex-col items-center opacity-50">
-                    <i class="fas fa-home text-[--text-secondary] mb-1"></i>
-                    <span class="text-xs text-[--text-secondary]">首页</span>
-                </button>
-                <button class="flex flex-col items-center">
-                    <i class="fas fa-wallet text-[--primary-color] mb-1"></i>
-                    <span class="text-xs text-[--primary-color]">钱包</span>
-                </button>
-                <button class="flex flex-col items-center opacity-50">
-                    <i class="fas fa-exchange-alt text-[--text-secondary] mb-1"></i>
-                    <span class="text-xs text-[--text-secondary]">交易</span>
-                </button>
-                <button class="flex flex-col items-center opacity-50">
-                    <i class="fas fa-chart-line text-[--text-secondary] mb-1"></i>
-                    <span class="text-xs text-[--text-secondary]">行情</span>
-                </button>
-                <button class="flex flex-col items-center opacity-50">
-                    <i class="fas fa-user text-[--text-secondary] mb-1"></i>
-                    <span class="text-xs text-[--text-secondary]">我的</span>
-                </button>
+        <!-- 导航栏 -->
+        <div class="nav-bar">
+            <div class="nav-back" id="navBack" style="visibility: hidden;">
+                <i class="fas fa-chevron-left"></i>
+                <span>返回</span>
+            </div>
+            <div class="nav-title">Matrix USD</div>
+            <div class="nav-action">
+                <i class="fas fa-bell"></i>
+            </div>
+        </div>
+
+        <!-- 主要内容区 -->
+        <div class="content">
+            <!-- 账户状态通知 -->
+            <div class="notification notification-info">
+                <div class="notification-icon">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">请完成KYC认证</div>
+                    <div class="notification-message">完成KYC认证后可使用OTC交易和开通美元账户服务</div>
+                </div>
+            </div>
+            
+            <!-- 进行中交易通知 -->
+            <div class="notification notification-warning" id="activeTransactionNotice" style="display: none;">
+                <div class="notification-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">您有一笔交易正在处理中</div>
+                    <div class="notification-message">
+                        <span id="activeTxType">出金 (卖出USDC)</span> -
+                        <span id="activeTxAmount">5,000 USDC</span> -
+                        <span id="activeTxStatus">等待USDC支付</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 资产展示 -->
+            <div class="card token-card">
+                <div class="token-label">总资产 (USD)</div>
+                <div class="token-balance">$10,250.00</div>
+                <div class="token-actions">
+                    <div class="token-action-btn">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>充值</span>
+                    </div>
+                    <div class="token-action-btn">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>提现</span>
+                    </div>
+                    <div class="token-action-btn">
+                        <i class="fas fa-exchange-alt"></i>
+                        <span>兑换</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 我的资产列表 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">我的资产</div>
+                </div>
+                
+                <!-- USDC资产 -->
+                <div class="list-item">
+                    <div class="list-item-icon">
+                        <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png" alt="USDC" width="32" height="32">
+                    </div>
+                    <div class="list-item-content">
+                        <div class="list-item-title">USDC</div>
+                        <div class="list-item-subtitle">USD Coin</div>
+                    </div>
+                    <div>
+                        <div class="text-right font-semibold">8,500.00</div>
+                        <div class="text-right text-sm text-neutral-500">≈ $8,500.00</div>
+                    </div>
+                </div>
+                
+                <!-- USD资产 -->
+                <div class="list-item">
+                    <div class="list-item-icon">
+                        <div style="width: 32px; height: 32px; background-color: #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #333; font-weight: 600; font-size: 18px;">$</div>
+                    </div>
+                    <div class="list-item-content">
+                        <div class="list-item-title">USD</div>
+                        <div class="list-item-subtitle">美元账户</div>
+                    </div>
+                    <div>
+                        <div class="text-right font-semibold">1,750.00</div>
+                        <div class="text-right text-sm text-neutral-500">≈ $1,750.00</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 快捷功能 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">快捷功能</div>
+                </div>
+                
+                <div class="flex justify-between p-2">
+                    <!-- 法币交易 -->
+                    <div class="flex flex-col items-center gap-2 p-2" style="width: 25%;" onclick="location.href='coin-exchange.html'">
+                        <div class="bg-primary-light rounded-full w-12 h-12 flex items-center justify-center">
+                            <i class="fas fa-exchange-alt text-primary"></i>
+                        </div>
+                        <div class="text-xs text-center">法币交易</div>
+                    </div>
+                    
+                    <!-- 美元账户 -->
+                    <div class="flex flex-col items-center gap-2 p-2" style="width: 25%;" onclick="location.href='account-status.html?status=opened'">
+                        <div class="bg-primary-light rounded-full w-12 h-12 flex items-center justify-center">
+                            <i class="fas fa-university text-primary"></i>
+                        </div>
+                        <div class="text-xs text-center">美元账户</div>
+                    </div>
+                    
+                    <!-- 交易记录 -->
+                    <div class="flex flex-col items-center gap-2 p-2" style="width: 25%;" onclick="location.href='../otc-history.html'">
+                        <div class="bg-primary-light rounded-full w-12 h-12 flex items-center justify-center">
+                            <i class="fas fa-history text-primary"></i>
+                        </div>
+                        <div class="text-xs text-center">交易记录</div>
+                    </div>
+                    
+                    <!-- KYC认证 -->
+                    <div class="flex flex-col items-center gap-2 p-2" style="width: 25%;">
+                        <div class="bg-primary-light rounded-full w-12 h-12 flex items-center justify-center">
+                            <i class="fas fa-id-card text-primary"></i>
+                        </div>
+                        <div class="text-xs text-center">KYC认证</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 最近交易 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">最近交易</div>
+                    <div class="card-subtitle">查看您的最近交易记录</div>
+                </div>
+                
+                <!-- 交易项目 -->
+                <div class="transaction-item">
+                    <div class="transaction-icon">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                    <div class="transaction-details">
+                        <div class="transaction-title">USDC 充值</div>
+                        <div class="transaction-date">2023-11-12 14:30</div>
+                    </div>
+                    <div class="transaction-amount positive">+2,500 USDC</div>
+                </div>
+                
+                <div class="transaction-item">
+                    <div class="transaction-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div class="transaction-details">
+                        <div class="transaction-title">USDC 兑换 USD</div>
+                        <div class="transaction-date">2023-11-10 09:15</div>
+                    </div>
+                    <div class="transaction-amount negative">-1,000 USDC</div>
+                </div>
+                
+                <div class="transaction-item">
+                    <div class="transaction-icon">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                    <div class="transaction-details">
+                        <div class="transaction-title">USD 提现</div>
+                        <div class="transaction-date">2023-11-08 16:45</div>
+                    </div>
+                    <div class="transaction-amount negative">-500 USD</div>
+                </div>
+                
+                <!-- 查看更多按钮 -->
+                <div class="text-center mt-3">
+                    <a href="../otc-history.html" class="btn btn-outline">查看更多交易</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部标签栏 -->
+        <div class="tab-bar">
+            <div class="tab-item active" data-tab="home">
+                <div class="tab-icon"><i class="fas fa-home"></i></div>
+                <div class="tab-text">首页</div>
+            </div>
+            <div class="tab-item" data-tab="otc">
+                <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div>
+                <div class="tab-text">法币交易</div>
+            </div>
+            <div class="tab-item" data-tab="account">
+                <div class="tab-icon"><i class="fas fa-university"></i></div>
+                <div class="tab-text">美元账户</div>
+            </div>
+            <div class="tab-item" data-tab="profile">
+                <div class="tab-icon"><i class="fas fa-user"></i></div>
+                <div class="tab-text">我的</div>
             </div>
         </div>
     </div>
+
+    <script>
+        // 设置状态栏时间
+        function updateStatusBarTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            
+            // 格式化时间为两位数
+            hours = hours < 10 ? `0${hours}` : hours;
+            minutes = minutes < 10 ? `0${minutes}` : minutes;
+            
+            document.getElementById('statusBarTime').textContent = `${hours}:${minutes}`;
+        }
+        
+        // 初始化时间并每分钟更新一次
+        updateStatusBarTime();
+        setInterval(updateStatusBarTime, 60000);
+        
+        // 检查是否有进行中的交易
+        function checkActiveTransaction() {
+            if (window.sessionStorage && sessionStorage.getItem('hasActiveTransaction') === 'true') {
+                document.getElementById('activeTransactionNotice').style.display = 'flex';
+                document.getElementById('activeTxType').textContent = sessionStorage.getItem('activeTxType') || '交易';
+                document.getElementById('activeTxAmount').textContent = sessionStorage.getItem('activeTxAmount') || '';
+                document.getElementById('activeTxStatus').textContent = sessionStorage.getItem('activeTxStatus') || '处理中';
+                
+                // 如果存在倒计时，显示倒计时
+                const remainingTime = sessionStorage.getItem('activeTxRemainingTime');
+                if (remainingTime) {
+                    startCountdown(parseInt(remainingTime));
+                }
+            }
+        }
+        
+        // 倒计时功能
+        function startCountdown(seconds) {
+            const countdownInterval = setInterval(() => {
+                seconds--;
+                
+                if (seconds <= 0) {
+                    clearInterval(countdownInterval);
+                    // 交易超时处理
+                    sessionStorage.removeItem('hasActiveTransaction');
+                    document.getElementById('activeTransactionNotice').style.display = 'none';
+                } else {
+                    // 更新剩余时间
+                    sessionStorage.setItem('activeTxRemainingTime', seconds.toString());
+                    
+                    // 格式化显示
+                    const minutes = Math.floor(seconds / 60);
+                    const secs = seconds % 60;
+                    const timeStr = `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+                    
+                    const statusEl = document.getElementById('activeTxStatus');
+                    // 检查状态文本，如果包含倒计时则更新倒计时部分
+                    if (statusEl.textContent.includes('剩余时间')) {
+                        statusEl.textContent = `等待USDC支付 (剩余时间: ${timeStr})`;
+                    } else {
+                        statusEl.textContent = `${statusEl.textContent} (剩余时间: ${timeStr})`;
+                    }
+                }
+            }, 1000);
+        }
+        
+        // 页面加载时检查交易状态
+        window.addEventListener('DOMContentLoaded', checkActiveTransaction);
+        
+        // 标签栏切换
+        const tabItems = document.querySelectorAll('.tab-item');
+        tabItems.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // 移除所有活动状态
+                tabItems.forEach(t => t.classList.remove('active'));
+                // 添加当前活动状态
+                this.classList.add('active');
+                
+                // 获取选中的标签
+                const tabName = this.getAttribute('data-tab');
+                
+                // 根据标签执行相应的操作
+                switch(tabName) {
+                    case 'home':
+                        // 当前页面，不做操作
+                        break;
+                    case 'otc':
+                        // 跳转到OTC交易页面
+                        window.location.href = 'coin-exchange.html';
+                        break;
+                    case 'account':
+                        // 跳转到账户页面
+                        window.location.href = 'account-status.html?status=opened';
+                        break;
+                    case 'profile':
+                        // 跳转到个人中心页面
+                        window.location.href = '../profile.html';
+                        break;
+                }
+            });
+        });
+    </script>
 </body>
 </html> 

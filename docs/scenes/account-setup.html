@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matrix USD - 美元账户开通</title>
+    <link href="../styles/main.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .setup-container {
+            padding: 16px;
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            padding: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--neutral-800);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-icon {
+            width: 24px;
+            height: 24px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+        }
+        
+        .section-icon i {
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+        
+        .status-card {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-radius: 8px;
+            background-color: var(--neutral-50);
+            margin-bottom: 12px;
+        }
+        
+        .status-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        
+        .status-icon.completed {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .status-icon.pending {
+            background-color: var(--warning);
+            color: white;
+        }
+        
+        .status-content {
+            flex: 1;
+        }
+        
+        .status-title {
+            font-weight: 500;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        
+        .status-desc {
+            font-size: 13px;
+            color: var(--neutral-600);
+        }
+        
+        .account-option {
+            padding: 16px;
+            border: 1px solid var(--neutral-200);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            background-color: white;
+            position: relative;
+        }
+        
+        .account-option.required {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+        
+        .account-option.required::before {
+            content: "必选";
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .account-option-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .account-option-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            color: var(--primary-color);
+        }
+        
+        .account-option-content {
+            flex: 1;
+        }
+        
+        .account-option-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        
+        .account-option-price {
+            color: var(--error);
+            font-weight: 500;
+        }
+        
+        .account-option-info {
+            display: flex;
+            margin-top: 8px;
+            color: var(--neutral-600);
+            font-size: 13px;
+        }
+        
+        .account-option-info-item {
+            display: flex;
+            align-items: center;
+            margin-right: 16px;
+        }
+        
+        .account-option-info-item i {
+            margin-right: 4px;
+            font-size: 14px;
+        }
+        
+        .account-option-desc {
+            font-size: 13px;
+            color: var(--neutral-600);
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed var(--neutral-200);
+        }
+        
+        .account-checkbox {
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+            border: 2px solid var(--neutral-300);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .account-checkbox.checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .account-checkbox.disabled {
+            background-color: var(--neutral-200);
+            border-color: var(--neutral-300);
+            cursor: not-allowed;
+        }
+        
+        .fee-summary {
+            padding: 16px;
+            border-radius: 12px;
+            background-color: var(--neutral-50);
+        }
+        
+        .fee-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .fee-label {
+            color: var(--neutral-700);
+            font-size: 14px;
+        }
+        
+        .fee-value {
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .fee-total {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 12px;
+            border-top: 1px solid var(--neutral-200);
+            font-weight: 600;
+        }
+        
+        .payment-methods {
+            margin-top: 16px;
+        }
+        
+        .payment-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .payment-options {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .payment-option {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid var(--neutral-200);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .payment-option.active {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+        
+        .payment-balance {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .payment-balance-label {
+            font-size: 14px;
+            color: var(--neutral-700);
+        }
+        
+        .payment-balance-value {
+            font-weight: 500;
+        }
+        
+        .payment-button {
+            display: inline-flex;
+            align-items: center;
+            color: var(--primary-color);
+            font-size: 13px;
+            margin-top: 8px;
+        }
+        
+        .payment-button i {
+            margin-right: 4px;
+            font-size: 14px;
+        }
+        
+        .action-button {
+            width: 100%;
+            height: 48px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        
+        .action-button:disabled {
+            background-color: var(--neutral-300);
+            cursor: not-allowed;
+        }
+        
+        .action-hint {
+            text-align: center;
+            font-size: 13px;
+            color: var(--neutral-600);
+            margin-top: 12px;
+        }
+        
+        .kyc-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            height: 40px;
+            padding: 0 16px;
+            font-weight: 500;
+            margin-left: 12px;
+        }
+        
+        .kyc-button.disabled {
+            background-color: var(--neutral-300);
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="ios-device">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-bar-content">
+                <div class="status-bar-time" id="statusBarTime">9:41</div>
+                <div class="status-bar-icons">
+                    <div class="status-bar-signal">
+                        <i class="fas fa-signal"></i>
+                    </div>
+                    <div class="status-bar-wifi">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <div class="status-bar-battery">
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 导航栏 -->
+        <div class="nav-bar">
+            <div class="nav-back" id="backButton">
+                <i class="fas fa-chevron-left"></i>
+                <span>返回</span>
+            </div>
+            <div class="nav-title">美元账户开通</div>
+            <div class="nav-action"></div>
+        </div>
+        
+        <!-- 主要内容区 -->
+        <div class="content">
+            <div class="setup-container">
+                <!-- KYC状态 -->
+                <div class="section" id="kycStatusSection">
+                    <div class="section-title">
+                        <div class="section-icon">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <span>企业 KYC 状态</span>
+                    </div>
+                    
+                    <!-- 未完成KYC状态 -->
+                    <div class="status-card" id="kycPendingCard">
+                        <div class="status-icon pending">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="status-content">
+                            <div class="status-title">未完成企业 KYC 认证</div>
+                            <div class="status-desc">您需先通过机构 eKYC 认证，才能开通机构专属美元账户</div>
+                        </div>
+                        <button class="kyc-button" onclick="location.href='kyc-setup.html'">去认证</button>
+                    </div>
+                    
+                    <!-- 已完成KYC状态 (默认隐藏) -->
+                    <div class="status-card" id="kycCompletedCard" style="display: none;">
+                        <div class="status-icon completed">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="status-content">
+                            <div class="status-title">已完成企业 KYC 认证</div>
+                            <div class="status-desc">您已通过机构 eKYC 认证，可以开通机构专属美元账户</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 可申请账户 -->
+                <div class="section" id="accountOptionsSection">
+                    <div class="section-title">
+                        <div class="section-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <span>可申请账户信息</span>
+                    </div>
+                    
+                    <!-- 入金账户选项 (必选) -->
+                    <div class="account-option required">
+                        <div class="account-option-header">
+                            <div class="account-option-icon">
+                                <i class="fas fa-arrow-down"></i>
+                            </div>
+                            <div class="account-option-content">
+                                <div class="account-option-title">入金账户</div>
+                                <div class="account-option-price">一次性支付 $2,000</div>
+                            </div>
+                            <div class="account-checkbox checked" id="inboundCheckbox">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+                        <div class="account-option-info">
+                            <div class="account-option-info-item">
+                                <i class="fas fa-clock"></i>
+                                <span>预计 10 个工作日</span>
+                            </div>
+                        </div>
+                        <div class="account-option-desc">
+                            开通入金账户后即可使用该账户美元快捷购买数字货币
+                        </div>
+                    </div>
+                    
+                    <!-- 出金账户选项 (可选) -->
+                    <div class="account-option">
+                        <div class="account-option-header">
+                            <div class="account-option-icon">
+                                <i class="fas fa-arrow-up"></i>
+                            </div>
+                            <div class="account-option-content">
+                                <div class="account-option-title">出金账户</div>
+                                <div class="account-option-price">一次性支付 $3,000</div>
+                            </div>
+                            <div class="account-checkbox" id="outboundCheckbox">
+                                <i class="fas fa-check" style="display: none;"></i>
+                            </div>
+                        </div>
+                        <div class="account-option-info">
+                            <div class="account-option-info-item">
+                                <i class="fas fa-clock"></i>
+                                <span>预计 30 个工作日</span>
+                            </div>
+                        </div>
+                        <div class="account-option-desc">
+                            开通出金账户后即可卖出稳定币并使用该账户接收美元
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 费用账单 -->
+                <div class="section" id="feeSummarySection">
+                    <div class="section-title">
+                        <div class="section-icon">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <span>费用账单</span>
+                    </div>
+                    
+                    <div class="fee-summary">
+                        <div class="fee-row">
+                            <div class="fee-label">入金账户开通费用</div>
+                            <div class="fee-value">$2,000.00</div>
+                        </div>
+                        <div class="fee-row" id="outboundFeeRow" style="display: none;">
+                            <div class="fee-label">出金账户开通费用</div>
+                            <div class="fee-value">$3,000.00</div>
+                        </div>
+                        <div class="fee-total">
+                            <div class="fee-label">总计支付金额</div>
+                            <div class="fee-value" id="totalFeeAmount">$2,000.00</div>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-methods">
+                        <div class="payment-title">选择支付方式</div>
+                        <div class="payment-options">
+                            <div class="payment-option active" data-currency="USDC">
+                                USDC
+                            </div>
+                            <div class="payment-option" data-currency="USDT">
+                                USDT
+                            </div>
+                        </div>
+                        
+                        <div class="payment-balance">
+                            <div class="payment-balance-label">USDC 钱包余额</div>
+                            <div class="payment-balance-value" id="walletBalance">8,500.00 USDC</div>
+                        </div>
+                        
+                        <div class="payment-button" onclick="location.href='coin-exchange-deposit.html'">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>充值 USDC</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 确认申请 -->
+                <button class="action-button" id="submitButton" disabled>确认申请并付款</button>
+                <div class="action-hint">
+                    联系我们：otc@matrixport.com
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部标签栏 -->
+        <div class="tab-bar">
+            <div class="tab-item" data-tab="home">
+                <div class="tab-icon"><i class="fas fa-home"></i></div>
+                <div class="tab-text">首页</div>
+            </div>
+            <div class="tab-item" data-tab="exchange">
+                <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div>
+                <div class="tab-text">法币交易</div>
+            </div>
+            <div class="tab-item active" data-tab="account">
+                <div class="tab-icon"><i class="fas fa-university"></i></div>
+                <div class="tab-text">美元账户</div>
+            </div>
+            <div class="tab-item" data-tab="profile">
+                <div class="tab-icon"><i class="fas fa-user"></i></div>
+                <div class="tab-text">我的</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 更新状态栏时间
+        function updateStatusBarTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('statusBarTime').textContent = `${hours}:${minutes}`;
+        }
+        
+        // 初始化时间并每分钟更新一次
+        updateStatusBarTime();
+        setInterval(updateStatusBarTime, 60000);
+        
+        // KYC状态判断（示例逻辑）
+        function checkKYCStatus() {
+            // 模拟从服务器获取KYC状态
+            // 这里使用URL参数来模拟不同状态，实际应从API获取
+            const urlParams = new URLSearchParams(window.location.search);
+            const kycStatus = urlParams.get('kyc_status');
+            
+            if (kycStatus === 'completed') {
+                // 已完成KYC
+                document.getElementById('kycPendingCard').style.display = 'none';
+                document.getElementById('kycCompletedCard').style.display = 'flex';
+                document.getElementById('submitButton').disabled = false;
+            } else {
+                // 未完成KYC
+                document.getElementById('submitButton').disabled = true;
+            }
+        }
+        
+        // 处理账户选择
+        function setupAccountSelection() {
+            const outboundCheckbox = document.getElementById('outboundCheckbox');
+            const inboundCheckbox = document.getElementById('inboundCheckbox');
+            const outboundFeeRow = document.getElementById('outboundFeeRow');
+            const totalFeeAmount = document.getElementById('totalFeeAmount');
+            
+            // 入金账户是必选项，不可取消
+            inboundCheckbox.addEventListener('click', function() {
+                // 不做任何操作，保持选中状态
+            });
+            
+            // 出金账户是可选项
+            outboundCheckbox.addEventListener('click', function() {
+                const checkIcon = this.querySelector('i');
+                
+                if (checkIcon.style.display === 'none') {
+                    // 选中出金账户
+                    this.classList.add('checked');
+                    checkIcon.style.display = 'inline-block';
+                    outboundFeeRow.style.display = 'flex';
+                    totalFeeAmount.textContent = '$5,000.00';
+                } else {
+                    // 取消选中出金账户
+                    this.classList.remove('checked');
+                    checkIcon.style.display = 'none';
+                    outboundFeeRow.style.display = 'none';
+                    totalFeeAmount.textContent = '$2,000.00';
+                }
+            });
+        }
+        
+        // 处理支付方式选择
+        function setupPaymentOptions() {
+            const paymentOptions = document.querySelectorAll('.payment-option');
+            const walletBalance = document.getElementById('walletBalance');
+            
+            paymentOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // 移除所有选项的活动状态
+                    paymentOptions.forEach(opt => opt.classList.remove('active'));
+                    
+                    // 设置当前选项为活动状态
+                    this.classList.add('active');
+                    
+                    // 更新钱包余额显示
+                    const currency = this.getAttribute('data-currency');
+                    if (currency === 'USDC') {
+                        walletBalance.textContent = '8,500.00 USDC';
+                    } else if (currency === 'USDT') {
+                        walletBalance.textContent = '3,200.00 USDT';
+                    }
+                });
+            });
+        }
+        
+        // 处理返回按钮
+        function setupBackButton() {
+            document.getElementById('backButton').addEventListener('click', function() {
+                window.location.href = 'account-status.html';
+            });
+        }
+        
+        // 处理提交按钮
+        function setupSubmitButton() {
+            document.getElementById('submitButton').addEventListener('click', function() {
+                if (!this.disabled) {
+                    // 模拟提交申请
+                    alert('申请已提交，即将跳转到支付页面');
+                    window.location.href = 'account-payment.html';
+                }
+            });
+        }
+        
+        // 页面加载时初始化
+        window.addEventListener('DOMContentLoaded', function() {
+            checkKYCStatus();
+            setupAccountSelection();
+            setupPaymentOptions();
+            setupBackButton();
+            setupSubmitButton();
+            
+            // 底部标签栏切换
+            const tabItems = document.querySelectorAll('.tab-item');
+            tabItems.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    if (tabName === 'home') {
+                        window.location.href = 'wallet-home.html';
+                    } else if (tabName === 'exchange') {
+                        window.location.href = 'coin-exchange.html';
+                    } else if (tabName === 'account') {
+                        window.location.href = 'account-status.html';
+                    } else if (tabName === 'profile') {
+                        window.location.href = 'profile.html';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

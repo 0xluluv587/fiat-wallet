@@ -2,296 +2,339 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>USDC余额不足 - Matrix USD</title>
-    <link href="../styles/output.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matrix USD - 余额不足</title>
+    <link href="../styles/main.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #0052ff;
-            --primary-hover: #0039c6;
-            --bg-light: #f5f8ff;
-            --text-primary: #0a0b0d;
-            --text-secondary: #5b616e;
-            --border-color: #e5e5e5;
-            --warning-color: #ff9500;
-            --warning-bg: #fff8e6;
-        }
-        body {
-            background-color: #f7f8fa;
-            color: var(--text-primary);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-        .page-container {
-            padding: 1rem;
-            padding-bottom: 6rem;
-        }
-        .card {
-            background-color: #fff;
-            border-radius: 1rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-            margin-bottom: 1rem;
-            border: 1px solid var(--border-color);
-        }
-        .section-title {
-            font-weight: 600;
-            font-size: 1.125rem;
-            margin-bottom: 1rem;
-        }
-        .text-subtitle {
-            font-weight: 600;
-            font-size: 1rem;
-            color: var(--text-primary);
-        }
-        .text-body {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-        .primary-button {
-            background-color: var(--primary-color);
-            color: white;
-            font-weight: 600;
-            padding: 0.875rem 1rem;
-            border-radius: 0.5rem;
+        .insufficient-container {
+            padding: 20px;
             text-align: center;
-            width: 100%;
-            transition: background-color 0.2s;
         }
-        .primary-button:hover {
-            background-color: var(--primary-hover);
-        }
-        .secondary-button {
-            background-color: transparent;
-            color: var(--text-primary);
-            font-weight: 600;
-            padding: 0.875rem 1rem;
-            border-radius: 0.5rem;
-            text-align: center;
-            width: 100%;
-            border: 1px solid var(--border-color);
-        }
-        .bottom-action-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: white;
-            padding: 1rem;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            gap: 0.75rem;
-            z-index: 20;
-        }
-        .warning-icon {
-            width: 64px;
-            height: 64px;
-            background-color: var(--warning-bg);
+        
+        .insufficient-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background-color: var(--warning-light);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto;
         }
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--border-color);
+        
+        .insufficient-icon i {
+            font-size: 40px;
+            color: var(--warning);
         }
-        .info-row:last-child {
-            border-bottom: none;
+        
+        .insufficient-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--neutral-900);
         }
-        .countdown {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--warning-color);
+        
+        .insufficient-desc {
+            font-size: 16px;
+            color: var(--neutral-600);
+            margin-bottom: 32px;
+            line-height: 1.5;
         }
-        .option-card {
-            border: 1px solid var(--border-color);
-            border-radius: 0.75rem;
-            padding: 1.25rem;
-            margin-bottom: 1rem;
-            transition: all 0.2s;
-            cursor: pointer;
+        
+        .balance-card {
+            background-color: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
-        .option-card:hover, .option-card.selected {
-            border-color: var(--primary-color);
-            background-color: var(--bg-light);
-        }
-        .option-header {
+        
+        .balance-row {
             display: flex;
             align-items: center;
-            margin-bottom: 0.75rem;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--neutral-100);
         }
-        .option-radio {
-            width: 1.25rem;
-            height: 1.25rem;
-            border-radius: 50%;
-            border: 2px solid var(--border-color);
-            margin-right: 0.75rem;
-            position: relative;
+        
+        .balance-row:last-child {
+            border-bottom: none;
         }
-        .option-card.selected .option-radio {
-            border-color: var(--primary-color);
+        
+        .balance-label {
+            font-size: 15px;
+            color: var(--neutral-700);
+            display: flex;
+            align-items: center;
         }
-        .option-card.selected .option-radio::after {
-            content: '';
-            position: absolute;
-            width: 0.625rem;
-            height: 0.625rem;
-            background-color: var(--primary-color);
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        
+        .balance-label i {
+            font-size: 18px;
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+        
+        .balance-value {
+            font-size: 17px;
+            font-weight: 600;
+        }
+        
+        .balance-value.insufficient {
+            color: var(--danger);
+        }
+        
+        .actions-container {
+            margin-top: 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .action-button {
+            padding: 16px;
+            border-radius: 12px;
+            background-color: white;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .action-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+        
+        .action-deposit .action-icon {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+        }
+        
+        .action-modify .action-icon {
+            background-color: var(--neutral-100);
+            color: var(--neutral-700);
+        }
+        
+        .action-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .action-desc {
+            font-size: 13px;
+            color: var(--neutral-600);
         }
     </style>
 </head>
 <body>
-    <div class="mx-auto max-w-md">
-        <!-- 顶部导航栏 -->
-        <div class="sticky top-0 bg-white z-10 pt-12 pb-2 border-b border-gray-100">
-            <div class="px-4 flex items-center justify-between">
-                <a href="javascript:history.back()" class="w-8 h-8 flex items-center justify-center">
-                    <i class="fas fa-arrow-left text-black"></i>
-                </a>
-                <h1 class="text-xl font-semibold">余额不足</h1>
-                <div class="w-8 h-8"></div>
-            </div>
-        </div>
-
-        <div class="page-container">
-            <!-- 余额不足提示 -->
-            <div class="text-center mb-6">
-                <div class="warning-icon mb-4">
-                    <i class="fas fa-exclamation-triangle text-warning-color text-2xl"></i>
-                </div>
-                <h2 class="text-xl font-bold text-black mb-2">USDC余额不足</h2>
-                <p class="text-gray-500 mb-2">您当前的USDC余额不足以完成此次交易</p>
-                <p class="font-medium">需要支付: <span id="required-amount">5,000 USDC</span></p>
-                <p class="text-gray-500">当前余额: <span id="current-balance">2,500 USDC</span></p>
-            </div>
-
-            <!-- 选项卡片 -->
-            <div class="mb-6">
-                <h3 class="text-subtitle mb-3">选择付款方式</h3>
-                
-                <!-- 选项1: 其他钱包存入 -->
-                <div class="option-card selected" id="option-deposit">
-                    <div class="option-header">
-                        <div class="option-radio"></div>
-                        <h4 class="font-semibold">从其他钱包存入</h4>
-                    </div>
-                    <p class="text-body ml-8">从其他钱包或交易所转入USDC到您的Matrixport账户</p>
-                </div>
-                
-                <!-- 选项2: 购买加密货币 -->
-                <div class="option-card" id="option-buy">
-                    <div class="option-header">
-                        <div class="option-radio"></div>
-                        <h4 class="font-semibold">购买USDC</h4>
-                    </div>
-                    <p class="text-body ml-8">使用银行卡或其他支付方式购买USDC</p>
-                </div>
-            </div>
-
-            <!-- 锁定汇率说明 -->
-            <div class="card mb-6">
-                <div class="p-5">
-                    <h3 class="section-title">锁定汇率说明</h3>
-                    
-                    <div class="info-row">
-                        <span class="text-body">当前汇率</span>
-                        <span class="text-subtitle">1 USDC = 1.003 USD</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="text-body">锁定时间</span>
-                        <span class="text-subtitle">30分钟</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="text-body">到期时间</span>
-                        <div class="flex items-center">
-                            <i class="fas fa-clock text-warning-color mr-2"></i>
-                            <span class="countdown" id="countdown">29:59</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 交易说明 -->
-            <div class="bg-blue-50 rounded-xl p-4 mb-6">
-                <div class="flex">
-                    <i class="fas fa-info-circle text-blue-600 mt-1 mr-3"></i>
-                    <div>
-                        <p class="text-blue-800 text-sm">请在30分钟内完成USDC存入，超时后订单将自动取消，且当前锁定的汇率将失效。</p>
-                    </div>
-                </div>
+    <div class="ios-device">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-bar-time" id="statusBarTime">12:30</div>
+            <div class="status-bar-icons">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
             </div>
         </div>
         
-        <!-- 底部操作栏 -->
-        <div class="bottom-action-bar">
-            <button class="secondary-button" onclick="window.location.href='./coin-exchange.html'">
-                取消交易
-            </button>
-            <button class="primary-button" id="continue-button">
-                继续交易
-            </button>
+        <!-- 导航栏 -->
+        <div class="nav-bar">
+            <div class="nav-back" id="backButton">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+            <div class="nav-title">余额不足</div>
+            <div class="nav-actions"></div>
+        </div>
+        
+        <!-- 主内容区 -->
+        <div class="main-content">
+            <div class="insufficient-container">
+                <div class="insufficient-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="insufficient-title">USDC 余额不足</div>
+                <div class="insufficient-desc">
+                    您的USDC余额不足以完成此次交易，请充值后再试。
+                </div>
+                
+                <div class="balance-card">
+                    <div class="balance-row">
+                        <div class="balance-label">
+                            <i class="fas fa-coins"></i>
+                            所需USDC
+                        </div>
+                        <div class="balance-value" id="requiredAmount">5,000 USDC</div>
+                    </div>
+                    
+                    <div class="balance-row">
+                        <div class="balance-label">
+                            <i class="fas fa-wallet"></i>
+                            当前余额
+                        </div>
+                        <div class="balance-value insufficient" id="currentBalance">2,500 USDC</div>
+                    </div>
+                    
+                    <div class="balance-row">
+                        <div class="balance-label">
+                            <i class="fas fa-arrow-down"></i>
+                            还需充值
+                        </div>
+                        <div class="balance-value insufficient" id="neededAmount">2,500 USDC</div>
+                    </div>
+                </div>
+                
+                <div class="actions-container">
+                    <div class="action-button action-deposit" id="depositButton">
+                        <div class="action-icon">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <div class="action-title">充值USDC</div>
+                        <div class="action-desc">从其他钱包转入</div>
+                    </div>
+                    
+                    <div class="action-button action-modify" id="modifyButton">
+                        <div class="action-icon">
+                            <i class="fas fa-pen"></i>
+                        </div>
+                        <div class="action-title">修改金额</div>
+                        <div class="action-desc">返回调整交易金额</div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-outline btn-block" style="margin-top: 24px;" id="cancelButton">
+                    取消交易
+                </button>
+            </div>
+        </div>
+        
+        <!-- 底部标签栏 -->
+        <div class="tab-bar">
+            <div class="tab-item" data-tab="home">
+                <i class="fas fa-home"></i>
+                <span>首页</span>
+            </div>
+            <div class="tab-item active" data-tab="exchange">
+                <i class="fas fa-exchange-alt"></i>
+                <span>OTC交易</span>
+            </div>
+            <div class="tab-item" data-tab="account">
+                <i class="fas fa-university"></i>
+                <span>美元账户</span>
+            </div>
+            <div class="tab-item" data-tab="profile">
+                <i class="fas fa-user"></i>
+                <span>我的</span>
+            </div>
         </div>
     </div>
     
     <script>
-        // 获取URL参数
-        const urlParams = new URLSearchParams(window.location.search);
-        const amount = urlParams.get('amount') || '5000';
-        const balance = urlParams.get('balance') || '2500';
+        // 更新状态栏时间
+        function updateStatusBarTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('statusBarTime').textContent = `${hours}:${minutes}`;
+        }
         
-        // 更新页面显示的金额
-        document.getElementById('required-amount').textContent = amount + ' USDC';
-        document.getElementById('current-balance').textContent = balance + ' USDC';
-        
-        // 设置倒计时
-        let countdown = 30 * 60; // 30分钟，以秒为单位
-        const countdownElement = document.getElementById('countdown');
-        
-        const timer = setInterval(function() {
-            countdown--;
-            if (countdown <= 0) {
-                clearInterval(timer);
-                alert('订单已超时，汇率锁定已失效');
+        // 处理返回按钮
+        function setupBackButton() {
+            document.getElementById('backButton').addEventListener('click', function() {
                 window.location.href = './coin-exchange.html';
-            }
+            });
+        }
+        
+        // 从URL获取参数并设置金额
+        function setupAmountDisplay() {
+            const params = new URLSearchParams(window.location.search);
+            const amount = params.get('amount') || 5000;
+            const balance = params.get('balance') || 2500;
             
-            const minutes = Math.floor(countdown / 60);
-            const seconds = countdown % 60;
-            countdownElement.textContent = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
-        }, 1000);
-        
-        // 付款方式选择
-        document.getElementById('option-deposit').addEventListener('click', function() {
-            this.classList.add('selected');
-            document.getElementById('option-buy').classList.remove('selected');
-        });
-        
-        document.getElementById('option-buy').addEventListener('click', function() {
-            this.classList.add('selected');
-            document.getElementById('option-deposit').classList.remove('selected');
-        });
-        
-        // 继续交易按钮
-        document.getElementById('continue-button').addEventListener('click', function() {
-            if (document.getElementById('option-deposit').classList.contains('selected')) {
-                // 跳转到存款地址页面
-                window.location.href = './coin-exchange-deposit.html?amount=' + amount;
-            } else {
-                // 跳转到购买USDC页面
-                window.location.href = './buy-crypto.html?amount=' + amount;
+            // 计算差额
+            const needed = amount - balance;
+            
+            // 设置显示
+            const formatNumber = num => {
+                return new Intl.NumberFormat('en-US').format(num);
+            };
+            
+            document.getElementById('requiredAmount').textContent = `${formatNumber(amount)} USDC`;
+            document.getElementById('currentBalance').textContent = `${formatNumber(balance)} USDC`;
+            document.getElementById('neededAmount').textContent = `${formatNumber(needed)} USDC`;
+            
+            // 存储到会话，以便在充值页面使用
+            if (window.sessionStorage) {
+                sessionStorage.setItem('requiredAmount', amount);
+                sessionStorage.setItem('currentBalance', balance);
+                sessionStorage.setItem('neededAmount', needed);
             }
+        }
+        
+        // 设置按钮动作
+        function setupButtons() {
+            // 充值按钮
+            document.getElementById('depositButton').addEventListener('click', function() {
+                window.location.href = './coin-exchange-deposit.html';
+            });
+            
+            // 修改金额按钮
+            document.getElementById('modifyButton').addEventListener('click', function() {
+                window.location.href = './coin-exchange.html';
+            });
+            
+            // 取消交易按钮
+            document.getElementById('cancelButton').addEventListener('click', function() {
+                window.location.href = './wallet-home.html';
+            });
+        }
+        
+        // 处理底部标签切换
+        function setupTabBar() {
+            const tabItems = document.querySelectorAll('.tab-item');
+            tabItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    tabItems.forEach(tab => tab.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 根据标签执行相应操作
+                    const tabName = this.getAttribute('data-tab');
+                    if (tabName === 'home') {
+                        window.location.href = './wallet-home.html';
+                    } else if (tabName === 'exchange') {
+                        // 当前页面，不跳转
+                    } else if (tabName === 'account') {
+                        window.location.href = './account-status.html?status=opened';
+                    } else if (tabName === 'profile') {
+                        // 跳转到个人页面
+                    }
+                });
+            });
+        }
+        
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStatusBarTime();
+            setInterval(updateStatusBarTime, 60000);
+            
+            setupBackButton();
+            setupAmountDisplay();
+            setupButtons();
+            setupTabBar();
         });
     </script>
-
-    <script src="../scripts/navigation.js"></script>
 </body>
 </html> 

@@ -2,470 +2,229 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>交易结果 - Matrix USD</title>
-    <link href="../styles/output.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #0052ff;
-            --primary-hover: #0039c6;
-            --bg-light: #f5f8ff;
-            --text-primary: #0a0b0d;
-            --text-secondary: #5b616e;
-            --border-color: #e5e5e5;
-            --success-color: #00c087;
-            --success-bg: #e6fff7;
-            --warning-color: #ff9500;
-            --warning-bg: #fff8e6;
-        }
-        body {
-            background-color: #f7f8fa;
-            color: var(--text-primary);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-        .page-container {
-            padding: 1rem;
-            padding-bottom: 6rem;
-        }
-        .card {
-            background-color: #fff;
-            border-radius: 1rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-            margin-bottom: 1rem;
-            border: 1px solid var(--border-color);
-        }
-        .section-title {
-            font-weight: 600;
-            font-size: 1.125rem;
-            margin-bottom: 1rem;
-        }
-        .text-subtitle {
-            font-weight: 600;
-            font-size: 1rem;
-            color: var(--text-primary);
-        }
-        .text-body {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-        .primary-button {
-            background-color: var(--primary-color);
-            color: white;
-            font-weight: 600;
-            padding: 0.875rem 1rem;
-            border-radius: 0.5rem;
-            text-align: center;
-            width: 100%;
-            transition: background-color 0.2s;
-        }
-        .primary-button:hover {
-            background-color: var(--primary-hover);
-        }
-        .secondary-button {
-            background-color: transparent;
-            color: var(--text-primary);
-            font-weight: 600;
-            padding: 0.875rem 1rem;
-            border-radius: 0.5rem;
-            text-align: center;
-            width: 100%;
-            border: 1px solid var(--border-color);
-        }
-        .success-icon {
-            width: 64px;
-            height: 64px;
-            background-color: var(--success-bg);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-        }
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .info-row:last-child {
-            border-bottom: none;
-        }
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            background-color: var(--success-bg);
-            color: var(--success-color);
-            font-weight: 500;
-            font-size: 0.875rem;
-            padding: 0.5rem 0.75rem;
-            border-radius: 1rem;
-            margin-bottom: 1rem;
-        }
-        .timeline {
-            position: relative;
-            margin: 1.5rem 0;
-            padding-left: 2rem;
-        }
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 8px;
-            top: 8px;
-            bottom: 10px;
-            width: 2px;
-            background-color: var(--border-color);
-        }
-        .timeline-item {
-            position: relative;
-            padding-bottom: 1.5rem;
-        }
-        .timeline-item:last-child {
-            padding-bottom: 0;
-        }
-        .timeline-point {
-            position: absolute;
-            left: -2rem;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background-color: white;
-            border: 2px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .timeline-point-complete {
-            border-color: var(--success-color);
-            background-color: var(--success-color);
-        }
-        .timeline-point-complete i {
-            font-size: 0.5rem;
-            color: white;
-        }
-        .timeline-content {
-            position: relative;
-        }
-        .timeline-title {
-            font-weight: 600;
-            font-size: 0.975rem;
-            margin-bottom: 0.25rem;
-        }
-        .timeline-desc {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            margin-bottom: 0.25rem;
-        }
-        .timeline-date {
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-        }
-        .bottom-action-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: white;
-            padding: 1rem;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            gap: 0.75rem;
-            z-index: 20;
-        }
-        .share-container {
-            display: flex;
-            justify-content: center;
-            margin: 1.5rem 0;
-            gap: 1rem;
-        }
-        .share-button {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #f3f4f6;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-primary);
-            font-size: 1.25rem;
-            transition: all 0.2s;
-        }
-        .share-button:hover {
-            background-color: #e5e7eb;
-        }
-        .transaction-amount {
-            font-size: 2rem;
-            font-weight: 700;
-            margin: 0.5rem 0;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matrix USD - 交易结果</title>
+    <link href="../styles/main.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="mx-auto max-w-md">
-        <!-- 顶部导航栏 -->
-        <div class="sticky top-0 bg-white z-10 pt-12 pb-2 border-b border-gray-100">
-            <div class="px-4 flex items-center justify-between">
-                <a href="./index.html" class="w-8 h-8 flex items-center justify-center">
-                    <i class="fas fa-arrow-left text-black"></i>
-                </a>
-                <h1 class="text-xl font-semibold">交易结果</h1>
-                <a href="#" class="w-8 h-8 flex items-center justify-center">
-                    <i class="fas fa-share-alt text-gray-500"></i>
-                </a>
+    <!-- iOS设备模拟 -->
+    <div class="ios-device">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-bar-content">
+                <div class="status-bar-time" id="statusBarTime">9:41</div>
+                <div class="status-bar-icons">
+                    <div class="status-bar-signal">
+                        <i class="fas fa-signal"></i>
+                    </div>
+                    <div class="status-bar-wifi">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <div class="status-bar-battery">
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="page-container">
-            <!-- 交易结果头部 -->
-            <div class="text-center mb-6" id="result-header">
-                <div class="success-icon mb-4">
-                    <i class="fas fa-check text-success-color text-xl"></i>
-                </div>
-                <h2 class="text-xl font-bold text-black mb-2" id="result-title">交易成功</h2>
-                <div class="status-badge inline-flex">
-                    <i class="fas fa-check-circle mr-2"></i>
-                    <span id="status-text">已完成</span>
-                </div>
-                <p class="transaction-amount" id="transaction-amount">$5,015.00</p>
-                <p class="text-gray-500" id="result-description">USD已成功转入您的账户</p>
+        <!-- 导航栏 -->
+        <div class="nav-bar">
+            <div class="nav-back" id="navBack" style="visibility: hidden;">
+                <i class="fas fa-chevron-left"></i>
+                <span>返回</span>
             </div>
-            
-            <!-- 交易详情 -->
-            <div class="card mb-6">
-                <div class="p-5">
-                    <h3 class="section-title">交易详情</h3>
-                    
-                    <div class="info-row">
-                        <span class="text-body">交易类型</span>
-                        <span class="text-subtitle" id="transaction-type">出金 (卖出USDC)</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="text-body" id="from-label">支付金额</span>
-                        <span class="text-subtitle" id="from-amount">5,000 USDC</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="text-body" id="to-label">结算金额</span>
-                        <span class="text-subtitle" id="to-amount">$5,015.00</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="text-body">交易汇率</span>
-                        <span class="text-subtitle" id="exchange-rate">1 USDC = 1.003 USD</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="text-body">订单编号</span>
-                        <span class="text-subtitle" id="order-number">OT23082700562</span>
-                    </div>
-                    
-                    <div class="info-row">
-                        <span class="text-body">完成时间</span>
-                        <span class="text-subtitle" id="completion-time">2023-08-27 15:30:45</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 交易进度时间线 -->
-            <div class="card mb-6">
-                <div class="p-5">
-                    <h3 class="section-title">交易进度</h3>
-                    
-                    <div class="timeline" id="outbound-timeline">
-                        <!-- 出金流程时间线 -->
-                        <!-- 步骤1: 发起交易 -->
-                        <div class="timeline-item">
-                            <div class="timeline-point timeline-point-complete">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="timeline-content">
-                                <h4 class="timeline-title">发起交易</h4>
-                                <p class="timeline-desc">您已成功发起出金交易</p>
-                                <p class="timeline-date">2023-08-27 14:30:00</p>
-                            </div>
-                        </div>
-                        
-                        <!-- 步骤2: USDC支付 -->
-                        <div class="timeline-item">
-                            <div class="timeline-point timeline-point-complete">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="timeline-content">
-                                <h4 class="timeline-title">USDC支付确认</h4>
-                                <p class="timeline-desc">我们已收到您的USDC支付</p>
-                                <p class="timeline-date">2023-08-27 14:45:10</p>
-                            </div>
-                        </div>
-                        
-                        <!-- 步骤3: USD结算处理 -->
-                        <div class="timeline-item">
-                            <div class="timeline-point timeline-point-complete">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="timeline-content">
-                                <h4 class="timeline-title">USD结算处理</h4>
-                                <p class="timeline-desc">我们已处理您的USD结算</p>
-                                <p class="timeline-date">2023-08-27 15:15:35</p>
-                            </div>
-                        </div>
-                        
-                        <!-- 步骤4: 交易完成 -->
-                        <div class="timeline-item">
-                            <div class="timeline-point timeline-point-complete">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="timeline-content">
-                                <h4 class="timeline-title">交易完成</h4>
-                                <p class="timeline-desc">USD已到达您的银行账户</p>
-                                <p class="timeline-date">2023-08-27 15:30:45</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="timeline hidden" id="inbound-timeline">
-                        <!-- 入金流程时间线 -->
-                        <!-- 步骤1: 发起交易 -->
-                        <div class="timeline-item">
-                            <div class="timeline-point timeline-point-complete">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="timeline-content">
-                                <h4 class="timeline-title">发起交易</h4>
-                                <p class="timeline-desc">您已成功发起入金交易</p>
-                                <p class="timeline-date">2023-08-27 10:15:00</p>
-                            </div>
-                        </div>
-                        
-                        <!-- 步骤2: USD汇款 -->
-                        <div class="timeline-item">
-                            <div class="timeline-point timeline-point-complete">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="timeline-content">
-                                <h4 class="timeline-title">USD汇款确认</h4>
-                                <p class="timeline-desc">我们已收到您的USD汇款</p>
-                                <p class="timeline-date">2023-08-27 11:30:20</p>
-                            </div>
-                        </div>
-                        
-                        <!-- 步骤3: USDC结算处理 -->
-                        <div class="timeline-item">
-                            <div class="timeline-point timeline-point-complete">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="timeline-content">
-                                <h4 class="timeline-title">USDC结算处理</h4>
-                                <p class="timeline-desc">我们已处理您的USDC结算</p>
-                                <p class="timeline-date">2023-08-27 14:45:10</p>
-                            </div>
-                        </div>
-                        
-                        <!-- 步骤4: 交易完成 -->
-                        <div class="timeline-item">
-                            <div class="timeline-point timeline-point-complete">
-                                <i class="fas fa-check"></i>
-                            </div>
-                            <div class="timeline-content">
-                                <h4 class="timeline-title">交易完成</h4>
-                                <p class="timeline-desc">USDC已到达您的Matrixport钱包</p>
-                                <p class="timeline-date">2023-08-27 15:00:30</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 分享交易 -->
-            <div class="card mb-6">
-                <div class="p-5">
-                    <h3 class="section-title">分享交易</h3>
-                    <p class="text-body mb-3">与朋友分享您的交易体验</p>
-                    
-                    <div class="share-container">
-                        <a href="#" class="share-button">
-                            <i class="fab fa-weixin text-green-600"></i>
-                        </a>
-                        <a href="#" class="share-button">
-                            <i class="fab fa-telegram-plane text-blue-500"></i>
-                        </a>
-                        <a href="#" class="share-button">
-                            <i class="fab fa-twitter text-blue-400"></i>
-                        </a>
-                        <a href="#" class="share-button">
-                            <i class="fas fa-link text-gray-600"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
+            <div class="nav-title" id="pageTitle">交易结果</div>
+            <div class="nav-action"></div>
         </div>
-        
-        <!-- 底部操作栏 -->
-        <div class="bottom-action-bar">
-            <button class="secondary-button" onclick="window.location.href='./otc-history.html'">
-                查看所有交易
-            </button>
-            <button class="primary-button" onclick="window.location.href='./coin-exchange.html'">
-                再次交易
-            </button>
+
+        <!-- 主要内容区 -->
+        <div class="content">
+            <!-- 交易状态 -->
+            <div class="flex flex-col items-center justify-center pt-8 pb-10">
+                <!-- 成功图标 -->
+                <div id="successIcon" class="bg-success w-20 h-20 rounded-full flex items-center justify-center mb-6" style="display: none;">
+                    <i class="fas fa-check text-white text-3xl"></i>
+                </div>
+                
+                <!-- 失败图标 -->
+                <div id="failIcon" class="bg-error w-20 h-20 rounded-full flex items-center justify-center mb-6" style="display: none;">
+                    <i class="fas fa-times text-white text-3xl"></i>
+                </div>
+                
+                <!-- 取消图标 -->
+                <div id="cancelIcon" class="bg-warning w-20 h-20 rounded-full flex items-center justify-center mb-6" style="display: none;">
+                    <i class="fas fa-ban text-white text-3xl"></i>
+                </div>
+                
+                <h2 class="text-xl font-semibold mb-2" id="resultTitle">交易成功</h2>
+                <p class="text-neutral-500 text-center mb-4" id="resultDescription">
+                    您的交易已成功完成
+                </p>
+                
+                <!-- 交易金额 -->
+                <div class="p-4 bg-primary-light rounded-lg mb-4 w-full max-w-xs">
+                    <div class="text-center text-neutral-500 mb-1 text-sm">交易金额</div>
+                    <div class="text-center text-2xl font-bold text-primary mb-1" id="txAmount">5,000 USDC</div>
+                    <div class="text-center text-sm text-neutral-500" id="txEquivalent">≈ $5,000.00</div>
+                </div>
+            </div>
+            
+            <!-- 交易详情卡片 -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <div class="card-title">交易详情</div>
+                </div>
+                
+                <div class="list">
+                    <div class="list-item">
+                        <div class="list-item-title">交易类型</div>
+                        <div class="list-item-action" id="txType">出金 (卖出USDC)</div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-title">交易时间</div>
+                        <div class="list-item-action" id="txTime">2023-11-15 15:20</div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-title">交易汇率</div>
+                        <div class="list-item-action" id="txRate">1 USDC = 0.998 USD</div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-title">交易手续费</div>
+                        <div class="list-item-action" id="txFee">0.2% (10 USDC)</div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-title">到账金额</div>
+                        <div class="list-item-action font-semibold text-primary" id="receiveAmount">4,990.00 USD</div>
+                    </div>
+                    <div class="list-item" id="accountItem">
+                        <div class="list-item-title">到账账户</div>
+                        <div class="list-item-action" id="receiveAccount">机构专属美元账户</div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-title">订单编号</div>
+                        <div class="list-item-action text-sm" id="txId">TX1234567890ABCDEF</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 额外提示信息 -->
+            <div id="successTip" class="notification notification-success" style="display: none;">
+                <div class="notification-icon">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">交易已完成</div>
+                    <div class="notification-message">
+                        您可以在"我的 > 交易记录"中查看所有交易详情。
+                    </div>
+                </div>
+            </div>
+            
+            <div id="failTip" class="notification notification-error" style="display: none;">
+                <div class="notification-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">交易未完成</div>
+                    <div class="notification-message">
+                        如需帮助，请联系客服或稍后重试。
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 操作按钮组 -->
+            <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-neutral-100">
+                <button id="homeButton" class="btn btn-primary btn-lg btn-block mb-3">
+                    返回首页
+                </button>
+                <button id="newTxButton" class="btn btn-outline btn-lg btn-block">
+                    发起新交易
+                </button>
+            </div>
         </div>
     </div>
-    
+
     <script>
-        // 获取URL参数
-        const urlParams = new URLSearchParams(window.location.search);
-        const type = urlParams.get('type') || 'outbound'; // outbound 或 inbound
-        const status = urlParams.get('status') || 'success'; // success 或 pending
-        
-        // 根据交易类型显示不同内容
-        if (type === 'inbound') {
-            // 入金交易
-            document.getElementById('transaction-type').textContent = '入金 (买入USDC)';
-            document.getElementById('from-label').textContent = '支付金额';
-            document.getElementById('to-label').textContent = '收到金额';
-            document.getElementById('from-amount').textContent = '$5,000.00';
-            document.getElementById('to-amount').textContent = '4,985 USDC';
-            document.getElementById('exchange-rate').textContent = '1 USD = 0.997 USDC';
-            document.getElementById('transaction-amount').textContent = '4,985 USDC';
-            document.getElementById('result-description').textContent = 'USDC已成功转入您的钱包';
-            
-            // 显示入金时间线，隐藏出金时间线
-            document.getElementById('outbound-timeline').classList.add('hidden');
-            document.getElementById('inbound-timeline').classList.remove('hidden');
-        } else {
-            // 出金交易
-            document.getElementById('transaction-type').textContent = '出金 (卖出USDC)';
-            document.getElementById('from-label').textContent = '支付金额';
-            document.getElementById('to-label').textContent = '收到金额';
-            document.getElementById('from-amount').textContent = '5,000 USDC';
-            document.getElementById('to-amount').textContent = '$5,015.00';
-            document.getElementById('exchange-rate').textContent = '1 USDC = 1.003 USD';
-            document.getElementById('transaction-amount').textContent = '$5,015.00';
-            document.getElementById('result-description').textContent = 'USD已成功转入您的账户';
-            
-            // 显示出金时间线，隐藏入金时间线
-            document.getElementById('outbound-timeline').classList.remove('hidden');
-            document.getElementById('inbound-timeline').classList.add('hidden');
+        // 设置状态栏时间
+        function updateStatusBarTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            hours = hours < 10 ? `0${hours}` : hours;
+            minutes = minutes < 10 ? `0${minutes}` : minutes;
+            document.getElementById('statusBarTime').textContent = `${hours}:${minutes}`;
         }
         
-        // 设置随机订单号
-        const randomOrderNum = 'OT' + new Date().getFullYear().toString().slice(-2) + 
-                             (new Date().getMonth() + 1).toString().padStart(2, '0') + 
-                             new Date().getDate().toString().padStart(2, '0') + 
-                             Math.floor(Math.random() * 100000).toString().padStart(5, '0');
-        document.getElementById('order-number').textContent = randomOrderNum;
+        // 初始化时间并每分钟更新一次
+        updateStatusBarTime();
+        setInterval(updateStatusBarTime, 60000);
         
-        // 设置完成时间
-        const now = new Date();
-        const formattedDate = now.getFullYear() + '-' + 
-                            (now.getMonth() + 1).toString().padStart(2, '0') + '-' + 
-                            now.getDate().toString().padStart(2, '0') + ' ' + 
-                            now.getHours().toString().padStart(2, '0') + ':' + 
-                            now.getMinutes().toString().padStart(2, '0') + ':' + 
-                            now.getSeconds().toString().padStart(2, '0');
-        document.getElementById('completion-time').textContent = formattedDate;
+        // 获取URL参数
+        function getUrlParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+        
+        // 加载交易结果
+        function loadTransactionResult() {
+            // 获取交易状态
+            const status = getUrlParam('status') || 'success';
+            
+            // 根据状态更新UI
+            if (status === 'success') {
+                document.getElementById('successIcon').style.display = 'flex';
+                document.getElementById('resultTitle').textContent = '交易成功';
+                document.getElementById('resultDescription').textContent = '您的交易已成功完成';
+                document.getElementById('successTip').style.display = 'flex';
+            } else if (status === 'timeout') {
+                document.getElementById('failIcon').style.display = 'flex';
+                document.getElementById('resultTitle').textContent = '交易超时';
+                document.getElementById('resultDescription').textContent = '交易已超时，未能完成';
+                document.getElementById('failTip').style.display = 'flex';
+            } else if (status === 'cancelled') {
+                document.getElementById('cancelIcon').style.display = 'flex';
+                document.getElementById('resultTitle').textContent = '交易已取消';
+                document.getElementById('resultDescription').textContent = '您已取消此次交易';
+                document.getElementById('failTip').style.display = 'flex';
+            } else if (status === 'failed') {
+                document.getElementById('failIcon').style.display = 'flex';
+                document.getElementById('resultTitle').textContent = '交易失败';
+                document.getElementById('resultDescription').textContent = '很抱歉，交易未能完成';
+                document.getElementById('failTip').style.display = 'flex';
+            }
+            
+            // 生成随机订单ID
+            const orderId = 'TX' + Math.random().toString(36).substring(2, 10).toUpperCase() + Math.random().toString(36).substring(2, 10).toUpperCase();
+            document.getElementById('txId').textContent = orderId;
+            
+            // 设置交易时间
+            const now = new Date();
+            const txTime = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            document.getElementById('txTime').textContent = txTime;
+            
+            // 如果是失败或取消状态，调整一些UI元素
+            if (status === 'failed' || status === 'timeout' || status === 'cancelled') {
+                document.getElementById('accountItem').style.display = 'none';
+                
+                if (status === 'cancelled') {
+                    document.getElementById('receiveAmount').textContent = '0.00';
+                    document.getElementById('receiveAmount').className = 'list-item-action font-semibold';
+                }
+            }
+        }
+        
+        // 绑定按钮事件
+        document.getElementById('homeButton').addEventListener('click', function() {
+            window.location.href = 'wallet-home.html';
+        });
+        
+        document.getElementById('newTxButton').addEventListener('click', function() {
+            window.location.href = 'coin-exchange.html';
+        });
+        
+        // 页面加载时运行
+        window.addEventListener('DOMContentLoaded', loadTransactionResult);
     </script>
-
-    <script src="../scripts/navigation.js"></script>
 </body>
 </html> 

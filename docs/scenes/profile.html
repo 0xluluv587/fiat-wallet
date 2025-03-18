@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matrix USD - 个人中心</title>
+    <link href="../styles/main.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            padding: 32px 20px;
+            color: white;
+            text-align: center;
+        }
+        
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .profile-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .profile-company {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .profile-status {
+            margin-top: 16px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            font-size: 12px;
+        }
+        
+        .status-badge {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .menu-section {
+            background: white;
+            margin: 12px 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .menu-title {
+            padding: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--neutral-600);
+            border-bottom: 1px solid var(--neutral-100);
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid var(--neutral-50);
+            cursor: pointer;
+        }
+        
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+        
+        .menu-item:active {
+            background-color: var(--neutral-50);
+        }
+        
+        .menu-icon {
+            width: 24px;
+            height: 24px;
+            background-color: var(--primary-light);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+        }
+        
+        .menu-icon i {
+            font-size: 14px;
+            color: var(--primary-color);
+        }
+        
+        .menu-label {
+            flex: 1;
+            font-size: 15px;
+            color: var(--neutral-900);
+        }
+        
+        .menu-value {
+            font-size: 14px;
+            color: var(--neutral-500);
+            margin-right: 8px;
+        }
+        
+        .menu-arrow {
+            color: var(--neutral-400);
+        }
+        
+        .version-info {
+            text-align: center;
+            padding: 24px;
+            color: var(--neutral-500);
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ios-device">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-bar-content">
+                <div class="status-bar-time" id="statusBarTime">9:41</div>
+                <div class="status-bar-icons">
+                    <div class="status-bar-signal">
+                        <i class="fas fa-signal"></i>
+                    </div>
+                    <div class="status-bar-wifi">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <div class="status-bar-battery">
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 导航栏 -->
+        <div class="nav-bar">
+            <div class="nav-title">个人中心</div>
+            <div class="nav-action">
+                <i class="fas fa-bell"></i>
+            </div>
+        </div>
+        
+        <!-- 主要内容区 -->
+        <div class="content">
+            <!-- 个人信息头部 -->
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="profile-name">张三</div>
+                <div class="profile-company">ABC Trading Co., Ltd.</div>
+                <div class="profile-status">
+                    <div class="status-badge">
+                        <i class="fas fa-check-circle"></i>
+                        <span>已完成KYC认证</span>
+                    </div>
+                    <div class="status-badge">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>已开通美元账户</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 账户安全 -->
+            <div class="menu-section">
+                <div class="menu-title">账户安全</div>
+                <div class="menu-item" onclick="location.href='profile-security.html'">
+                    <div class="menu-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="menu-label">登录密码</div>
+                    <div class="menu-value">已设置</div>
+                    <div class="menu-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="menu-item" onclick="location.href='profile-2fa.html'">
+                    <div class="menu-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="menu-label">双重认证</div>
+                    <div class="menu-value">未开启</div>
+                    <div class="menu-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 账户信息 -->
+            <div class="menu-section">
+                <div class="menu-title">账户信息</div>
+                <div class="menu-item" onclick="location.href='profile-company.html'">
+                    <div class="menu-icon">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <div class="menu-label">企业信息</div>
+                    <div class="menu-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="menu-item" onclick="location.href='profile-kyc.html'">
+                    <div class="menu-icon">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                    <div class="menu-label">KYC认证信息</div>
+                    <div class="menu-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="menu-item" onclick="location.href='profile-bank.html'">
+                    <div class="menu-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <div class="menu-label">银行账户信息</div>
+                    <div class="menu-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 其他设置 -->
+            <div class="menu-section">
+                <div class="menu-title">其他设置</div>
+                <div class="menu-item" onclick="location.href='profile-language.html'">
+                    <div class="menu-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <div class="menu-label">语言设置</div>
+                    <div class="menu-value">简体中文</div>
+                    <div class="menu-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="menu-item" onclick="location.href='profile-notification.html'">
+                    <div class="menu-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="menu-label">通知设置</div>
+                    <div class="menu-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="menu-item" onclick="location.href='profile-about.html'">
+                    <div class="menu-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div class="menu-label">关于我们</div>
+                    <div class="menu-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 退出登录 -->
+            <div class="menu-section">
+                <div class="menu-item" onclick="handleLogout()" style="justify-content: center;">
+                    <div class="menu-label" style="flex: 0; color: var(--error);">退出登录</div>
+                </div>
+            </div>
+            
+            <!-- 版本信息 -->
+            <div class="version-info">
+                Matrix USD v1.0.0
+            </div>
+        </div>
+        
+        <!-- 底部标签栏 -->
+        <div class="tab-bar">
+            <div class="tab-item" data-tab="home">
+                <div class="tab-icon"><i class="fas fa-home"></i></div>
+                <div class="tab-text">首页</div>
+            </div>
+            <div class="tab-item" data-tab="exchange">
+                <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div>
+                <div class="tab-text">法币交易</div>
+            </div>
+            <div class="tab-item" data-tab="account">
+                <div class="tab-icon"><i class="fas fa-university"></i></div>
+                <div class="tab-text">美元账户</div>
+            </div>
+            <div class="tab-item active" data-tab="profile">
+                <div class="tab-icon"><i class="fas fa-user"></i></div>
+                <div class="tab-text">我的</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 设置状态栏时间
+        function updateStatusBarTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            hours = hours < 10 ? `0${hours}` : hours;
+            minutes = minutes < 10 ? `0${minutes}` : minutes;
+            document.getElementById('statusBarTime').textContent = `${hours}:${minutes}`;
+        }
+        
+        // 初始化时间并每分钟更新一次
+        updateStatusBarTime();
+        setInterval(updateStatusBarTime, 60000);
+        
+        // 标签栏切换
+        const tabItems = document.querySelectorAll('.tab-item');
+        tabItems.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabName = this.getAttribute('data-tab');
+                if (tabName === 'home') {
+                    window.location.href = 'wallet-home.html';
+                } else if (tabName === 'exchange') {
+                    window.location.href = 'coin-exchange.html';
+                } else if (tabName === 'account') {
+                    window.location.href = 'account-status.html';
+                } else if (tabName === 'profile') {
+                    // 当前页面，不跳转
+                }
+            });
+        });
+        
+        // 处理退出登录
+        function handleLogout() {
+            if (confirm('确定要退出登录吗？')) {
+                // 清除所有会话存储
+                if (window.sessionStorage) {
+                    sessionStorage.clear();
+                }
+                // 清除所有本地存储
+                if (window.localStorage) {
+                    localStorage.clear();
+                }
+                // 跳转到登录页
+                window.location.href = '../index.html';
+            }
+        }
+    </script>
+</body>
+</html> 
