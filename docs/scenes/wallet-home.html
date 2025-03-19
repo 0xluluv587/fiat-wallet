@@ -6,6 +6,330 @@
     <title>Matrix USD - 钱包首页</title>
     <link href="../styles/main.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* 首页特定样式优化 */
+        .token-card {
+            background: linear-gradient(135deg, #0052ff, #0039c6);
+            border-radius: 16px;
+            padding: 20px;
+            color: white;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 82, 255, 0.15);
+        }
+        
+        .token-balance {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 8px 0;
+            letter-spacing: -0.5px;
+        }
+        
+        .token-label {
+            font-size: 14px;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+        
+        .token-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 16px;
+            gap: 10px;
+        }
+        
+        .token-action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 13px;
+            gap: 8px;
+            flex: 1;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .token-action-btn:hover, 
+        .token-action-btn:active {
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        .token-action-btn i {
+            font-size: 18px;
+        }
+        
+        /* 资产列表优化 */
+        .list-item {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--neutral-100);
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .list-item:last-child {
+            border-bottom: none;
+        }
+        
+        .list-item:hover,
+        .list-item:active {
+            background-color: var(--neutral-50);
+        }
+        
+        .list-item-icon {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-right: 16px;
+            overflow: hidden;
+        }
+        
+        .coin-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: #FFD700;
+            color: #333;
+            font-weight: 700;
+            font-size: 20px;
+        }
+        
+        .list-item-content {
+            flex: 1;
+        }
+        
+        .list-item-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--neutral-900);
+        }
+        
+        /* 快捷功能区优化 */
+        .shortcut-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            padding: 8px 0;
+        }
+        
+        .shortcut-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .shortcut-item:hover,
+        .shortcut-item:active {
+            transform: translateY(-2px);
+        }
+        
+        .shortcut-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 20px;
+        }
+        
+        .shortcut-label {
+            font-size: 12px;
+            color: var(--neutral-700);
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        /* 交易记录优化 */
+        .transaction-item {
+            padding: 16px 0;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--neutral-100);
+            transition: background-color 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+        
+        .transaction-item:hover,
+        .transaction-item:active {
+            background-color: var(--neutral-50);
+        }
+        
+        .transaction-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            font-size: 18px;
+        }
+        
+        .transaction-icon.deposit {
+            background-color: rgba(5, 177, 105, 0.1);
+            color: var(--success);
+        }
+        
+        .transaction-icon.withdraw {
+            background-color: rgba(244, 63, 94, 0.1);
+            color: var(--error);
+        }
+        
+        .transaction-icon.exchange {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .transaction-details {
+            flex: 1;
+        }
+        
+        .transaction-title {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--neutral-900);
+        }
+        
+        .transaction-date {
+            font-size: 13px;
+            color: var(--neutral-500);
+            margin-top: 2px;
+        }
+        
+        .transaction-amount {
+            font-weight: 600;
+            font-size: 15px;
+            text-align: right;
+        }
+        
+        .transaction-amount.positive {
+            color: var(--success);
+        }
+        
+        .transaction-amount.negative {
+            color: var(--error);
+        }
+        
+        /* 通知优化 */
+        .notification {
+            border-radius: 12px;
+            margin-bottom: 16px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .notification-info {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--info);
+        }
+        
+        .notification-warning {
+            background-color: rgba(255, 173, 13, 0.1);
+            border-left: 4px solid var(--warning);
+        }
+        
+        .notification-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        
+        .notification-info .notification-icon {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: var(--info);
+        }
+        
+        .notification-warning .notification-icon {
+            background-color: rgba(255, 173, 13, 0.2);
+            color: var(--warning);
+        }
+        
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: 15px;
+        }
+        
+        .notification-message {
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        
+        /* 按钮样式优化 */
+        .btn-view-more {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 12px;
+            width: 100%;
+            margin-top: 12px;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-view-more:hover,
+        .btn-view-more:active {
+            background-color: var(--primary-light);
+        }
+        
+        /* 徽章和标签样式 */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .badge-new {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+        }
+    </style>
 </head>
 <body>
     <!-- iOS设备模拟 -->
@@ -69,19 +393,19 @@
             </div>
 
             <!-- 资产展示 -->
-            <div class="card token-card">
+            <div class="token-card">
                 <div class="token-label">总资产 (USD)</div>
                 <div class="token-balance">$10,250.00</div>
                 <div class="token-actions">
-                    <div class="token-action-btn">
+                    <div class="token-action-btn" id="depositBtn">
                         <i class="fas fa-arrow-down"></i>
                         <span>充值</span>
                     </div>
-                    <div class="token-action-btn">
+                    <div class="token-action-btn" id="withdrawBtn">
                         <i class="fas fa-arrow-up"></i>
                         <span>提现</span>
                     </div>
-                    <div class="token-action-btn">
+                    <div class="token-action-btn" onclick="location.href='coin-exchange.html'">
                         <i class="fas fa-exchange-alt"></i>
                         <span>兑换</span>
                     </div>
@@ -95,9 +419,9 @@
                 </div>
                 
                 <!-- USD资产 -->
-                <div class="list-item">
+                <div class="list-item" onclick="location.href='account-status.html?status=opened'">
                     <div class="list-item-icon">
-                        <div style="width: 32px; height: 32px; background-color: #FFD700; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #333; font-weight: 600; font-size: 18px;">$</div>
+                        <div class="coin-icon">$</div>
                     </div>
                     <div class="list-item-content">
                         <div class="list-item-title">USD</div>
@@ -110,9 +434,9 @@
                 </div>
                 
                 <!-- USDC资产 -->
-                <div class="list-item">
+                <div class="list-item" id="usdcAsset">
                     <div class="list-item-icon">
-                        <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png" alt="USDC" width="32" height="32">
+                        <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png" alt="USDC" width="40" height="40">
                     </div>
                     <div class="list-item-content">
                         <div class="list-item-title">USDC</div>
@@ -131,37 +455,37 @@
                     <div class="card-title">快捷功能</div>
                 </div>
                 
-                <div class="flex justify-between p-2">
+                <div class="shortcut-grid">
                     <!-- 法币交易 -->
-                    <div class="flex flex-col items-center gap-2 p-2" style="width: 25%;" onclick="location.href='coin-exchange.html'">
-                        <div class="bg-primary-light rounded-full w-12 h-12 flex items-center justify-center">
-                            <i class="fas fa-exchange-alt text-primary"></i>
+                    <div class="shortcut-item" onclick="location.href='coin-exchange.html'">
+                        <div class="shortcut-icon">
+                            <i class="fas fa-exchange-alt"></i>
                         </div>
-                        <div class="text-xs text-center">法币交易</div>
+                        <div class="shortcut-label">法币交易</div>
                     </div>
                     
                     <!-- 美元账户 -->
-                    <div class="flex flex-col items-center gap-2 p-2" style="width: 25%;" onclick="location.href='account-status.html?status=opened'">
-                        <div class="bg-primary-light rounded-full w-12 h-12 flex items-center justify-center">
-                            <i class="fas fa-university text-primary"></i>
+                    <div class="shortcut-item" onclick="location.href='account-status.html?status=opened'">
+                        <div class="shortcut-icon">
+                            <i class="fas fa-university"></i>
                         </div>
-                        <div class="text-xs text-center">美元账户</div>
+                        <div class="shortcut-label">美元账户</div>
                     </div>
                     
                     <!-- 交易记录 -->
-                    <div class="flex flex-col items-center gap-2 p-2" style="width: 25%;" onclick="location.href='../otc-history.html'">
-                        <div class="bg-primary-light rounded-full w-12 h-12 flex items-center justify-center">
-                            <i class="fas fa-history text-primary"></i>
+                    <div class="shortcut-item" onclick="location.href='../otc-history.html'">
+                        <div class="shortcut-icon">
+                            <i class="fas fa-history"></i>
                         </div>
-                        <div class="text-xs text-center">交易记录</div>
+                        <div class="shortcut-label">交易记录</div>
                     </div>
                     
                     <!-- KYC认证 -->
-                    <div class="flex flex-col items-center gap-2 p-2" style="width: 25%;">
-                        <div class="bg-primary-light rounded-full w-12 h-12 flex items-center justify-center">
-                            <i class="fas fa-id-card text-primary"></i>
+                    <div class="shortcut-item">
+                        <div class="shortcut-icon">
+                            <i class="fas fa-id-card"></i>
                         </div>
-                        <div class="text-xs text-center">KYC认证</div>
+                        <div class="shortcut-label">KYC认证</div>
                     </div>
                 </div>
             </div>
@@ -175,7 +499,7 @@
                 
                 <!-- 交易项目 -->
                 <div class="transaction-item">
-                    <div class="transaction-icon">
+                    <div class="transaction-icon deposit">
                         <i class="fas fa-arrow-down"></i>
                     </div>
                     <div class="transaction-details">
@@ -186,7 +510,7 @@
                 </div>
                 
                 <div class="transaction-item">
-                    <div class="transaction-icon">
+                    <div class="transaction-icon exchange">
                         <i class="fas fa-exchange-alt"></i>
                     </div>
                     <div class="transaction-details">
@@ -197,7 +521,7 @@
                 </div>
                 
                 <div class="transaction-item">
-                    <div class="transaction-icon">
+                    <div class="transaction-icon withdraw">
                         <i class="fas fa-arrow-up"></i>
                     </div>
                     <div class="transaction-details">
@@ -208,9 +532,9 @@
                 </div>
                 
                 <!-- 查看更多按钮 -->
-                <div class="text-center mt-3">
-                    <a href="../otc-history.html" class="btn btn-outline">查看更多交易</a>
-                </div>
+                <button class="btn-view-more" onclick="location.href='../otc-history.html'">
+                    查看更多交易
+                </button>
             </div>
         </div>
 
@@ -300,7 +624,43 @@
         }
         
         // 页面加载时检查交易状态
-        window.addEventListener('DOMContentLoaded', checkActiveTransaction);
+        window.addEventListener('DOMContentLoaded', function() {
+            checkActiveTransaction();
+            
+            // 添加USDC资产点击事件
+            document.getElementById('usdcAsset').addEventListener('click', function() {
+                // 显示USDC详情或操作页面
+                showCryptoOptions('USDC');
+            });
+            
+            // 添加充值按钮的点击事件
+            document.getElementById('depositBtn').addEventListener('click', function() {
+                showDepositOptions();
+            });
+            
+            // 添加提现按钮的点击事件
+            document.getElementById('withdrawBtn').addEventListener('click', function() {
+                showWithdrawOptions();
+            });
+        });
+        
+        // 显示加密货币选项
+        function showCryptoOptions(coin) {
+            alert(`${coin} 详情页功能即将上线`);
+            // 实际应用中可以导航到具体的币种详情页
+        }
+        
+        // 显示充值选项
+        function showDepositOptions() {
+            alert('请选择充值方式: 1. 从链上转入USDC  2. 通过OTC买入USDC');
+            // 实际应用中应该显示模态框或导航到充值页面
+        }
+        
+        // 显示提现选项
+        function showWithdrawOptions() {
+            alert('请选择提现方式: 1. 提取到链上地址  2. 提取为USD法币');
+            // 实际应用中应该显示模态框或导航到提现页面
+        }
         
         // 标签栏切换
         const tabItems = document.querySelectorAll('.tab-item');
@@ -329,7 +689,7 @@
                         break;
                     case 'profile':
                         // 跳转到个人中心页面
-                        window.location.href = '../profile.html';
+                        window.location.href = 'profile.html';
                         break;
                 }
             });
