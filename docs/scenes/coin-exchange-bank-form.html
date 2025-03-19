@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matrix USD - 添加银行账户</title>
+    <link href="../styles/main.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .ios-device {
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 20px 100px 20px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .form-header {
+            margin-bottom: 24px;
+        }
+        
+        .form-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .form-subtitle {
+            color: var(--neutral-500);
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            color: var(--neutral-600);
+            margin-bottom: 8px;
+        }
+        
+        .form-input {
+            width: 100%;
+            height: 48px;
+            padding: 0 16px;
+            border: 1px solid var(--neutral-200);
+            border-radius: 12px;
+            font-size: 16px;
+            color: var(--neutral-900);
+            transition: all 0.3s;
+            background-color: white;
+        }
+        
+        .form-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
+            outline: none;
+        }
+        
+        .form-select {
+            width: 100%;
+            height: 48px;
+            padding: 0 16px;
+            border: 1px solid var(--neutral-200);
+            border-radius: 12px;
+            font-size: 16px;
+            color: var(--neutral-900);
+            background-color: white;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+        }
+        
+        .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
+            outline: none;
+        }
+        
+        .text-error {
+            color: var(--error);
+        }
+        
+        .hint-text {
+            color: var(--neutral-500);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+        
+        .required-mark::after {
+            content: "*";
+            color: var(--error);
+            margin-left: 2px;
+        }
+        
+        .bank-list {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -8px;
+        }
+        
+        .bank-option {
+            width: calc(33.33% - 16px);
+            margin: 0 8px 16px;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .bank-option-inner {
+            border: 1px solid var(--neutral-200);
+            border-radius: 12px;
+            padding: 12px 8px;
+            transition: all 0.2s;
+        }
+        
+        .bank-option.selected .bank-option-inner {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+        
+        .bank-logo {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            color: var(--neutral-700);
+            font-size: 24px;
+        }
+        
+        .bank-name {
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .form-divider {
+            height: 16px;
+            margin-bottom: 16px;
+            border-bottom: 8px solid var(--neutral-100);
+            margin-left: -20px;
+            margin-right: -20px;
+        }
+        
+        .bottom-action-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            padding: 16px 20px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+        
+        .btn {
+            width: 100%;
+            height: 52px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:active {
+            background-color: var(--primary-dark);
+            transform: translateY(1px);
+        }
+        
+        .btn-primary:disabled {
+            background-color: var(--neutral-300);
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="ios-device">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-bar-content">
+                <div class="status-bar-time" id="statusBarTime">9:41</div>
+                <div class="status-bar-icons">
+                    <div class="status-bar-signal">
+                        <i class="fas fa-signal"></i>
+                    </div>
+                    <div class="status-bar-wifi">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <div class="status-bar-battery">
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 导航栏 -->
+        <div class="nav-bar">
+            <div class="nav-back" id="navBack">
+                <i class="fas fa-chevron-left"></i>
+                <span>返回</span>
+            </div>
+            <div class="nav-title">添加银行账户</div>
+            <div class="nav-action" style="visibility: hidden">
+                <i class="fas fa-ellipsis-v"></i>
+            </div>
+        </div>
+
+        <!-- 主要内容区 -->
+        <div class="content">
+            <div class="form-header">
+                <div class="form-title">添加新的银行账户</div>
+                <div class="form-subtitle">请填写您的银行账户信息，用于法币交易收款</div>
+            </div>
+            
+            <form id="bankAccountForm" onsubmit="return handleSubmit(event)">
+                <!-- 选择银行 -->
+                <div class="form-group">
+                    <label class="form-label required-mark">选择银行</label>
+                    <div class="bank-list">
+                        <div class="bank-option" onclick="selectBank(this, 'HSBC')">
+                            <div class="bank-option-inner">
+                                <div class="bank-logo" style="color: #DB0011;">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                                <div class="bank-name">汇丰银行</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bank-option" onclick="selectBank(this, 'Citi')">
+                            <div class="bank-option-inner">
+                                <div class="bank-logo" style="color: #0E3D8A;">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                                <div class="bank-name">花旗银行</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bank-option" onclick="selectBank(this, 'Chase')">
+                            <div class="bank-option-inner">
+                                <div class="bank-logo" style="color: #117ACA;">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                                <div class="bank-name">摩根大通</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bank-option" onclick="selectBank(this, 'DBS')">
+                            <div class="bank-option-inner">
+                                <div class="bank-logo" style="color: #E31837;">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                                <div class="bank-name">星展银行</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bank-option" onclick="selectBank(this, 'BankOfAmerica')">
+                            <div class="bank-option-inner">
+                                <div class="bank-logo" style="color: #012169;">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                                <div class="bank-name">美国银行</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bank-option" onclick="selectBank(this, 'Other')">
+                            <div class="bank-option-inner">
+                                <div class="bank-logo">
+                                    <i class="fas fa-ellipsis-h"></i>
+                                </div>
+                                <div class="bank-name">其他银行</div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="selectedBank" name="selectedBank" required>
+                    <div class="error-message" id="bankError" style="display: none; color: var(--error); font-size: 14px;"></div>
+                </div>
+                
+                <!-- 其他银行名称 (仅当选择"其他银行"时显示) -->
+                <div class="form-group" id="otherBankGroup" style="display: none;">
+                    <label class="form-label required-mark" for="otherBankName">银行名称</label>
+                    <input type="text" id="otherBankName" name="otherBankName" class="form-input" placeholder="请输入银行名称">
+                    <div class="error-message" id="otherBankNameError" style="display: none; color: var(--error); font-size: 14px;"></div>
+                </div>
+                
+                <!-- 银行所在地区 -->
+                <div class="form-group">
+                    <label class="form-label required-mark" for="bankRegion">银行所在地区</label>
+                    <select id="bankRegion" name="bankRegion" class="form-select" required>
+                        <option value="">请选择地区</option>
+                        <option value="US">美国</option>
+                        <option value="SG">新加坡</option>
+                        <option value="HK">中国香港</option>
+                        <option value="GB">英国</option>
+                        <option value="JP">日本</option>
+                        <option value="DE">德国</option>
+                        <option value="AU">澳大利亚</option>
+                        <option value="CA">加拿大</option>
+                        <option value="OT">其他地区</option>
+                    </select>
+                    <div class="error-message" id="bankRegionError" style="display: none; color: var(--error); font-size: 14px;"></div>
+                </div>
+                
+                <div class="form-divider"></div>
+                
+                <!-- 账户信息部分 -->
+                <div class="form-group">
+                    <label class="form-label required-mark" for="accountName">账户名称</label>
+                    <input type="text" id="accountName" name="accountName" class="form-input" placeholder="请输入与银行账户名称一致的完整名称" required>
+                    <div class="hint-text">请确保账户名称与银行账户证明文件完全一致</div>
+                    <div class="error-message" id="accountNameError" style="display: none; color: var(--error); font-size: 14px;"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label required-mark" for="accountNumber">账户号码</label>
+                    <input type="text" id="accountNumber" name="accountNumber" class="form-input" placeholder="请输入完整的银行账户号码" required>
+                    <div class="error-message" id="accountNumberError" style="display: none; color: var(--error); font-size: 14px;"></div>
+                </div>
+                
+                <!-- 美国银行特有的路由号码字段 -->
+                <div class="form-group" id="routingNumberGroup" style="display: none;">
+                    <label class="form-label required-mark" for="routingNumber">路由号码 (Routing Number)</label>
+                    <input type="text" id="routingNumber" name="routingNumber" class="form-input" placeholder="9位数字的ABA路由号码">
+                    <div class="hint-text">美国银行账户需要提供此信息，用于跨行转账</div>
+                    <div class="error-message" id="routingNumberError" style="display: none; color: var(--error); font-size: 14px;"></div>
+                </div>
+                
+                <!-- Swift码 -->
+                <div class="form-group">
+                    <label class="form-label" for="swiftCode">Swift码/BIC码</label>
+                    <input type="text" id="swiftCode" name="swiftCode" class="form-input" placeholder="例如：CHASUS33XXX (选填)">
+                    <div class="hint-text">国际转账可能需要此信息，非必填项</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="accountType">账户类型</label>
+                    <select id="accountType" name="accountType" class="form-select">
+                        <option value="">请选择账户类型 (选填)</option>
+                        <option value="Checking">支票账户 (Checking)</option>
+                        <option value="Savings">储蓄账户 (Savings)</option>
+                        <option value="Current">活期账户 (Current)</option>
+                        <option value="Business">商业账户 (Business)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="accountCurrency">账户币种</label>
+                    <select id="accountCurrency" name="accountCurrency" class="form-select" required>
+                        <option value="USD">美元 (USD)</option>
+                        <option value="SGD">新加坡元 (SGD)</option>
+                        <option value="HKD">港元 (HKD)</option>
+                        <option value="EUR">欧元 (EUR)</option>
+                        <option value="GBP">英镑 (GBP)</option>
+                        <option value="JPY">日元 (JPY)</option>
+                        <option value="AUD">澳元 (AUD)</option>
+                        <option value="CAD">加元 (CAD)</option>
+                    </select>
+                    <div class="hint-text">请选择银行账户支持的币种</div>
+                </div>
+                
+                <div class="form-divider"></div>
+                
+                <!-- 设置为默认账户 -->
+                <div class="form-group">
+                    <label class="form-checkbox">
+                        <input type="checkbox" id="defaultAccount" name="defaultAccount" checked>
+                        <span class="checkbox-text">设为默认收款账户</span>
+                    </label>
+                </div>
+            </form>
+        </div>
+        
+        <!-- 底部固定按钮 -->
+        <div class="bottom-action-bar">
+            <button type="button" class="btn btn-primary" id="submitButton" onclick="validateAndSubmit()">
+                提交
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 设置状态栏时间
+        function updateStatusBarTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            hours = hours < 10 ? `0${hours}` : hours;
+            minutes = minutes < 10 ? `0${minutes}` : minutes;
+            document.getElementById('statusBarTime').textContent = `${hours}:${minutes}`;
+        }
+        
+        // 初始化时间并每分钟更新一次
+        updateStatusBarTime();
+        setInterval(updateStatusBarTime, 60000);
+        
+        // 返回按钮
+        document.getElementById('navBack').addEventListener('click', function() {
+            window.location.href = 'coin-exchange-bank-list.html';
+        });
+        
+        // 选择银行
+        function selectBank(element, bankCode) {
+            // 移除所有选中状态
+            document.querySelectorAll('.bank-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // 添加选中状态
+            element.classList.add('selected');
+            
+            // 更新隐藏的银行选择字段
+            document.getElementById('selectedBank').value = bankCode;
+            
+            // 如果选择了"其他银行"，显示其他银行名称输入框
+            const otherBankGroup = document.getElementById('otherBankGroup');
+            if (bankCode === 'Other') {
+                otherBankGroup.style.display = 'block';
+                document.getElementById('otherBankName').required = true;
+            } else {
+                otherBankGroup.style.display = 'none';
+                document.getElementById('otherBankName').required = false;
+            }
+            
+            // 清除错误消息
+            document.getElementById('bankError').style.display = 'none';
+            
+            // 如果选择美国银行，显示路由号码字段
+            const routingNumberGroup = document.getElementById('routingNumberGroup');
+            const bankRegion = document.getElementById('bankRegion');
+            
+            if (bankRegion.value === 'US' || bankCode === 'Chase' || bankCode === 'BankOfAmerica') {
+                routingNumberGroup.style.display = 'block';
+                document.getElementById('routingNumber').required = true;
+            } else {
+                routingNumberGroup.style.display = 'none';
+                document.getElementById('routingNumber').required = false;
+            }
+        }
+        
+        // 监听银行地区变化
+        document.getElementById('bankRegion').addEventListener('change', function() {
+            const routingNumberGroup = document.getElementById('routingNumberGroup');
+            const selectedBank = document.getElementById('selectedBank').value;
+            
+            if (this.value === 'US' || selectedBank === 'Chase' || selectedBank === 'BankOfAmerica') {
+                routingNumberGroup.style.display = 'block';
+                document.getElementById('routingNumber').required = true;
+            } else {
+                routingNumberGroup.style.display = 'none';
+                document.getElementById('routingNumber').required = false;
+            }
+        });
+        
+        // 验证表单并提交
+        function validateAndSubmit() {
+            let isValid = true;
+            
+            // 验证银行选择
+            const selectedBank = document.getElementById('selectedBank').value;
+            if (!selectedBank) {
+                document.getElementById('bankError').textContent = '请选择银行';
+                document.getElementById('bankError').style.display = 'block';
+                isValid = false;
+            }
+            
+            // 验证其他银行名称
+            if (selectedBank === 'Other') {
+                const otherBankName = document.getElementById('otherBankName').value.trim();
+                if (!otherBankName) {
+                    document.getElementById('otherBankNameError').textContent = '请输入银行名称';
+                    document.getElementById('otherBankNameError').style.display = 'block';
+                    isValid = false;
+                } else {
+                    document.getElementById('otherBankNameError').style.display = 'none';
+                }
+            }
+            
+            // 验证银行地区
+            const bankRegion = document.getElementById('bankRegion').value;
+            if (!bankRegion) {
+                document.getElementById('bankRegionError').textContent = '请选择银行所在地区';
+                document.getElementById('bankRegionError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('bankRegionError').style.display = 'none';
+            }
+            
+            // 验证账户名称
+            const accountName = document.getElementById('accountName').value.trim();
+            if (!accountName) {
+                document.getElementById('accountNameError').textContent = '请输入账户名称';
+                document.getElementById('accountNameError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('accountNameError').style.display = 'none';
+            }
+            
+            // 验证账户号码
+            const accountNumber = document.getElementById('accountNumber').value.trim();
+            if (!accountNumber) {
+                document.getElementById('accountNumberError').textContent = '请输入账户号码';
+                document.getElementById('accountNumberError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('accountNumberError').style.display = 'none';
+            }
+            
+            // 验证路由号码
+            if ((bankRegion === 'US' || selectedBank === 'Chase' || selectedBank === 'BankOfAmerica') && document.getElementById('routingNumber').required) {
+                const routingNumber = document.getElementById('routingNumber').value.trim();
+                if (!routingNumber) {
+                    document.getElementById('routingNumberError').textContent = '请输入路由号码';
+                    document.getElementById('routingNumberError').style.display = 'block';
+                    isValid = false;
+                } else if (!/^\d{9}$/.test(routingNumber)) {
+                    document.getElementById('routingNumberError').textContent = '路由号码必须是9位数字';
+                    document.getElementById('routingNumberError').style.display = 'block';
+                    isValid = false;
+                } else {
+                    document.getElementById('routingNumberError').style.display = 'none';
+                }
+            }
+            
+            // 如果所有验证通过，提交表单
+            if (isValid) {
+                // 模拟提交成功，实际应用中这里应该进行表单提交
+                alert('银行账户添加成功！');
+                
+                // 转回银行列表页面
+                window.location.href = 'coin-exchange-bank-list.html';
+            }
+        }
+        
+        // 处理表单提交
+        function handleSubmit(event) {
+            event.preventDefault();
+            validateAndSubmit();
+            return false;
+        }
+    </script>
+</body>
+</html> 

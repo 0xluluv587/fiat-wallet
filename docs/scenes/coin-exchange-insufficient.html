@@ -7,9 +7,33 @@
     <link href="../styles/main.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* 整体容器 */
+        .ios-device {
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* 主内容区域 - 确保可滚动 */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            position: relative;
+        }
+        
+        /* 内容容器 */
         .insufficient-container {
             padding: 20px;
             text-align: center;
+            padding-bottom: 120px; /* 为底部按钮留出空间 */
         }
         
         .insufficient-icon {
@@ -45,8 +69,8 @@
         .balance-card {
             background-color: white;
             border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 30px;
+            padding: 16px;
+            margin-bottom: 20px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
         
@@ -54,7 +78,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 14px 0;
+            padding: 10px 0;
             border-bottom: 1px solid var(--neutral-100);
         }
         
@@ -84,6 +108,7 @@
             color: var(--danger);
         }
         
+        /* 底部操作按钮区域 */
         .actions-container {
             margin-top: 24px;
             display: grid;
@@ -101,9 +126,9 @@
             transition: all 0.2s;
         }
         
-        .action-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        .action-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
         
         .action-icon {
@@ -137,13 +162,263 @@
             font-size: 13px;
             color: var(--neutral-600);
         }
+        
+        /* 充值地址样式 */
+        .card-header {
+            text-align: left;
+            margin-bottom: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--neutral-800);
+        }
+        
+        .qr-code {
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 12px;
+            background-color: white;
+            border: 1px solid var(--neutral-200);
+        }
+        
+        .qr-code img {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .address-box {
+            background-color: var(--neutral-50);
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            font-family: monospace;
+            word-break: break-all;
+            text-align: center;
+            color: var(--neutral-800);
+        }
+        
+        .network-info {
+            margin-top: 8px;
+            text-align: left;
+            color: var(--neutral-600);
+            font-size: 12px;
+        }
+        
+        .network-tag {
+            display: inline-block;
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            padding: 2px 6px;
+            border-radius: 100px;
+            font-size: 11px;
+            margin-right: 4px;
+            margin-top: 4px;
+        }
+        
+        /* 底部固定按钮 */
+        .sticky-button {
+            position: fixed;
+            bottom: 50px; /* 位于底部标签栏之上 */
+            left: 0;
+            right: 0;
+            background-color: white;
+            padding: 10px 16px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 95;
+            display: flex;
+            white-space: nowrap;
+        }
+        
+        .sticky-button button {
+            flex: 1;
+            padding: 12px 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:active {
+            background-color: var(--primary-dark);
+            transform: translateY(1px);
+        }
+        
+        .btn-primary:disabled {
+            background-color: var(--neutral-300);
+            cursor: not-allowed;
+        }
+        
+        .notification-copy {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        
+        .notification-copy.show {
+            opacity: 1;
+        }
+        
+        /* 滚动提示 */
+        .scroll-hint {
+            display: block;
+            text-align: center;
+            padding: 8px 0;
+            color: var(--neutral-600);
+            font-size: 13px;
+            position: absolute;
+            bottom: 80px;
+            left: 0;
+            right: 0;
+            animation: bounce 2s infinite;
+            pointer-events: none;
+            opacity: 1;
+            transition: opacity 0.3s;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        .scroll-hint.hidden {
+            opacity: 0;
+        }
+        
+        /* 导航栏固定 */
+        .nav-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: white;
+        }
+        
+        /* 底部标签栏固定 */
+        .tab-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 90;
+        }
+        
+        /* 等待页面样式 */
+        .waiting-container {
+            display: none;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .waiting-spinner {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: spinner-rotate 2s linear infinite;
+        }
+        
+        @keyframes spinner-rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .waiting-spinner i {
+            font-size: 60px;
+            color: var(--primary-color);
+        }
+        
+        .waiting-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--neutral-900);
+        }
+        
+        .waiting-desc {
+            font-size: 16px;
+            color: var(--neutral-600);
+            margin-bottom: 30px;
+        }
+        
+        .progress-container {
+            margin: 30px auto;
+            max-width: 280px;
+        }
+        
+        .progress-track {
+            background-color: var(--neutral-100);
+            height: 6px;
+            border-radius: 3px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            background-color: var(--primary-color);
+            height: 100%;
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .progress-status {
+            display: flex;
+            justify-content: center;
+            margin-top: 5px;
+            color: var(--neutral-600);
+            font-size: 14px;
+        }
+        
+        .cancel-link {
+            margin-top: 24px;
+            display: inline-block;
+            color: var(--neutral-500);
+            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.2s;
+        }
+        
+        .cancel-link:active {
+            background-color: var(--neutral-100);
+        }
     </style>
 </head>
 <body>
     <div class="ios-device">
         <!-- 状态栏 -->
         <div class="status-bar">
-            <div class="status-bar-time" id="statusBarTime">12:30</div>
+            <div class="status-bar-time" id="statusBarTime">14:13</div>
             <div class="status-bar-icons">
                 <i class="fas fa-signal"></i>
                 <i class="fas fa-wifi"></i>
@@ -156,19 +431,20 @@
             <div class="nav-back" id="backButton">
                 <i class="fas fa-chevron-left"></i>
             </div>
-            <div class="nav-title">余额不足</div>
+            <div class="nav-title" id="pageTitle">余额不足</div>
             <div class="nav-actions"></div>
         </div>
         
-        <!-- 主内容区 -->
+        <!-- 主内容区 - 余额不足视图 -->
         <div class="main-content">
-            <div class="insufficient-container">
+            <!-- 余额不足视图 -->
+            <div class="insufficient-container" id="insufficientView">
                 <div class="insufficient-icon">
                     <i class="fas fa-exclamation-triangle"></i>
                 </div>
                 <div class="insufficient-title">USDC 余额不足</div>
                 <div class="insufficient-desc">
-                    您的USDC余额不足以完成此次交易，请充值后再试。
+                    当前账户余额不足，您可继续提交订单，30分钟内完成充值仍可按当前汇率完成交易；30分钟后订单自动关闭，届时你需重新按最新汇率下单完成交易。
                 </div>
                 
                 <div class="balance-card">
@@ -195,17 +471,61 @@
                         </div>
                         <div class="balance-value insufficient" id="neededAmount">2,500 USDC</div>
                     </div>
+                    
+                    <div class="balance-row">
+                        <div class="balance-label">
+                            <i class="fas fa-clock"></i>
+                            汇率锁定剩余时间
+                        </div>
+                        <div class="balance-value" id="remainingTime">28:53</div>
+                    </div>
+                </div>
+                
+                <!-- USDC 充值地址 -->
+                <div class="balance-card">
+                    <div class="card-header">
+                        <div>USDC 充值地址</div>
+                    </div>
+                    
+                    <div class="qr-code">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=0x8A7b79d957d2c6d3d1Eb5C16F6788bDcBc418298" alt="USDC充值地址二维码">
+                    </div>
+                    
+                    <div class="address-box" id="depositAddress">
+                        0x8A7b79d957d2c6d3d1Eb5C16F6788bDcBc418298
+                    </div>
+                    
+                    <button class="btn btn-sm btn-outline mb-3" onclick="copyAddress()">
+                        <i class="fas fa-copy mr-1"></i> 复制地址
+                    </button>
+                    
+                    <div class="network-info">
+                        <div><i class="fas fa-info-circle mr-1"></i> 支持网络：</div>
+                        <div>
+                            <span class="network-tag">Ethereum (ERC-20)</span>
+                            <span class="network-tag">BSC (BEP-20)</span>
+                            <span class="network-tag">Polygon</span>
+                        </div>
+                        <div class="mt-2"><i class="fas fa-exclamation-triangle mr-1 text-warning"></i> 请勿向此地址发送其他代币</div>
+                    </div>
+                </div>
+                
+                <!-- 温馨提示 -->
+                <div class="notification notification-info mt-4 mb-4">
+                    <div class="notification-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">温馨提示</div>
+                        <div class="notification-message">
+                            <p>• 充值到账时间取决于区块链网络确认速度</p>
+                            <p>• 一般5-15分钟内完成，高峰期可能略有延迟</p>
+                            <p>• 若30分钟后仍未收到，请联系客服处理</p>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="actions-container">
-                    <div class="action-button action-deposit" id="depositButton">
-                        <div class="action-icon">
-                            <i class="fas fa-plus"></i>
-                        </div>
-                        <div class="action-title">充值USDC</div>
-                        <div class="action-desc">从其他钱包转入</div>
-                    </div>
-                    
                     <div class="action-button action-modify" id="modifyButton">
                         <div class="action-icon">
                             <i class="fas fa-pen"></i>
@@ -213,11 +533,80 @@
                         <div class="action-title">修改金额</div>
                         <div class="action-desc">返回调整交易金额</div>
                     </div>
+                    
+                    <div class="action-button action-cancel" id="cancelButton">
+                        <div class="action-icon" style="background-color: #fee2e2; color: #ef4444;">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <div class="action-title">取消交易</div>
+                        <div class="action-desc">放弃当前交易</div>
+                    </div>
                 </div>
                 
-                <button class="btn btn-outline btn-block" style="margin-top: 24px;" id="cancelButton">
-                    取消交易
-                </button>
+                <!-- 滚动提示 -->
+                <div class="scroll-hint" id="scrollHint">
+                    <i class="fas fa-chevron-down"></i> 向下滑动查看更多内容
+                </div>
+            </div>
+            
+            <!-- 等待处理视图 - 初始隐藏 -->
+            <div class="waiting-container" id="waitingView">
+                <div class="waiting-spinner">
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+                <div class="waiting-title">交易处理中</div>
+                <div class="waiting-desc">我们正在处理您的USDC交易，请耐心等待</div>
+                
+                <div class="progress-container">
+                    <div class="progress-track">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                    <div class="progress-status">
+                        <span id="progressStatus">确认中 (1/3)</span>
+                    </div>
+                </div>
+                
+                <div class="balance-card">
+                    <div class="balance-row">
+                        <div class="balance-label">
+                            <i class="fas fa-arrows-alt-h"></i>
+                            交易类型
+                        </div>
+                        <div class="balance-value">USDC → USD</div>
+                    </div>
+                    <div class="balance-row">
+                        <div class="balance-label">
+                            <i class="fas fa-calculator"></i>
+                            兑换金额
+                        </div>
+                        <div class="balance-value" id="waitingAmount">5,000 USDC</div>
+                    </div>
+                    <div class="balance-row">
+                        <div class="balance-label">
+                            <i class="fas fa-dollar-sign"></i>
+                            预计到账
+                        </div>
+                        <div class="balance-value" id="expectedUSD">4,975 USD</div>
+                    </div>
+                </div>
+                
+                <div class="notification notification-info mt-4">
+                    <div class="notification-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-title">处理说明</div>
+                        <div class="notification-message">
+                            <p>• 交易确认通常需要1-5分钟</p>
+                            <p>• 到账时间取决于网络确认速度</p>
+                            <p>• 处理完成后，金额将转入您的美元账户</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="javascript:void(0)" class="cancel-link" id="cancelWaitingLink">
+                    <i class="fas fa-times-circle mr-1"></i> 取消并返回
+                </a>
             </div>
         </div>
         
@@ -240,6 +629,18 @@
                 <span>我的</span>
             </div>
         </div>
+        
+        <!-- 吸底按钮 - 我已转账 -->
+        <div class="sticky-button" id="transferButtonContainer">
+            <button class="btn-primary" id="transferDoneButton">
+                <i class="fas fa-check-circle mr-2"></i> 我已转账
+            </button>
+        </div>
+        
+        <!-- 复制成功提示 -->
+        <div class="notification-copy" id="copyNotification">
+            地址已复制到剪贴板
+        </div>
     </div>
     
     <script>
@@ -254,7 +655,13 @@
         // 处理返回按钮
         function setupBackButton() {
             document.getElementById('backButton').addEventListener('click', function() {
-                window.location.href = './coin-exchange.html';
+                // 如果在等待视图，返回到余额不足视图
+                if (document.getElementById('waitingView').style.display === 'block') {
+                    showInsufficientView();
+                } else {
+                    // 否则返回到交易页面
+                    window.location.href = './coin-exchange.html';
+                }
             });
         }
         
@@ -276,6 +683,12 @@
             document.getElementById('currentBalance').textContent = `${formatNumber(balance)} USDC`;
             document.getElementById('neededAmount').textContent = `${formatNumber(needed)} USDC`;
             
+            // 设置等待视图的金额
+            document.getElementById('waitingAmount').textContent = `${formatNumber(amount)} USDC`;
+            // 简单计算预计到账金额（假设0.5%手续费）
+            const expectedUSD = amount * 0.995;
+            document.getElementById('expectedUSD').textContent = `${formatNumber(expectedUSD.toFixed(2))} USD`;
+            
             // 存储到会话，以便在充值页面使用
             if (window.sessionStorage) {
                 sessionStorage.setItem('requiredAmount', amount);
@@ -286,11 +699,6 @@
         
         // 设置按钮动作
         function setupButtons() {
-            // 充值按钮
-            document.getElementById('depositButton').addEventListener('click', function() {
-                window.location.href = './coin-exchange-deposit.html';
-            });
-            
             // 修改金额按钮
             document.getElementById('modifyButton').addEventListener('click', function() {
                 window.location.href = './coin-exchange.html';
@@ -298,8 +706,69 @@
             
             // 取消交易按钮
             document.getElementById('cancelButton').addEventListener('click', function() {
-                window.location.href = './wallet-home.html';
+                if (confirm('确定要取消此次交易吗？')) {
+                    window.location.href = './wallet-home.html';
+                }
             });
+            
+            // 我已转账按钮
+            document.getElementById('transferDoneButton').addEventListener('click', function() {
+                // 显示加载状态
+                this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> 正在检查充值';
+                this.disabled = true;
+                
+                // 模拟网络延迟
+                setTimeout(() => {
+                    // 切换到等待视图
+                    showWaitingView();
+                    startProgressAnimation();
+                }, 1500);
+            });
+            
+            // 等待视图的取消链接
+            document.getElementById('cancelWaitingLink').addEventListener('click', function() {
+                if (confirm('确定要取消查询并返回吗？当前交易仍将继续处理。')) {
+                    showInsufficientView();
+                }
+            });
+        }
+        
+        // 复制地址功能
+        function copyAddress() {
+            const addressText = document.getElementById('depositAddress').textContent.trim();
+            
+            // 使用Clipboard API复制文本
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(addressText)
+                    .then(() => showCopyNotification())
+                    .catch(err => console.error('复制失败: ', err));
+            } else {
+                // 回退方法，创建临时文本区域
+                const tempTextArea = document.createElement('textarea');
+                tempTextArea.value = addressText;
+                document.body.appendChild(tempTextArea);
+                tempTextArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    showCopyNotification();
+                } catch (err) {
+                    console.error('复制失败: ', err);
+                    alert("复制失败，请手动复制地址");
+                }
+                
+                document.body.removeChild(tempTextArea);
+            }
+        }
+        
+        // 显示复制成功提示
+        function showCopyNotification() {
+            const notification = document.getElementById('copyNotification');
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
         }
         
         // 处理底部标签切换
@@ -319,10 +788,131 @@
                     } else if (tabName === 'account') {
                         window.location.href = './account-status.html?status=opened';
                     } else if (tabName === 'profile') {
-                        // 跳转到个人页面
+                        window.location.href = './profile.html';
                     }
                 });
             });
+        }
+        
+        // 倒计时功能
+        function startLockCountdown() {
+            let seconds = 30 * 60; // 30分钟
+            const countdownInterval = setInterval(() => {
+                seconds--;
+                
+                if (seconds <= 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById('remainingTime').textContent = "已过期";
+                    document.getElementById('remainingTime').classList.add("insufficient");
+                    
+                    // 禁用"我已转账"按钮
+                    const transferButton = document.getElementById('transferDoneButton');
+                    transferButton.disabled = true;
+                    transferButton.style.backgroundColor = '#d1d5db';
+                    transferButton.innerHTML = '交易已过期';
+                    
+                    // 显示提示
+                    alert('汇率锁定时间已过期，请重新创建交易');
+                } else {
+                    // 更新剩余时间
+                    const minutes = Math.floor(seconds / 60);
+                    const secs = seconds % 60;
+                    const timeStr = `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+                    document.getElementById('remainingTime').textContent = timeStr;
+                }
+            }, 1000);
+        }
+        
+        // 检测滚动并隐藏提示
+        function setupScrollHint() {
+            const mainContent = document.querySelector('.main-content');
+            const scrollHint = document.getElementById('scrollHint');
+            
+            // 延迟检查内容高度，确保DOM已完全渲染
+            setTimeout(() => {
+                if (mainContent.scrollHeight > mainContent.clientHeight) {
+                    scrollHint.style.display = 'block';
+                } else {
+                    scrollHint.style.display = 'none';
+                }
+            }, 300);
+            
+            // 滚动时隐藏提示
+            mainContent.addEventListener('scroll', function() {
+                if (mainContent.scrollTop > 10) {
+                    scrollHint.classList.add('hidden');
+                    setTimeout(() => {
+                        scrollHint.style.display = 'none';
+                    }, 1500);
+                }
+            });
+        }
+        
+        // 切换到等待视图
+        function showWaitingView() {
+            document.getElementById('insufficientView').style.display = 'none';
+            document.getElementById('waitingView').style.display = 'block';
+            document.getElementById('transferButtonContainer').style.display = 'none';
+            document.getElementById('pageTitle').textContent = '交易处理中';
+            
+            // 滚动到顶部
+            document.querySelector('.main-content').scrollTop = 0;
+        }
+        
+        // 切换到余额不足视图
+        function showInsufficientView() {
+            document.getElementById('insufficientView').style.display = 'block';
+            document.getElementById('waitingView').style.display = 'none';
+            document.getElementById('transferButtonContainer').style.display = 'flex';
+            document.getElementById('pageTitle').textContent = '余额不足';
+            
+            // 重置转账按钮状态
+            const transferButton = document.getElementById('transferDoneButton');
+            transferButton.disabled = false;
+            transferButton.innerHTML = '<i class="fas fa-check-circle mr-2"></i> 我已转账';
+            
+            // 滚动到顶部
+            document.querySelector('.main-content').scrollTop = 0;
+        }
+        
+        // 进度条动画
+        function startProgressAnimation() {
+            const progressBar = document.getElementById('progressBar');
+            const progressStatus = document.getElementById('progressStatus');
+            let progress = 0;
+            
+            const statuses = [
+                "确认中 (1/3)",
+                "确认中 (2/3)",
+                "确认完成 (3/3)",
+                "正在处理",
+                "完成"
+            ];
+            
+            // 模拟进度更新
+            const progressInterval = setInterval(() => {
+                progress += 5;
+                progressBar.style.width = `${progress}%`;
+                
+                // 更新状态文本
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                    progressStatus.textContent = statuses[4];
+                    
+                    // 完成后跳转到结果页面
+                    setTimeout(() => {
+                        window.location.href = './coin-exchange-result.html?status=success';
+                    }, 1000);
+                } else if (progress >= 85) {
+                    progressStatus.textContent = statuses[3];
+                } else if (progress >= 60) {
+                    progressStatus.textContent = statuses[2];
+                } else if (progress >= 30) {
+                    progressStatus.textContent = statuses[1];
+                } else {
+                    progressStatus.textContent = statuses[0];
+                }
+            }, 300);
         }
         
         // 页面初始化
@@ -330,10 +920,25 @@
             updateStatusBarTime();
             setInterval(updateStatusBarTime, 60000);
             
+            // 初始视图设置
+            document.getElementById('insufficientView').style.display = 'block';
+            document.getElementById('waitingView').style.display = 'none';
+            
             setupBackButton();
             setupAmountDisplay();
             setupButtons();
             setupTabBar();
+            setupScrollHint();
+            
+            // 启动倒计时
+            startLockCountdown();
+            
+            // 检查URL参数，如果有showWaiting=true，则显示等待视图
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('showWaiting') === 'true') {
+                showWaitingView();
+                startProgressAnimation();
+            }
         });
     </script>
 </body>

@@ -8,7 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         .setup-container {
-            padding: 16px;
+            padding: 12px 12px 24px 12px;
         }
         
         .section {
@@ -20,10 +20,10 @@
         }
         
         .section-title {
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 600;
             color: var(--neutral-800);
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             display: flex;
             align-items: center;
         }
@@ -46,11 +46,18 @@
         
         .status-card {
             display: flex;
-            align-items: center;
-            padding: 12px;
-            border-radius: 8px;
+            flex-direction: column;
+            padding: 16px;
+            border-radius: 10px;
             background-color: var(--neutral-50);
+            margin-bottom: 16px;
+        }
+        
+        .status-card-header {
+            display: flex;
+            align-items: center;
             margin-bottom: 12px;
+            width: 100%;
         }
         
         .status-icon {
@@ -76,90 +83,92 @@
         
         .status-content {
             flex: 1;
+            padding-right: 0;
+            width: 100%;
         }
         
         .status-title {
-            font-weight: 500;
-            font-size: 15px;
-            margin-bottom: 4px;
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 8px;
         }
         
         .status-desc {
-            font-size: 13px;
+            font-size: 14px;
             color: var(--neutral-600);
+            line-height: 1.5;
+            margin-bottom: 12px;
         }
         
         .account-option {
             padding: 16px;
-            border: 1px solid var(--neutral-200);
             border-radius: 12px;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             background-color: white;
             position: relative;
         }
         
         .account-option.required {
             border-color: var(--primary-color);
-            background-color: var(--primary-light);
+            background-color: rgba(0, 82, 255, 0.05);
         }
         
         .account-option.required::before {
             content: "必选";
             position: absolute;
             top: -10px;
-            right: 10px;
+            right: 15px;
             background-color: var(--primary-color);
             color: white;
-            padding: 2px 8px;
+            padding: 3px 10px;
             border-radius: 10px;
             font-size: 12px;
             font-weight: 500;
         }
         
         .account-option-header {
-            display: flex;
-            align-items: center;
             margin-bottom: 12px;
         }
         
         .account-option-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
             background-color: var(--primary-light);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 12px;
+            margin-right: 16px;
             color: var(--primary-color);
+            font-size: 18px;
         }
         
         .account-option-content {
             flex: 1;
+            margin-right: 10px;
         }
         
         .account-option-title {
             font-weight: 600;
-            font-size: 16px;
-            margin-bottom: 4px;
+            font-size: 17px;
+            margin-bottom: 6px;
         }
         
         .account-option-price {
             color: var(--error);
             font-weight: 500;
+            font-size: 15px;
         }
         
         .account-option-info {
-            display: flex;
-            margin-top: 8px;
-            color: var(--neutral-600);
-            font-size: 13px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
         
         .account-option-info-item {
-            display: flex;
-            align-items: center;
-            margin-right: 16px;
+            margin-right: 12px;
+            margin-bottom: 6px;
         }
         
         .account-option-info-item i {
@@ -168,11 +177,13 @@
         }
         
         .account-option-desc {
-            font-size: 13px;
-            color: var(--neutral-600);
-            margin-top: 8px;
-            padding-top: 8px;
+            font-size: 14px;
+            padding: 12px;
+            line-height: 1.6;
             border-top: 1px dashed var(--neutral-200);
+            background-color: rgba(0, 0, 0, 0.02);
+            border-radius: 8px;
+            margin-top: 10px;
         }
         
         .account-checkbox {
@@ -201,32 +212,35 @@
         
         .fee-summary {
             padding: 16px;
-            border-radius: 12px;
+            border-radius: 10px;
             background-color: var(--neutral-50);
         }
         
         .fee-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
+            font-size: 15px;
         }
         
         .fee-label {
             color: var(--neutral-700);
-            font-size: 14px;
+            font-size: 15px;
         }
         
         .fee-value {
             font-weight: 500;
-            font-size: 14px;
+            font-size: 15px;
         }
         
         .fee-total {
             display: flex;
             justify-content: space-between;
-            padding-top: 12px;
+            padding-top: 14px;
+            padding-bottom: 4px;
             border-top: 1px solid var(--neutral-200);
             font-weight: 600;
+            font-size: 16px;
         }
         
         .payment-methods {
@@ -234,38 +248,42 @@
         }
         
         .payment-title {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 500;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         
         .payment-options {
             display: flex;
             gap: 8px;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
         
         .payment-option {
             flex: 1;
             padding: 12px;
             border: 1px solid var(--neutral-200);
-            border-radius: 8px;
+            border-radius: 10px;
             text-align: center;
             cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
         }
         
         .payment-option.active {
             border-color: var(--primary-color);
-            background-color: var(--primary-light);
+            background-color: rgba(0, 82, 255, 0.05);
+            color: var(--primary-color);
         }
         
         .payment-balance {
             display: flex;
             justify-content: space-between;
-            padding: 12px;
+            padding: 14px;
             background-color: white;
-            border-radius: 8px;
+            border-radius: 10px;
             margin-bottom: 12px;
+            font-size: 15px;
         }
         
         .payment-balance-label {
@@ -275,6 +293,90 @@
         
         .payment-balance-value {
             font-weight: 500;
+        }
+        
+        .action-buttons {
+            margin-top: 24px;
+        }
+        
+        .action-button {
+            width: 100%;
+            height: 50px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .action-hint {
+            text-align: center;
+            font-size: 13px;
+            color: var(--neutral-600);
+            margin-top: 12px;
+        }
+        
+        .kyc-button {
+            margin-left: 0;
+            align-self: flex-end;
+            height: 40px;
+            padding: 0 20px;
+            font-weight: 500;
+            border-radius: 8px;
+        }
+        
+        .kyc-button.disabled {
+            background-color: var(--neutral-300);
+            cursor: not-allowed;
+        }
+        
+        #kycCompletedCard {
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+        
+        #kycPendingCard {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+        
+        .section-subtitle {
+            font-size: 14px;
+            color: var(--neutral-600);
+            margin-top: -8px;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .feature-list li {
+            position: relative;
+            padding-left: 22px;
+            margin-bottom: 8px;
+            position: relative;
+        }
+        
+        .feature-list li:before {
+            content: "\f058";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: var(--primary-color);
+            font-size: 14px;
+        }
+        
+        .action-button:disabled {
+            background-color: var(--neutral-300);
+            cursor: not-allowed;
         }
         
         .payment-button {
@@ -288,50 +390,6 @@
         .payment-button i {
             margin-right: 4px;
             font-size: 14px;
-        }
-        
-        .action-button {
-            width: 100%;
-            height: 48px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            margin-top: 20px;
-            cursor: pointer;
-        }
-        
-        .action-button:disabled {
-            background-color: var(--neutral-300);
-            cursor: not-allowed;
-        }
-        
-        .action-hint {
-            text-align: center;
-            font-size: 13px;
-            color: var(--neutral-600);
-            margin-top: 12px;
-        }
-        
-        .kyc-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            height: 40px;
-            padding: 0 16px;
-            font-weight: 500;
-            margin-left: 12px;
-        }
-        
-        .kyc-button.disabled {
-            background-color: var(--neutral-300);
-            cursor: not-allowed;
         }
     </style>
 </head>
@@ -379,24 +437,28 @@
                     
                     <!-- 未完成KYC状态 -->
                     <div class="status-card" id="kycPendingCard">
-                        <div class="status-icon pending">
-                            <i class="fas fa-clock"></i>
+                        <div class="status-card-header">
+                            <div class="status-icon pending">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="status-title">未完成企业 KYC 认证</div>
                         </div>
                         <div class="status-content">
-                            <div class="status-title">未完成企业 KYC 认证</div>
-                            <div class="status-desc">您需先通过机构 eKYC 认证，才能开通机构专属美元账户</div>
+                            <div class="status-desc">您需先通过机构 eKYC 认证流程，才能开通机构专属美元账户。认证过程通常需要 3-5 个工作日审核。</div>
                         </div>
                         <button class="kyc-button" onclick="location.href='kyc-setup.html'">去认证</button>
                     </div>
                     
                     <!-- 已完成KYC状态 (默认隐藏) -->
                     <div class="status-card" id="kycCompletedCard" style="display: none;">
-                        <div class="status-icon completed">
-                            <i class="fas fa-check"></i>
+                        <div class="status-card-header">
+                            <div class="status-icon completed">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="status-title">已完成企业 KYC 认证</div>
                         </div>
                         <div class="status-content">
-                            <div class="status-title">已完成企业 KYC 认证</div>
-                            <div class="status-desc">您已通过机构 eKYC 认证，可以开通机构专属美元账户</div>
+                            <div class="status-desc">您已通过机构 eKYC 认证，可以立即开通机构专属美元账户。我们将优先处理您的账户申请。</div>
                         </div>
                     </div>
                 </div>
@@ -408,6 +470,9 @@
                             <i class="fas fa-university"></i>
                         </div>
                         <span>可申请账户信息</span>
+                    </div>
+                    <div class="section-subtitle">
+                        请根据您的业务需求选择开通的账户类型，入金账户为必选项
                     </div>
                     
                     <!-- 入金账户选项 (必选) -->
@@ -429,9 +494,17 @@
                                 <i class="fas fa-clock"></i>
                                 <span>预计 10 个工作日</span>
                             </div>
+                            <div class="account-option-info-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>无需实名认证</span>
+                            </div>
                         </div>
                         <div class="account-option-desc">
-                            开通入金账户后即可使用该账户美元快捷购买数字货币
+                            <ul class="feature-list">
+                                <li>使用该账户美元快捷购买数字货币</li>
+                                <li>适合需要用法币入金的机构和企业用户</li>
+                                <li>无需多步骤验证，简化数字资产投资流程</li>
+                            </ul>
                         </div>
                     </div>
                     
@@ -454,9 +527,17 @@
                                 <i class="fas fa-clock"></i>
                                 <span>预计 30 个工作日</span>
                             </div>
+                            <div class="account-option-info-item">
+                                <i class="fas fa-globe"></i>
+                                <span>支持全球付款</span>
+                            </div>
                         </div>
                         <div class="account-option-desc">
-                            开通出金账户后即可卖出稳定币并使用该账户接收美元
+                            <ul class="feature-list">
+                                <li>卖出稳定币并使用该账户接收美元</li>
+                                <li>支持全球银行网络，提供安全合规的法币出金服务</li>
+                                <li>企业流动性管理的理想选择</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -509,9 +590,11 @@
                 </div>
                 
                 <!-- 确认申请 -->
-                <button class="action-button" id="submitButton" disabled>确认申请并付款</button>
-                <div class="action-hint">
-                    联系我们：otc@matrixport.com
+                <div class="action-buttons">
+                    <button class="action-button" id="submitButton" disabled>确认申请并付款</button>
+                    <div class="action-hint">
+                        联系我们：otc@matrixport.com
+                    </div>
                 </div>
             </div>
         </div>

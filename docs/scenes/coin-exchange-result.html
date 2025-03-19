@@ -6,6 +6,85 @@
     <title>Matrix USD - 交易结果</title>
     <link href="../styles/main.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* 优化页面布局，确保内容完整显示 */
+        .content {
+            padding-bottom: 120px; /* 增加底部填充，确保可滚动查看所有内容 */
+        }
+        
+        /* 减小顶部区域的填充 */
+        .flex.flex-col.items-center.justify-center {
+            padding-top: 20px !important;
+            padding-bottom: 20px !important;
+        }
+        
+        /* 减小图标尺寸 */
+        .w-20 {
+            width: 70px !important;
+            height: 70px !important;
+        }
+        
+        .w-20.rounded-full {
+            margin-bottom: 16px !important;
+        }
+        
+        /* 调整交易详情表格样式 */
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--neutral-100);
+        }
+        
+        .list-item:last-child {
+            border-bottom: none;
+        }
+        
+        .list-item-title {
+            color: var(--neutral-600);
+            font-size: 14px;
+            flex: 1;
+        }
+        
+        .list-item-action {
+            color: var(--neutral-900);
+            font-size: 14px;
+            text-align: right;
+            font-weight: 500;
+        }
+        
+        /* 确保底部按钮正确显示 */
+        .fixed.bottom-0 {
+            padding-bottom: 20px;
+            background-color: rgba(255, 255, 255, 0.95);
+            z-index: 10;
+        }
+        
+        /* 减小卡片间距 */
+        .card, .notification {
+            margin-bottom: 16px;
+        }
+        
+        /* 调整按钮间距 */
+        .btn-lg.btn-block.mb-3 {
+            margin-bottom: 10px;
+        }
+        
+        /* 添加滚动条样式以增强可视性 */
+        .content::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .content::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
     <!-- iOS设备模拟 -->
@@ -80,6 +159,10 @@
                     <div class="list-item">
                         <div class="list-item-title">交易类型</div>
                         <div class="list-item-action" id="txType">出金 (卖出USDC)</div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-title">交易金额</div>
+                        <div class="list-item-action" id="txAmount">5,000 USDC</div>
                     </div>
                     <div class="list-item">
                         <div class="list-item-title">交易时间</div>

@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matrix USD - 个人账户</title>
+    <link href="../styles/main.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .account-type-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background-color: white;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .user-avatar {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+        
+        .user-info {
+            flex: 1;
+        }
+        
+        .user-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-email {
+            font-size: 14px;
+            color: var(--neutral-600);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .empty-state-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background-color: var(--neutral-100);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: var(--neutral-500);
+        }
+        
+        .empty-state-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--neutral-800);
+        }
+        
+        .empty-state-desc {
+            font-size: 15px;
+            color: var(--neutral-600);
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 24px;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+        
+        .feature-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--neutral-800);
+        }
+        
+        .feature-desc {
+            font-size: 13px;
+            color: var(--neutral-600);
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+        
+        .feature-link {
+            font-size: 14px;
+            color: var(--primary-color);
+            font-weight: 500;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            margin-top: auto;
+        }
+        
+        .feature-link i {
+            margin-left: 4px;
+            font-size: 12px;
+        }
+        
+        /* 底部弹窗样式 */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: flex-end;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            width: 100%;
+            background-color: white;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            padding: 24px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease-out;
+        }
+        
+        .modal-backdrop.show {
+            display: flex;
+        }
+        
+        .modal-backdrop.show .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-header {
+            position: relative;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .modal-close {
+            position: absolute;
+            right: 0;
+            top: 0;
+            font-size: 20px;
+            color: var(--neutral-500);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .org-list {
+            margin-bottom: 24px;
+        }
+        
+        .org-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border: 1px solid var(--neutral-200);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .org-item:hover {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+        
+        .org-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background-color: var(--neutral-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            color: var(--neutral-800);
+            font-size: 20px;
+        }
+        
+        .org-info {
+            flex: 1;
+        }
+        
+        .org-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .org-status {
+            font-size: 13px;
+            color: var(--neutral-600);
+        }
+        
+        .org-status.verified {
+            color: var(--success);
+        }
+        
+        .org-status.pending {
+            color: var(--warning);
+        }
+        
+        .add-org-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            border: 2px dashed var(--neutral-300);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .add-org-btn:hover {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+        
+        .add-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            color: var(--primary-color);
+        }
+        
+        .add-text {
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        .option-list {
+            margin-bottom: 24px;
+        }
+        
+        .option-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border: 1px solid var(--neutral-200);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .option-item:hover {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+        
+        .option-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            font-size: 20px;
+        }
+        
+        .option-info {
+            flex: 1;
+        }
+        
+        .option-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--neutral-800);
+        }
+        
+        .option-desc {
+            font-size: 13px;
+            color: var(--neutral-600);
+            line-height: 1.4;
+        }
+        
+        .proceed-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: var(--neutral-100);
+            color: var(--neutral-600);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- iOS设备模拟 -->
+    <div class="ios-device">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-bar-content">
+                <div class="status-bar-time" id="statusBarTime">9:41</div>
+                <div class="status-bar-icons">
+                    <div class="status-bar-signal">
+                        <i class="fas fa-signal"></i>
+                    </div>
+                    <div class="status-bar-wifi">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <div class="status-bar-battery">
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 导航栏 -->
+        <div class="nav-bar">
+            <div class="nav-back" id="navBack" style="visibility: hidden;">
+                <i class="fas fa-chevron-left"></i>
+                <span>返回</span>
+            </div>
+            <div class="nav-title">Matrix USD</div>
+            <div class="nav-action">
+                <i class="fas fa-bell"></i>
+            </div>
+        </div>
+
+        <!-- 主要内容区 -->
+        <div class="content">
+            <!-- 用户信息 -->
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <div class="user-name">
+                        John Smith
+                        <span class="account-type-badge">个人账户</span>
+                    </div>
+                    <div class="user-email">john.smith@example.com</div>
+                </div>
+            </div>
+            
+            <!-- 空状态 - 没有机构账户 -->
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <i class="fas fa-building"></i>
+                </div>
+                <div class="empty-state-title">您尚未开通机构账户</div>
+                <div class="empty-state-desc">
+                    开通机构专属账户，享受全球收付款、跨境结算等企业金融服务
+                </div>
+                <button class="btn btn-primary btn-lg" id="applyAccountBtn" style="min-width: 240px; padding: 14px 40px; margin: 20px auto 10px; display: block; font-size: 16px; font-weight: 600;">
+                    申请开户
+                </button>
+            </div>
+            
+            <!-- 功能特点 -->
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon" style="background-color: #e6f7ff; color: #0369a1;">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <div class="feature-title">全球收付款</div>
+                    <div class="feature-desc">支持190+国家和地区的跨境收付款服务，满足企业全球业务需求</div>
+                    <a href="#" class="feature-link">了解更多 <i class="fas fa-chevron-right"></i></a>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon" style="background-color: #f0fdf4; color: #16a34a;">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="feature-title">低成本清算</div>
+                    <div class="feature-desc">比传统银行渠道更低的费率，更快的清算速度，助力企业降本增效</div>
+                    <a href="#" class="feature-link">了解更多 <i class="fas fa-chevron-right"></i></a>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon" style="background-color: #fef9c3; color: #ca8a04;">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="feature-title">安全合规</div>
+                    <div class="feature-desc">多重安全保障，合规监管，为企业资金安全提供全方位保障</div>
+                    <a href="#" class="feature-link">了解更多 <i class="fas fa-chevron-right"></i></a>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon" style="background-color: #fae8ff; color: #a21caf;">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div class="feature-title">OTC法币交易</div>
+                    <div class="feature-desc">支持USDC与USD的双向兑换，流动性充足，汇率优惠</div>
+                    <a href="#" class="feature-link">了解更多 <i class="fas fa-chevron-right"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部标签栏 -->
+        <div class="tab-bar">
+            <div class="tab-item active" data-tab="home">
+                <div class="tab-icon"><i class="fas fa-home"></i></div>
+                <div class="tab-text">首页</div>
+            </div>
+            <div class="tab-item" data-tab="wallet">
+                <div class="tab-icon"><i class="fas fa-wallet"></i></div>
+                <div class="tab-text">钱包</div>
+            </div>
+            <div class="tab-item" data-tab="account">
+                <div class="tab-icon"><i class="fas fa-university"></i></div>
+                <div class="tab-text">账户</div>
+            </div>
+            <div class="tab-item" data-tab="profile">
+                <div class="tab-icon"><i class="fas fa-user"></i></div>
+                <div class="tab-text">我的</div>
+            </div>
+        </div>
+        
+        <!-- 账户切换选项弹窗 -->
+        <div class="modal-backdrop" id="accountSwitchModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">选择操作方式</div>
+                    <button class="modal-close" id="closeModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="notification notification-warning mb-4">
+                    <div class="notification-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-message">
+                            您当前登录的账户为个人账户，需切换机构账户后才能申请机构专属美金账户
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="option-list">
+                    <div class="option-item" id="switchOrgOption">
+                        <div class="option-icon" style="background-color: var(--primary-light); color: var(--primary-color);">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <div class="option-info">
+                            <div class="option-title">我有其他机构账户</div>
+                            <div class="option-desc">切换至您已关联的机构账户</div>
+                        </div>
+                        <div class="proceed-btn">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="option-item" id="createOrgOption">
+                        <div class="option-icon" style="background-color: #e6f7ff; color: #0369a1;">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="option-info">
+                            <div class="option-title">我名下有可认证实控企业</div>
+                            <div class="option-desc">完成机构企业KYC认证流程</div>
+                        </div>
+                        <div class="proceed-btn">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="option-item" id="noOrgOption">
+                        <div class="option-icon" style="background-color: #fee2e2; color: #b91c1c;">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="option-info">
+                            <div class="option-title">我名下暂无任何实控企业</div>
+                            <div class="option-desc">无法开户，需要先注册企业</div>
+                        </div>
+                        <div class="proceed-btn">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 机构账户列表弹窗 -->
+        <div class="modal-backdrop" id="orgListModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">选择机构账户</div>
+                    <button class="modal-close" id="closeOrgListModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="org-list">
+                    <div class="org-item" onclick="switchToOrg('acme')">
+                        <div class="org-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="org-info">
+                            <div class="org-name">Acme Corporation</div>
+                            <div class="org-status verified">
+                                <i class="fas fa-check-circle"></i> 已认证
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="org-item" onclick="switchToOrg('global')">
+                        <div class="org-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="org-info">
+                            <div class="org-name">Global Trading Ltd</div>
+                            <div class="org-status pending">
+                                <i class="fas fa-clock"></i> 认证审核中
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="add-org-btn" id="addOrgBtn">
+                    <div class="add-icon">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="add-text">关联新账号</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 设置状态栏时间
+        function updateStatusBarTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            hours = hours < 10 ? `0${hours}` : hours;
+            minutes = minutes < 10 ? `0${minutes}` : minutes;
+            document.getElementById('statusBarTime').textContent = `${hours}:${minutes}`;
+        }
+        
+        // 初始化时间并每分钟更新一次
+        updateStatusBarTime();
+        setInterval(updateStatusBarTime, 60000);
+        
+        // 处理模态框
+        const accountSwitchModal = document.getElementById('accountSwitchModal');
+        const orgListModal = document.getElementById('orgListModal');
+        const applyAccountBtn = document.getElementById('applyAccountBtn');
+        const closeModal = document.getElementById('closeModal');
+        const closeOrgListModal = document.getElementById('closeOrgListModal');
+        const switchOrgOption = document.getElementById('switchOrgOption');
+        const createOrgOption = document.getElementById('createOrgOption');
+        const noOrgOption = document.getElementById('noOrgOption');
+        const addOrgBtn = document.getElementById('addOrgBtn');
+        
+        // 打开账户切换弹窗
+        applyAccountBtn.addEventListener('click', function() {
+            accountSwitchModal.classList.add('show');
+        });
+        
+        // 关闭弹窗
+        closeModal.addEventListener('click', function() {
+            accountSwitchModal.classList.remove('show');
+        });
+        
+        closeOrgListModal.addEventListener('click', function() {
+            orgListModal.classList.remove('show');
+        });
+        
+        // 点击背景关闭弹窗
+        accountSwitchModal.addEventListener('click', function(e) {
+            if (e.target === accountSwitchModal) {
+                accountSwitchModal.classList.remove('show');
+            }
+        });
+        
+        orgListModal.addEventListener('click', function(e) {
+            if (e.target === orgListModal) {
+                orgListModal.classList.remove('show');
+            }
+        });
+        
+        // 切换到机构选择列表
+        switchOrgOption.addEventListener('click', function() {
+            accountSwitchModal.classList.remove('show');
+            orgListModal.classList.add('show');
+        });
+        
+        // 创建新机构选项
+        createOrgOption.addEventListener('click', function() {
+            // 跳转到企业KYC认证页面
+            window.location.href = 'kyc-setup.html';
+        });
+        
+        // 无法开户选项
+        noOrgOption.addEventListener('click', function() {
+            alert('您暂无可用的企业账户，请先注册企业后再申请开户。');
+            accountSwitchModal.classList.remove('show');
+        });
+        
+        // 添加新机构
+        addOrgBtn.addEventListener('click', function() {
+            // 跳转到企业KYC认证页面
+            window.location.href = 'kyc-setup.html';
+        });
+        
+        // 切换到特定机构
+        function switchToOrg(orgId) {
+            if (orgId === 'acme') {
+                // 跳转到已认证机构的账户页面
+                window.location.href = 'account-status.html?status=unopened';
+            } else if (orgId === 'global') {
+                // 跳转到审核中机构的状态页面
+                window.location.href = 'org-verify.html';
+            }
+        }
+        
+        // 底部标签栏切换
+        const tabItems = document.querySelectorAll('.tab-item');
+        tabItems.forEach(tab => {
+            tab.addEventListener('click', function() {
+                tabItems.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // 实际应用中应该根据点击的标签进行页面跳转
+                const tabName = this.getAttribute('data-tab');
+                if (tabName === 'wallet') {
+                    // 跳转到钱包页面
+                } else if (tabName === 'account') {
+                    // 跳转到账户页面
+                } else if (tabName === 'profile') {
+                    // 跳转到个人中心页面
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

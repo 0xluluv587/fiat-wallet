@@ -9,6 +9,8 @@ const app = express();
 
 // 设置静态文件目录
 app.use(express.static('src'));
+// 添加docs目录作为静态文件目录
+app.use('/docs', express.static('docs'));
 
 // 路由处理
 app.get('/', (req, res) => {

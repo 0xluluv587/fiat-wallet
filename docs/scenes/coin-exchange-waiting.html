@@ -61,12 +61,20 @@
                 <!-- 交易信息 -->
                 <div class="list">
                     <div class="list-item">
-                        <div class="list-item-title">交易金额</div>
-                        <div class="list-item-action font-semibold" id="txAmount">5,000 USDC</div>
-                    </div>
-                    <div class="list-item">
                         <div class="list-item-title">交易类型</div>
                         <div class="list-item-action" id="txType">出金 (卖出USDC)</div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-title">交易金额</div>
+                        <div class="list-item-action" id="txAmount">5,000 USDC</div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-title">交易汇率</div>
+                        <div class="list-item-action" id="txRate">1 USDC = 0.998 USD</div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-title">交易手续费</div>
+                        <div class="list-item-action" id="txFee">0.2% (10 USDC)</div>
                     </div>
                     <div class="list-item">
                         <div class="list-item-title">到账金额</div>
@@ -280,5 +288,64 @@
         // 页面加载时运行
         window.addEventListener('DOMContentLoaded', loadTransactionData);
     </script>
+
+    <style>
+        /* 添加自定义样式，让字段和内容更好地左右对齐 */
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--neutral-100);
+        }
+        
+        .list-item:last-child {
+            border-bottom: none;
+        }
+        
+        .list-item-title {
+            color: var(--neutral-600);
+            font-size: 14px;
+            flex: 1;
+        }
+        
+        .list-item-action {
+            color: var(--neutral-900);
+            font-size: 14px;
+            text-align: right;
+            font-weight: 500;
+        }
+        
+        /* 优化页面布局，确保内容完整显示 */
+        .content {
+            padding-bottom: 120px; /* 增加底部填充，确保滚动时可以看到所有内容 */
+        }
+        
+        /* 压缩处理步骤高度 */
+        .progress-steps {
+            padding: 0;
+            margin-bottom: 0;
+        }
+        
+        .progress-step {
+            margin-bottom: 20px;
+        }
+        
+        /* 减小顶部填充 */
+        .flex.flex-col.items-center.justify-center {
+            padding-top: 16px !important;
+            padding-bottom: 16px !important;
+        }
+        
+        /* 减小卡片间距 */
+        .card {
+            margin-bottom: 16px;
+        }
+        
+        /* 自动跳转提示层优化 */
+        #successOverlay .bg-white {
+            max-width: 85%;
+        }
+    </style>
 </body>
 </html> 

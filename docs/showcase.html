@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Matrix USD - 原型展示</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -29,12 +29,44 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        html, body {
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
+            height: auto;
         }
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
             background-color: var(--neutral-50);
             color: var(--neutral-700);
+            line-height: 1.5;
+            text-rendering: optimizeSpeed;
+            overflow-x: hidden;
+        }
+        
+        /* 全局文本强制断行设置 */
+        h1, h2, h3, h4, h5, h6, p, li, a, span, div {
+            word-wrap: break-word;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
+        }
+        
+        /* 全局容器溢出保护 */
+        div, section, article, aside, nav, main, header, footer {
+            max-width: 100%;
+            overflow-wrap: break-word;
+        }
+        
+        img, video, svg, canvas, picture {
+            display: block;
+            max-width: 100%;
+            height: auto;
         }
         
         header {
@@ -46,6 +78,8 @@
             position: sticky;
             top: 0;
             z-index: 10;
+            width: 100%;
+            overflow: hidden;
         }
         
         h1 {
@@ -53,25 +87,63 @@
             font-weight: 600;
             color: var(--primary-color);
             margin-bottom: 0.5rem;
+            white-space: normal;
+            padding: 0 0.5rem;
         }
         
         .layout {
             display: flex;
             max-width: 1400px;
             margin: 0 auto;
+            position: relative;
+            width: 100%;
+            flex-wrap: wrap;
         }
 
+        /* 导航侧边栏新样式 - 可折叠 */
         .nav-sidebar {
-            width: 280px;
             background-color: white;
             border-right: 1px solid var(--neutral-100);
-            padding: 1.5rem;
-            height: calc(100vh - 5rem);
-            position: sticky;
+            position: fixed;
+            left: 0;
             top: 5rem;
+            height: calc(100vh - 5rem);
+            z-index: 100;
+            transition: all 0.3s ease;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+            
+            /* 默认折叠状态 */
+            width: 50px;
+            overflow: hidden;
+            text-overflow: clip;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .nav-sidebar:hover,
+        .nav-sidebar.expanded {
+            width: 280px;
             overflow-y: auto;
         }
-
+        
+        .nav-toggle {
+            position: absolute;
+            right: 0;
+            top: 1rem;
+            width: 24px;
+            height: 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+            font-size: 12px;
+            touch-action: manipulation;
+        }
+        
         .nav-title {
             font-weight: 600;
             font-size: 1.125rem;
@@ -79,16 +151,28 @@
             color: var(--neutral-900);
             display: flex;
             align-items: center;
+            padding: 1rem 1.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-
+        
+        .nav-title .icon {
+            min-width: 20px; /* 确保图标始终显示 */
+            margin-right: 10px;
+        }
+        
         .nav-list {
             list-style: none;
+            padding: 0 0.75rem;
+            overflow: hidden;
         }
-
+        
         .nav-section {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
+            overflow: hidden;
         }
-
+        
         .nav-section-title {
             font-weight: 600;
             margin-bottom: 0.5rem;
@@ -96,14 +180,25 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            white-space: nowrap;
+            padding: 0.5rem 0;
+            overflow: hidden;
+            padding-left: 1.5rem;
         }
-
+        
+        .nav-section-title i {
+            min-width: 20px;
+            text-align: center;
+        }
+        
         .nav-item {
             padding: 0.5rem 0;
             padding-left: 1.5rem;
             position: relative;
+            white-space: nowrap;
+            overflow: hidden;
         }
-
+        
         .nav-item.active {
             color: var(--primary-color);
             font-weight: 500;
@@ -132,15 +227,27 @@
             color: var(--primary-color);
         }
         
+        /* 内容容器调整 */
         .container {
             flex: 1;
             padding: 0 1.5rem 3rem;
-            overflow-y: auto;
+            margin-left: 50px;
+            width: calc(100% - 50px);
+            transition: all 0.3s ease;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        
+        .container.nav-expanded {
+            margin-left: 280px;
+            width: calc(100% - 280px);
         }
         
         .section {
             margin-bottom: 3rem;
             scroll-margin-top: 6rem;
+            width: 100%;
+            overflow: hidden;
         }
         
         h2 {
@@ -159,25 +266,28 @@
             margin-bottom: 1rem;
         }
         
+        /* 调整卡片大小和布局 */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem;
+            width: 100%;
+            margin: 0 auto;
         }
         
         .scene {
             background-color: white;
             border-radius: 12px;
-            overflow: hidden;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
             margin-bottom: 2rem;
-            padding: 1rem;
-        }
-        
-        .scene:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* 居中内容 */
+            min-height: 850px; /* 显著增加最小高度 */
+            width: 100%;
+            overflow: hidden;
         }
         
         .scene-header {
@@ -185,6 +295,8 @@
             background-color: var(--primary-light);
             border-radius: 8px;
             margin-bottom: 1.5rem;
+            width: 100%;
+            overflow: hidden;
         }
         
         .scene-title {
@@ -192,51 +304,157 @@
             font-weight: 600;
             margin-bottom: 0.25rem;
             color: var(--neutral-900);
+            word-break: break-word;
         }
         
         .scene-desc {
             font-size: 0.875rem;
             color: var(--neutral-700);
+            word-break: break-word;
         }
         
-        /* iPhone 15 Pro 样式 */
+        /* 改进iPhone框架样式，确保内容完整显示和高清晰度 */
         .iphone-frame {
-            width: 393px;
-            height: 852px;
+            width: 340px; /* 进一步增加宽度 */
+            height: 730px; /* 显著增加高度 */
             background-color: #1a1a1a;
-            border-radius: 45px;
-            padding: 10px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-            margin: 2rem auto;
+            border-radius: 36px;
+            padding: 8px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            margin: 0 auto 20px; /* 添加底部间距 */
             position: relative;
             overflow: hidden;
+            transform: scale(0.95);
+            transform-origin: top center;
+            transition: width 0.3s ease, height 0.3s ease;
+            max-width: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
         }
-
+        
         .iphone-screen {
             width: 100%;
             height: 100%;
-            border-radius: 35px;
-            overflow: hidden;
+            border-radius: 28px;
+            overflow: auto !important; /* 强制使容器可滚动 */
             background-color: white;
             position: relative;
+            -webkit-overflow-scrolling: touch;
+            transition: all 0.3s ease;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            will-change: transform, scroll;
         }
 
         .dynamic-island {
-            width: 120px;
-            height: 35px;
+            width: 100px;
+            height: 30px;
             background-color: #000;
             border-radius: 20px;
             position: absolute;
-            top: 12px;
+            top: 8px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 10;
+            -webkit-transform: translateX(-50%);
+            -webkit-backface-visibility: hidden;
         }
 
         .scene-frame {
             width: 100%;
             height: 100%;
             border: none;
+            overflow-y: visible !important; /* 显示完整内容 */
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 28px;
+            will-change: transform;
+            display: block;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            /* 以下属性用于提高iframe内容清晰度 */
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+        
+        .iphone-screen {
+            overflow: hidden;
+            border-radius: 30px;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+        }
+        
+        /* 添加滚动提示样式 */
+        .scroll-hint {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            z-index: 100;
+            text-align: center;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
+            -webkit-transform: translateX(-50%);
+            -webkit-backface-visibility: hidden;
+        }
+        
+        .scroll-hint i {
+            animation: bounce 1.5s infinite;
+            display: inline-block;
+            margin-left: 3px;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+                -webkit-transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-5px);
+                -webkit-transform: translateY(-5px);
+            }
+            60% {
+                transform: translateY(-3px);
+                -webkit-transform: translateY(-3px);
+            }
+        }
+        
+        /* 添加滑动提示动画 */
+        .iphone-screen::after {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            -webkit-transform: translateX(-50%);
+            width: 40px;
+            height: 4px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 2px;
+            opacity: 0;
+            animation: pulseIndicator 2s infinite;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        @keyframes pulseIndicator {
+            0% { opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { opacity: 0; }
         }
         
         .icon {
@@ -253,56 +471,458 @@
             border-top: 1px solid var(--neutral-100);
         }
 
-        /* 响应式设计 */
+        /* 响应式设计调整 */
+        @media (max-width: 1400px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+        }
+        
         @media (max-width: 1024px) {
             .layout {
                 flex-direction: column;
+                width: 100%;
             }
 
             .nav-sidebar {
                 width: 100%;
                 height: auto;
-                position: relative;
+                max-height: 60px;
+                overflow: hidden;
+                position: sticky;
                 top: 0;
+                left: auto;
                 border-right: none;
                 border-bottom: 1px solid var(--neutral-100);
+                transition: max-height 0.3s ease;
+                padding: 0;
+            }
+            
+            .nav-sidebar.expanded {
+                max-height: 500px;
+                width: 100%;
+                overflow-y: auto;
+            }
+            
+            .nav-toggle {
+                display: none;
+            }
+            
+            .nav-title {
+                cursor: pointer;
+                position: relative;
+                padding-right: 30px;
+            }
+            
+            .nav-title::after {
+                content: '\f107';
+                font-family: 'Font Awesome 5 Free';
+                font-weight: 900;
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                transition: transform 0.3s ease;
+            }
+            
+            .nav-sidebar.expanded .nav-title::after {
+                transform: translateY(-50%) rotate(180deg);
+            }
+            
+            .container {
+                width: 100%;
+                margin-left: 0;
                 padding: 1rem;
             }
-
-            .container {
+            
+            .container.nav-expanded {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+            
+            .scene {
                 padding: 1rem;
+                min-height: 780px;
+            }
+            
+            .scene-header {
+                padding: 0.75rem;
+                margin-bottom: 1rem;
+            }
+            
+            .scene-title {
+                font-size: 1rem;
+            }
+            
+            .scene-desc {
+                font-size: 0.8rem;
+            }
+            
+            .iphone-frame {
+                width: 320px;
+                height: 680px;
+                transform: scale(0.9);
+                margin: -10px auto 10px;
+            }
+            
+            /* 移动端导航栏调整 */
+            .nav-sidebar:not(.expanded) .nav-section-title span,
+            .nav-sidebar:not(.expanded) .nav-item {
+                display: none;
             }
         }
 
         @media (max-width: 768px) {
+            header {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            h2 {
+                font-size: 1.25rem;
+                margin-bottom: 1rem;
+            }
+            
             .grid {
                 grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 0;
             }
-
+            
             .iphone-frame {
-                transform: scale(0.9);
-                margin: 0 auto;
+                width: 290px;
+                height: 620px;
+                transform: scale(0.85);
+                margin: -15px auto 0;
             }
+            
+            .scene {
+                margin-bottom: 1rem;
+                padding: 0.75rem;
+                min-height: 680px;
+            }
+            
+            .scene-header {
+                padding: 0.6rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .scene-title {
+                font-size: 0.9rem;
+            }
+            
+            .scene-desc {
+                font-size: 0.75rem;
+                line-height: 1.4;
+            }
+        }
+        
+        /* 超小屏幕设备适配 */
+        @media (max-width: 375px) {
+            .iphone-frame {
+                width: 260px;
+                height: 560px;
+                transform: scale(0.85);
+            }
+            
+            .scene {
+                min-height: 620px;
+                padding: 0.5rem;
+            }
+            
+            .container {
+                padding: 0.5rem;
+            }
+            
+            h1 {
+                font-size: 1.25rem;
+            }
+            
+            h2 {
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (min-width: 1025px) and (max-width: 1599px) {
+            .grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* 设备框样式调整，防止滑动问题 */
+        .device-wrapper {
+            max-width: 100%;
+            overflow: hidden;
+            border-radius: 2rem;
+            background-color: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 页面滚动到顶部按钮 */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 100;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .scroll-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-to-top i {
+            font-size: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .scroll-to-top {
+                width: 40px;
+                height: 40px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+        
+        /* 页面加载动画 */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        
+        .page-loader.loaded {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--neutral-100);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 侧边栏折叠时只显示图标，完全隐藏文本 */
+        .nav-sidebar:not(:hover):not(.expanded) .nav-title span,
+        .nav-sidebar:not(:hover):not(.expanded) .nav-section-title span,
+        .nav-sidebar:not(:hover):not(.expanded) .nav-item {
+            display: none;
+        }
+
+        /* 移动端导航栏样式调整 */
+        @media (max-width: 1024px) {
+            .nav-sidebar:not(.expanded) .nav-section-title span,
+            .nav-sidebar:not(.expanded) .nav-item {
+                display: none;
+            }
+            
+            .nav-sidebar:not(.expanded) .nav-section,
+            .nav-sidebar:not(.expanded) .nav-item:not(:first-child) {
+                display: none;
+            }
+        }
+
+        /* 验证工具按钮 */
+        .verify-display-btn {
+            position: fixed;
+            bottom: 90px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--neutral-800);
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 99;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .verify-display-btn:hover {
+            background-color: var(--primary-color);
+        }
+
+        .verify-display-btn i {
+            font-size: 20px;
+        }
+
+        .verify-result {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            right: 30px;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 999;
+            display: none;
+            max-height: 80vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .verify-result.show {
+            display: block;
+        }
+
+        .verify-result-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: white;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .verify-display-btn {
+                width: 40px;
+                height: 40px;
+                bottom: 70px;
+                right: 20px;
+            }
+            
+            .verify-result {
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
+                font-size: 12px;
+            }
+        }
+
+        /* 全屏检查模式样式 */
+        .fullpage-check-mode {
+            display: block !important;
+            background-color: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .fullpage-check-mode .scene-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #1f2937;
+        }
+        
+        .fullpage-check-mode .iphone-frame {
+            margin: 0 auto;
+        }
+        
+        /* 验证按钮变化状态 */
+        #verifyDisplayBtn .fa-times-circle {
+            color: #ef4444;
+        }
+        
+        /* 改进验证结果面板样式 */
+        #verifyResult button {
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        #verifyResult button:hover {
+            opacity: 0.9;
         }
     </style>
 </head>
 <body>
+    <div class="page-loader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <div class="scroll-to-top" id="scrollToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <div class="verify-display-btn" id="verifyDisplayBtn">
+        <i class="fas fa-check-circle"></i>
+    </div>
+    
+    <!-- 添加强制刷新按钮 -->
+    <div id="forceRefreshBtn" style="position: fixed; bottom: 150px; right: 30px; width: 50px; height: 50px; background-color: #ef4444; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 99; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); transition: all 0.3s ease;">
+        <i class="fas fa-sync-alt"></i>
+    </div>
+    
+    <div class="verify-result" id="verifyResult">
+        <div class="verify-result-close" id="verifyResultClose">×</div>
+        <h4 style="margin-top: 0; margin-bottom: 10px;">内容显示验证结果：</h4>
+        <div id="verifyResultContent"></div>
+    </div>
+    
     <header>
         <h1>Matrix USD - OTC法币交易与美元账户服务</h1>
         <p>高保真交互原型展示 (iPhone 15 Pro 样式)</p>
+        <div style="margin-top: 10px;">
+            <a href="clear-cache.html" style="display: inline-block; background-color: #ef4444; color: white; padding: 5px 12px; border-radius: 4px; text-decoration: none; font-size: 14px;">
+                <i class="fas fa-sync-alt"></i> 优化未显示？点击这里修复
+            </a>
+        </div>
     </header>
     
     <div class="layout">
         <!-- 导航侧边栏 -->
-        <nav class="nav-sidebar">
+        <nav class="nav-sidebar" id="navSidebar">
+            <div class="nav-toggle" id="navToggle">
+                <i class="fas fa-chevron-right" id="navToggleIcon"></i>
+            </div>
             <div class="nav-title">
-                <i class="fas fa-sitemap icon"></i> 页面导航
+                <i class="fas fa-sitemap icon"></i> <span>页面导航</span>
             </div>
 
             <ul class="nav-list">
                 <li class="nav-section">
                     <div class="nav-section-title">
-                        <i class="fas fa-info-circle"></i> 项目介绍
+                        <i class="fas fa-info-circle"></i> <span>项目介绍</span>
                     </div>
                     <ul>
                         <li class="nav-item">
@@ -313,7 +933,7 @@
 
                 <li class="nav-section">
                     <div class="nav-section-title">
-                        <i class="fas fa-users"></i> 个人和机构账户
+                        <i class="fas fa-users"></i> <span>个人和机构账户</span>
                     </div>
                     <ul>
                         <li class="nav-item">
@@ -323,17 +943,17 @@
                             <a href="#org-select" class="nav-link">机构选择</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#org-add" class="nav-link">添加机构</a>
+                            <a href="#org-verify" class="nav-link">机构认证</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#org-verify" class="nav-link">机构认证</a>
+                            <a href="#kyc-setup" class="nav-link">企业KYC认证</a>
                         </li>
                     </ul>
                 </li>
 
                 <li class="nav-section">
                     <div class="nav-section-title">
-                        <i class="fas fa-home"></i> 场景一：首页
+                        <i class="fas fa-home"></i> <span>场景一：首页</span>
                     </div>
                     <ul>
                         <li class="nav-item">
@@ -344,7 +964,7 @@
 
                 <li class="nav-section">
                     <div class="nav-section-title">
-                        <i class="fas fa-university"></i> 场景二：美元账户服务
+                        <i class="fas fa-university"></i> <span>场景二：美元账户服务</span>
                     </div>
                     <ul>
                         <li class="nav-item">
@@ -361,7 +981,7 @@
 
                 <li class="nav-section">
                     <div class="nav-section-title">
-                        <i class="fas fa-dollar-sign"></i> 场景三：OTC法币交易
+                        <i class="fas fa-dollar-sign"></i> <span>场景三：OTC法币交易</span>
                     </div>
                     <ul>
                         <li class="nav-item">
@@ -388,15 +1008,12 @@
                         <li class="nav-item">
                             <a href="#exchange-result" class="nav-link">交易结果</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="#kyc-setup" class="nav-link">企业KYC认证</a>
-                        </li>
                     </ul>
                 </li>
 
                 <li class="nav-section">
                     <div class="nav-section-title">
-                        <i class="fas fa-user"></i> 场景四：个人中心
+                        <i class="fas fa-user"></i> <span>场景四：个人中心</span>
                     </div>
                     <ul>
                         <li class="nav-item">
@@ -431,16 +1048,16 @@
                 <h2><i class="fas fa-users icon"></i>个人和机构账户</h2>
                 <p>Matrix USD采用个人账户与机构账户双层架构，用户可以使用一个个人账户关联多个机构账户。</p>
                 <div class="grid">
-                    <!-- 个人账户登录页面 -->
+                    <!-- 个人账户状态页面 -->
                     <div class="scene">
                         <div class="scene-header">
-                            <div class="scene-title">个人账户登录</div>
-                            <div class="scene-desc">提供个人用户登录入口，支持邮箱密码登录和第三方账号快捷登录</div>
+                            <div class="scene-title">0-1 个人账户</div>
+                            <div class="scene-desc">展示已登录个人账户状态，当用户点击"申请开户"时，会显示账户切换提示，引导用户切换至机构账户。</div>
                         </div>
                         <div class="iphone-frame">
                             <div class="dynamic-island"></div>
                             <div class="iphone-screen">
-                                <iframe src="./index.html" class="scene-frame"></iframe>
+                                <iframe src="./scenes/personal-account-home.html" class="scene-frame"></iframe>
                             </div>
                         </div>
                     </div>
@@ -448,8 +1065,8 @@
                     <!-- 机构选择页面 -->
                     <div class="scene" id="org-select">
                         <div class="scene-header">
-                            <div class="scene-title">机构选择</div>
-                            <div class="scene-desc">登录后选择要使用的机构账户，支持查看不同状态的机构和添加新机构</div>
+                            <div class="scene-title">0-2 机构选择</div>
+                            <div class="scene-desc">登录后选择要使用的机构账户，支持查看不同状态的机构。若需添加新机构，将直接进入机构EKYC认证流程。</div>
                         </div>
                         <div class="iphone-frame">
                             <div class="dynamic-island"></div>
@@ -459,30 +1076,30 @@
                         </div>
                     </div>
                     
-                    <!-- 添加机构页面 -->
-                    <div class="scene" id="org-add">
-                        <div class="scene-header">
-                            <div class="scene-title">添加/加入机构</div>
-                            <div class="scene-desc">用户可以选择加入现有机构或创建新的机构，支持搜索机构和填写创建信息</div>
-                        </div>
-                        <div class="iphone-frame">
-                            <div class="dynamic-island"></div>
-                            <div class="iphone-screen">
-                                <iframe src="./scenes/org-add.html" class="scene-frame"></iframe>
-                            </div>
-                        </div>
-                    </div>
-                    
                     <!-- 机构认证页面 -->
                     <div class="scene" id="org-verify">
                         <div class="scene-header">
-                            <div class="scene-title">机构认证</div>
+                            <div class="scene-title">0-3 机构认证</div>
                             <div class="scene-desc">分步骤完成机构认证流程，包括上传企业资质和法人信息</div>
                         </div>
                         <div class="iphone-frame">
                             <div class="dynamic-island"></div>
                             <div class="iphone-screen">
                                 <iframe src="./scenes/org-verify.html" class="scene-frame"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 企业KYC认证页面 -->
+                    <div class="scene" id="kyc-setup">
+                        <div class="scene-header">
+                            <div class="scene-title">0-4 企业KYC认证页面</div>
+                            <div class="scene-desc">企业用户进行KYC认证，查看需要准备的资料清单，完成后可开通美元账户服务。</div>
+                        </div>
+                        <div class="iphone-frame">
+                            <div class="dynamic-island"></div>
+                            <div class="iphone-screen">
+                                <iframe src="scenes/kyc-setup.html" class="scene-frame"></iframe>
                             </div>
                         </div>
                     </div>
@@ -493,8 +1110,8 @@
                 <h2><i class="fas fa-home icon"></i>场景一：首页</h2>
                 <div class="scene">
                     <div class="scene-header">
-                        <div class="scene-title">钱包首页</div>
-                        <div class="scene-desc">展示用户资产概览、快捷功能入口和最近交易记录</div>
+                        <div class="scene-title">1-1 钱包首页</div>
+                        <div class="scene-desc">展示用户资产概览，优先显示USD美元账户，便于用户快速访问主要功能</div>
                     </div>
                     <div class="iphone-frame">
                         <div class="dynamic-island"></div>
@@ -513,7 +1130,7 @@
                     <!-- 美元账户状态页面 -->
                     <div class="scene">
                         <div class="scene-header">
-                            <div class="scene-title">美元账户状态页面</div>
+                            <div class="scene-title">2-1 美元账户状态页面</div>
                             <div class="scene-desc">展示用户美元账户状态，包括未开通和已开通两种状态。</div>
                         </div>
                         <div class="iphone-frame">
@@ -527,7 +1144,7 @@
                     <!-- 美元账户申请页面 -->
                     <div class="scene">
                         <div class="scene-header">
-                            <div class="scene-title">美元账户开通设置页面</div>
+                            <div class="scene-title">2-2 美元账户开通设置页面</div>
                             <div class="scene-desc">配置美元账户服务，包括KYC状态、账户选择和费用支付等。</div>
                         </div>
                         <div class="iphone-frame">
@@ -541,7 +1158,7 @@
                     <!-- 美元账户开通设置页面 -->
                     <div class="scene">
                         <div class="scene-header">
-                            <div class="scene-title">美元账户已开通状态</div>
+                            <div class="scene-title">2-3 美元账户已开通状态</div>
                             <div class="scene-desc">展示已开通的美元账户状态，包括账户余额和操作功能。</div>
                         </div>
                         <div class="iphone-frame">
@@ -559,7 +1176,7 @@
                 <div class="grid">
                     <div class="scene" id="exchange">
                         <div class="scene-header">
-                            <div class="scene-title">法币交易</div>
+                            <div class="scene-title">3-1 法币交易</div>
                             <div class="scene-desc">提供入金（买USDC）和出金（卖USDC）交易功能，含汇率显示和银行账户选择</div>
                         </div>
                         <div class="iphone-frame">
@@ -572,8 +1189,8 @@
                     
                     <div class="scene" id="exchange-bank-list">
                         <div class="scene-header">
-                            <div class="scene-title">银行账户选择</div>
-                            <div class="scene-desc">显示用户银行账户列表，支持选择、编辑和添加银行账户</div>
+                            <div class="scene-title">3-2 银行账户选择</div>
+                            <div class="scene-desc">显示用户银行账户列表，支持选择、编辑银行账户，并提供添加新银行账户功能，可设置开户行、账户持有人、账号等信息</div>
                         </div>
                         <div class="iphone-frame">
                             <div class="dynamic-island"></div>
@@ -585,8 +1202,8 @@
                     
                     <div class="scene" id="exchange-confirm">
                         <div class="scene-header">
-                            <div class="scene-title">交易确认</div>
-                            <div class="scene-desc">确认交易详情和服务条款，显示交易汇率和手续费</div>
+                            <div class="scene-title">3-3 交易确认</div>
+                            <div class="scene-desc">确认交易详情和服务条款，交易信息采用左右对齐排版，显示交易汇率和手续费</div>
                         </div>
                         <div class="iphone-frame">
                             <div class="dynamic-island"></div>
@@ -598,7 +1215,7 @@
                     
                     <div class="scene" id="exchange-deposit-usd">
                         <div class="scene-header">
-                            <div class="scene-title">存入USD</div>
+                            <div class="scene-title">3-4 存入USD</div>
                             <div class="scene-desc">展示接收客户汇款的银行账户信息，包括收款人信息、银行信息等</div>
                         </div>
                         <div class="iphone-frame">
@@ -611,8 +1228,8 @@
                     
                     <div class="scene" id="exchange-insufficient">
                         <div class="scene-header">
-                            <div class="scene-title">资金不足</div>
-                            <div class="scene-desc">处理余额不足的情况，提供充值选项</div>
+                            <div class="scene-title">3-5 资金不足</div>
+                            <div class="scene-desc">处理余额不足的情况，提供明确的提示信息，包含USDC充值地址及二维码，便于用户快速解决资金问题</div>
                         </div>
                         <div class="iphone-frame">
                             <div class="dynamic-island"></div>
@@ -624,7 +1241,7 @@
                     
                     <div class="scene" id="exchange-deposit">
                         <div class="scene-header">
-                            <div class="scene-title">USDC充值</div>
+                            <div class="scene-title">3-6 USDC充值</div>
                             <div class="scene-desc">展示USDC充值地址和二维码，提供充值指引</div>
                         </div>
                         <div class="iphone-frame">
@@ -637,7 +1254,7 @@
                     
                     <div class="scene" id="exchange-waiting">
                         <div class="scene-header">
-                            <div class="scene-title">交易处理中</div>
+                            <div class="scene-title">3-7 交易处理中</div>
                             <div class="scene-desc">展示交易进行状态，倒计时和处理步骤提示</div>
                         </div>
                         <div class="iphone-frame">
@@ -650,26 +1267,13 @@
                     
                     <div class="scene" id="exchange-result">
                         <div class="scene-header">
-                            <div class="scene-title">交易成功</div>
+                            <div class="scene-title">3-8 交易成功</div>
                             <div class="scene-desc">展示交易成功结果，含交易详情和后续操作</div>
                         </div>
                         <div class="iphone-frame">
                             <div class="dynamic-island"></div>
                             <div class="iphone-screen">
                                 <iframe src="./scenes/coin-exchange-result.html?status=success" class="scene-frame"></iframe>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="scene" id="kyc-setup">
-                        <div class="scene-header">
-                            <div class="scene-title">企业KYC认证页面</div>
-                            <div class="scene-desc">企业用户进行KYC认证，查看需要准备的资料清单。</div>
-                        </div>
-                        <div class="iphone-frame">
-                            <div class="dynamic-island"></div>
-                            <div class="iphone-screen">
-                                <iframe src="scenes/kyc-setup.html" class="scene-frame"></iframe>
                             </div>
                         </div>
                     </div>
@@ -680,7 +1284,7 @@
                 <h2><i class="fas fa-user icon"></i>场景四：个人中心</h2>
                 <div class="scene">
                     <div class="scene-header">
-                        <div class="scene-title">个人中心</div>
+                        <div class="scene-title">4-1 个人中心</div>
                         <div class="scene-desc">用户信息、账户安全设置和其他系统设置</div>
                     </div>
                     <div class="iphone-frame">
@@ -699,15 +1303,733 @@
     </footer>
 
     <script>
+        // 确保所有iframe内容完整显示的新方法 - 直接修改DOM结构
+        function fixIframeDisplay() {
+            console.log('正在修复iframe显示问题...');
+            
+            // 添加时间戳参数到所有iframe的src属性，强制刷新内容
+            const frameElements = document.querySelectorAll('.scene-frame');
+            const timestamp = new Date().getTime();
+            frameElements.forEach((iframe) => {
+                let src = iframe.src;
+                src = src.split('?')[0]; // 移除已有的查询参数
+                iframe.src = src + (src.includes('?') ? '&' : '?') + 'nocache=' + timestamp;
+            });
+            
+            // 1. 增加手机框架尺寸
+            const allPhoneFrames = document.querySelectorAll('.iphone-frame');
+            allPhoneFrames.forEach(frame => {
+                frame.style.width = '340px';
+                frame.style.height = '740px';
+                // 添加硬件加速
+                frame.style.webkitTransform = 'translateZ(0)';
+                frame.style.transform = 'translateZ(0)';
+            });
+            
+            // 2. 确保内容可滚动
+            const allScreens = document.querySelectorAll('.iphone-screen');
+            allScreens.forEach(screen => {
+                screen.style.overflowY = 'auto';
+                screen.style.position = 'relative';
+                screen.style.webkitOverflowScrolling = 'touch';
+            });
+            
+            // 3. 对每个iframe处理
+            const allIframes = document.querySelectorAll('.scene-frame');
+            allIframes.forEach((iframe, index) => {
+                // 设置初始高度
+                iframe.style.height = '100%';
+                iframe.style.overflowY = 'visible';
+                
+                // 提高清晰度设置
+                iframe.style.imageRendering = '-webkit-optimize-contrast';
+                iframe.style.imageRendering = 'crisp-edges';
+                iframe.style.webkitTransform = 'translateZ(0)';
+                iframe.style.transform = 'translateZ(0)';
+                
+                // 特别处理美元账户相关场景
+                const sceneContainer = iframe.closest('.scene');
+                if (sceneContainer) {
+                    const title = sceneContainer.querySelector('.scene-title')?.textContent || '';
+                    
+                    // 针对美元账户服务相关页面进行特殊优化
+                    if (title.includes('美元账户') || title.includes('账户状态') || title.includes('开通设置')) {
+                        iframe.style.height = '690px'; // 适当增加高度
+                        
+                        // 如果是iPhone框架，适当调整尺寸
+                        const iphoneFrame = iframe.closest('.iphone-frame');
+                        if (iphoneFrame) {
+                            iphoneFrame.style.width = '340px';
+                            iphoneFrame.style.height = '760px';
+                        }
+                    }
+                }
+                
+                // 等待iframe加载完成
+                iframe.onload = function() {
+                    try {
+                        // 尝试访问iframe内容
+                        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                        const iframeBody = iframeDoc.body;
+                        
+                        if (iframeBody) {
+                            // 设置高清显示
+                            iframeBody.style.webkitFontSmoothing = 'antialiased';
+                            iframeBody.style.mozOsxFontSmoothing = 'grayscale';
+                            
+                            // 确保内容可滚动
+                            iframeBody.style.height = 'auto';
+                            iframeBody.style.overflow = 'auto';
+                            iframeBody.style.overflowX = 'hidden';
+                            iframeBody.style.webkitOverflowScrolling = 'touch';
+                            
+                            // 最大宽度限制
+                            iframeBody.style.maxWidth = '100%';
+                            
+                            // 设置所有文本强制断行
+                            const allTextElements = iframeDoc.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, div, a, button');
+                            allTextElements.forEach(el => {
+                                el.style.wordBreak = 'break-word';
+                                el.style.overflowWrap = 'break-word';
+                                el.style.maxWidth = '100%';
+                            });
+                            
+                            // 设置所有图片最大宽度
+                            const allImages = iframeDoc.querySelectorAll('img');
+                            allImages.forEach(img => {
+                                img.style.maxWidth = '100%';
+                                img.style.height = 'auto';
+                            });
+                            
+                            // 获取场景标题，用于判断页面类型
+                            const frameScebeContainer = iframe.closest('.scene');
+                            const frameTitle = frameScebeContainer ? 
+                                (frameScebeContainer.querySelector('.scene-title')?.textContent || '') : '';
+                            
+                            // 针对特定页面的优化
+                            
+                            // 1. 优化机构选择页面 - 管理员标签和公司名称重叠问题
+                            if (frameTitle.includes('机构选择')) {
+                                try {
+                                    // 处理管理员标签和公司名称重叠问题
+                                    const companyItems = iframeDoc.querySelectorAll('.org-card');
+                                    companyItems.forEach(item => {
+                                        // 给容器添加足够的内边距
+                                        item.style.paddingRight = '80px';
+                                        
+                                        // 优化管理员标签定位
+                                        const badge = item.querySelector('.org-badge');
+                                        if (badge) {
+                                            badge.style.position = 'absolute';
+                                            badge.style.top = '50%';
+                                            badge.style.right = '12px';
+                                            badge.style.transform = 'translateY(-50%)';
+                                            badge.style.fontSize = '12px';
+                                            badge.style.padding = '2px 6px';
+                                            badge.style.whiteSpace = 'nowrap';
+                                            badge.style.zIndex = '2';
+                                        }
+                                        
+                                        // 确保公司名称不会溢出
+                                        const orgInfo = item.querySelector('.org-info');
+                                        if (orgInfo) {
+                                            orgInfo.style.maxWidth = 'calc(100% - 100px)';
+                                            orgInfo.style.overflow = 'hidden';
+                                        }
+                                        
+                                        const orgName = item.querySelector('.org-name');
+                                        if (orgName) {
+                                            orgName.style.whiteSpace = 'nowrap';
+                                            orgName.style.overflow = 'hidden';
+                                            orgName.style.textOverflow = 'ellipsis';
+                                        }
+                                    });
+                                    
+                                    console.log('机构选择页面优化完成');
+                                } catch (e) {
+                                    console.log('机构选择页面优化失败:', e.message);
+                                }
+                            }
+                            
+                            // 2. 优化美元账户开通设置页面 - 排版和布局问题
+                            else if (frameTitle.includes('美元账户开通设置')) {
+                                try {
+                                    // 优化卡片内容布局
+                                    const cards = iframeDoc.querySelectorAll('.card, .info-card');
+                                    cards.forEach(card => {
+                                        card.style.padding = '15px';
+                                        card.style.marginBottom = '15px';
+                                        card.style.boxSizing = 'border-box';
+                                        card.style.width = '100%';
+                                        
+                                        // 优化卡片内的标题和内容间距
+                                        const cardTitle = card.querySelector('h3, h4, .card-title');
+                                        if (cardTitle) {
+                                            cardTitle.style.marginBottom = '10px';
+                                            cardTitle.style.fontSize = '16px';
+                                            cardTitle.style.lineHeight = '1.4';
+                                        }
+                                        
+                                        // 优化卡片内容的字体大小和行高
+                                        const contentElements = card.querySelectorAll('p, .card-content');
+                                        contentElements.forEach(el => {
+                                            el.style.fontSize = '14px';
+                                            el.style.lineHeight = '1.5';
+                                            el.style.margin = '0 0 10px 0';
+                                        });
+                                    });
+                                    
+                                    // 优化KYC状态显示
+                                    const kycStatus = iframeDoc.querySelector('.kyc-status, .status-badge');
+                                    if (kycStatus) {
+                                        kycStatus.style.display = 'inline-block';
+                                        kycStatus.style.padding = '3px 8px';
+                                        kycStatus.style.borderRadius = '4px';
+                                        kycStatus.style.fontSize = '12px';
+                                        kycStatus.style.marginLeft = '5px';
+                                        kycStatus.style.verticalAlign = 'middle';
+                                    }
+                                    
+                                    // 优化可申请账户信息的排版
+                                    const accountInfo = iframeDoc.querySelectorAll('.account-info, .account-option');
+                                    accountInfo.forEach(info => {
+                                        info.style.marginBottom = '12px';
+                                        info.style.padding = '10px';
+                                        info.style.borderRadius = '8px';
+                                        info.style.backgroundColor = '#f8fafc';
+                                    });
+                                    
+                                    console.log('美元账户开通设置页面优化完成');
+                                } catch (e) {
+                                    console.log('美元账户开通设置页面优化失败:', e.message);
+                                }
+                            }
+                            
+                            // 3. 优化美元账户已开通状态页面 - 按钮换行问题
+                            else if (frameTitle.includes('美元账户已开通') || (frameTitle.includes('美元账户状态') && iframe.src.includes('status=opened'))) {
+                                try {
+                                    // 优化按钮区域
+                                    const buttonGroup = iframeDoc.querySelector('.button-group, .action-buttons');
+                                    if (buttonGroup) {
+                                        buttonGroup.style.display = 'flex';
+                                        buttonGroup.style.flexWrap = 'nowrap';
+                                        buttonGroup.style.justifyContent = 'center';
+                                        buttonGroup.style.gap = '10px';
+                                        buttonGroup.style.marginTop = '20px';
+                                        buttonGroup.style.width = '100%';
+                                    }
+                                    
+                                    // 优化所有按钮样式，避免换行
+                                    const buttons = iframeDoc.querySelectorAll('button, .btn, .button');
+                                    buttons.forEach(btn => {
+                                        btn.style.whiteSpace = 'nowrap';
+                                        btn.style.minWidth = '0';
+                                        btn.style.padding = '10px 15px';
+                                        btn.style.fontSize = '14px';
+                                        btn.style.flex = '1';
+                                        btn.style.maxWidth = 'fit-content';
+                                        btn.style.textAlign = 'center';
+                                    });
+                                    
+                                    console.log('美元账户已开通状态页面优化完成');
+                                } catch (e) {
+                                    console.log('美元账户已开通状态页面优化失败:', e.message);
+                                }
+                            }
+                            
+                            // 4. 优化法币交易页面 - 金额快捷输入标签优化
+                            else if (frameTitle.includes('法币交易')) {
+                                try {
+                                    // 优化金额快捷输入标签
+                                    const quickAmountTags = iframeDoc.querySelectorAll('.quick-amount, .amount-tag, .tag');
+                                    if (quickAmountTags.length > 0) {
+                                        // 优化标签容器
+                                        const tagContainer = quickAmountTags[0].parentElement;
+                                        if (tagContainer) {
+                                            tagContainer.style.display = 'flex';
+                                            tagContainer.style.flexWrap = 'wrap';
+                                            tagContainer.style.gap = '8px';
+                                            tagContainer.style.marginTop = '10px';
+                                        }
+                                        
+                                        // 优化每个标签
+                                        quickAmountTags.forEach(tag => {
+                                            tag.style.padding = '5px 10px';
+                                            tag.style.fontSize = '12px';
+                                            tag.style.borderRadius = '15px';
+                                            tag.style.backgroundColor = '#f0f9ff';
+                                            tag.style.color = '#0369a1';
+                                            tag.style.border = '1px solid #e0f2fe';
+                                            tag.style.minWidth = '0';
+                                            tag.style.whiteSpace = 'nowrap';
+                                            tag.style.display = 'inline-block';
+                                            tag.style.textAlign = 'center';
+                                            tag.style.lineHeight = '1';
+                                            tag.style.margin = '0';
+                                        });
+                                    }
+                                    
+                                    // 优化输入框布局
+                                    const inputGroups = iframeDoc.querySelectorAll('.input-group');
+                                    inputGroups.forEach(group => {
+                                        group.style.marginBottom = '20px';
+                                    });
+                                    
+                                    console.log('法币交易页面优化完成');
+                                } catch (e) {
+                                    console.log('法币交易页面优化失败:', e.message);
+                                }
+                            }
+                            
+                            // 5. 为钱包首页添加USDC提取和充值功能选项
+                            else if (frameTitle.includes('钱包首页')) {
+                                try {
+                                    // 为USDC卡片添加点击事件
+                                    const usdcCard = iframeDoc.querySelector('.crypto-card, .asset-card');
+                                    if (usdcCard) {
+                                        // 处理钱包页面中的充值和提取按钮
+                                        const depositBtn = iframeDoc.querySelector('.deposit-btn, [data-action="deposit"]');
+                                        const withdrawBtn = iframeDoc.querySelector('.withdraw-btn, [data-action="withdraw"]');
+                                        
+                                        if (depositBtn) {
+                                            // 移除原有事件
+                                            const newDepositBtn = depositBtn.cloneNode(true);
+                                            depositBtn.parentNode.replaceChild(newDepositBtn, depositBtn);
+                                            
+                                            // 添加新的点击事件显示选项弹窗
+                                            newDepositBtn.addEventListener('click', function(e) {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                
+                                                // 创建充值选项弹窗
+                                                showOptionsModal('充值USDC', [
+                                                    { title: '从链上转入', icon: 'fa-link', desc: '通过区块链网络转入USDC' },
+                                                    { title: '通过OTC买入', icon: 'fa-money-bill-wave', desc: '使用法币购买USDC' }
+                                                ]);
+                                            });
+                                        }
+                                        
+                                        if (withdrawBtn) {
+                                            // 移除原有事件
+                                            const newWithdrawBtn = withdrawBtn.cloneNode(true);
+                                            withdrawBtn.parentNode.replaceChild(newWithdrawBtn, withdrawBtn);
+                                            
+                                            // 添加新的点击事件显示选项弹窗
+                                            newWithdrawBtn.addEventListener('click', function(e) {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                
+                                                // 创建提取选项弹窗
+                                                showOptionsModal('提取USDC', [
+                                                    { title: '提取到链上地址', icon: 'fa-wallet', desc: '将USDC转出到外部钱包地址' },
+                                                    { title: '提取为USD', icon: 'fa-dollar-sign', desc: '将USDC兑换为USD法币' }
+                                                ]);
+                                            });
+                                        }
+                                        
+                                        // 创建并显示选项弹窗的函数
+                                        function showOptionsModal(title, options) {
+                                            // 检查是否已存在弹窗，如存在则移除
+                                            const existingModal = iframeDoc.querySelector('.options-modal');
+                                            if (existingModal) {
+                                                existingModal.remove();
+                                            }
+                                            
+                                            // 创建弹窗容器
+                                            const modal = document.createElement('div');
+                                            modal.className = 'options-modal';
+                                            modal.style.position = 'fixed';
+                                            modal.style.top = '0';
+                                            modal.style.left = '0';
+                                            modal.style.width = '100%';
+                                            modal.style.height = '100%';
+                                            modal.style.backgroundColor = 'rgba(0,0,0,0.5)';
+                                            modal.style.zIndex = '9999';
+                                            modal.style.display = 'flex';
+                                            modal.style.justifyContent = 'center';
+                                            modal.style.alignItems = 'flex-end';
+                                            
+                                            // 创建弹窗内容
+                                            const modalContent = document.createElement('div');
+                                            modalContent.className = 'options-modal-content';
+                                            modalContent.style.width = '100%';
+                                            modalContent.style.maxWidth = '500px';
+                                            modalContent.style.backgroundColor = '#fff';
+                                            modalContent.style.borderRadius = '16px 16px 0 0';
+                                            modalContent.style.padding = '20px';
+                                            modalContent.style.boxShadow = '0 -2px 10px rgba(0,0,0,0.1)';
+                                            modalContent.style.transform = 'translateY(100%)';
+                                            modalContent.style.transition = 'transform 0.3s ease';
+                                            
+                                            // 创建弹窗标题
+                                            const modalTitle = document.createElement('h3');
+                                            modalTitle.textContent = title;
+                                            modalTitle.style.marginTop = '0';
+                                            modalTitle.style.marginBottom = '15px';
+                                            modalTitle.style.fontSize = '18px';
+                                            modalTitle.style.textAlign = 'center';
+                                            
+                                            // The title bar with a close button
+                                            const titleBar = document.createElement('div');
+                                            titleBar.style.display = 'flex';
+                                            titleBar.style.justifyContent = 'space-between';
+                                            titleBar.style.alignItems = 'center';
+                                            titleBar.style.marginBottom = '15px';
+                                            
+                                            const closeButton = document.createElement('button');
+                                            closeButton.innerHTML = '&times;';
+                                            closeButton.style.border = 'none';
+                                            closeButton.style.background = 'none';
+                                            closeButton.style.fontSize = '24px';
+                                            closeButton.style.cursor = 'pointer';
+                                            closeButton.style.padding = '0';
+                                            closeButton.style.color = '#666';
+                                            closeButton.style.width = '30px';
+                                            closeButton.style.height = '30px';
+                                            closeButton.style.display = 'flex';
+                                            closeButton.style.alignItems = 'center';
+                                            closeButton.style.justifyContent = 'center';
+                                            
+                                            titleBar.appendChild(modalTitle);
+                                            titleBar.appendChild(closeButton);
+                                            
+                                            // 创建选项列表
+                                            const optionsList = document.createElement('div');
+                                            optionsList.className = 'options-list';
+                                            optionsList.style.display = 'flex';
+                                            optionsList.style.flexDirection = 'column';
+                                            optionsList.style.gap = '10px';
+                                            
+                                            // 添加选项
+                                            options.forEach(option => {
+                                                const optionItem = document.createElement('div');
+                                                optionItem.className = 'option-item';
+                                                optionItem.style.padding = '15px';
+                                                optionItem.style.borderRadius = '8px';
+                                                optionItem.style.backgroundColor = '#f8fafc';
+                                                optionItem.style.display = 'flex';
+                                                optionItem.style.alignItems = 'center';
+                                                optionItem.style.cursor = 'pointer';
+                                                optionItem.style.transition = 'background-color 0.2s';
+                                                
+                                                // 图标
+                                                const icon = document.createElement('i');
+                                                icon.className = `fas ${option.icon}`;
+                                                icon.style.width = '24px';
+                                                icon.style.height = '24px';
+                                                icon.style.backgroundColor = '#e0f2fe';
+                                                icon.style.borderRadius = '50%';
+                                                icon.style.display = 'flex';
+                                                icon.style.alignItems = 'center';
+                                                icon.style.justifyContent = 'center';
+                                                icon.style.color = '#0369a1';
+                                                icon.style.marginRight = '12px';
+                                                icon.style.flexShrink = '0';
+                                                
+                                                // 文本内容
+                                                const content = document.createElement('div');
+                                                content.style.flex = '1';
+                                                
+                                                const optionTitle = document.createElement('div');
+                                                optionTitle.textContent = option.title;
+                                                optionTitle.style.fontWeight = '500';
+                                                optionTitle.style.marginBottom = '4px';
+                                                
+                                                const optionDesc = document.createElement('div');
+                                                optionDesc.textContent = option.desc;
+                                                optionDesc.style.fontSize = '12px';
+                                                optionDesc.style.color = '#64748b';
+                                                
+                                                content.appendChild(optionTitle);
+                                                content.appendChild(optionDesc);
+                                                
+                                                // 箭头图标
+                                                const arrow = document.createElement('i');
+                                                arrow.className = 'fas fa-chevron-right';
+                                                arrow.style.color = '#94a3b8';
+                                                arrow.style.fontSize = '12px';
+                                                
+                                                optionItem.appendChild(icon);
+                                                optionItem.appendChild(content);
+                                                optionItem.appendChild(arrow);
+                                                
+                                                // 鼠标悬停效果
+                                                optionItem.addEventListener('mouseover', function() {
+                                                    this.style.backgroundColor = '#e0f2fe';
+                                                });
+                                                
+                                                optionItem.addEventListener('mouseout', function() {
+                                                    this.style.backgroundColor = '#f8fafc';
+                                                });
+                                                
+                                                // 点击事件
+                                                optionItem.addEventListener('click', function() {
+                                                    // 模拟导航到相应页面
+                                                    console.log(`选择了: ${option.title}`);
+                                                    modal.remove();
+                                                });
+                                                
+                                                optionsList.appendChild(optionItem);
+                                            });
+                                            
+                                            // 添加所有元素到弹窗
+                                            modalContent.appendChild(titleBar);
+                                            modalContent.appendChild(optionsList);
+                                            modal.appendChild(modalContent);
+                                            
+                                            // 点击关闭按钮关闭弹窗
+                                            closeButton.addEventListener('click', function() {
+                                                modal.remove();
+                                            });
+                                            
+                                            // 点击弹窗外部关闭弹窗
+                                            modal.addEventListener('click', function(e) {
+                                                if (e.target === modal) {
+                                                    modal.remove();
+                                                }
+                                            });
+                                            
+                                            // 添加弹窗到文档
+                                            iframeBody.appendChild(modal);
+                                            
+                                            // 显示弹窗动画
+                                            setTimeout(() => {
+                                                modalContent.style.transform = 'translateY(0)';
+                                            }, 10);
+                                        }
+                                    }
+                                    
+                                    console.log('钱包首页功能增强完成');
+                                } catch (e) {
+                                    console.log('钱包首页功能增强失败:', e.message);
+                                }
+                            }
+                            
+                            // 6. 对美元账户相关页面进行内容优化
+                            if (frameScebeContainer) {
+                                const frameSceneTitle = frameScebeContainer.querySelector('.scene-title')?.textContent || '';
+                                if (frameSceneTitle.includes('美元账户') || frameSceneTitle.includes('账户状态') || frameSceneTitle.includes('开通设置')) {
+                                    try {
+                                        // 查找主容器并调整其大小
+                                        const mainContainers = iframeDoc.querySelectorAll('.container, .content-container, main');
+                                        mainContainers.forEach(container => {
+                                            container.style.minHeight = '100%';
+                                            container.style.paddingBottom = '20px';
+                                            container.style.maxWidth = '100%';
+                                            container.style.overflow = 'hidden';
+                                        });
+                                        
+                                        // 查找并优化按钮容器
+                                        const buttonContainers = iframeDoc.querySelectorAll('.button-container, .btn-container');
+                                        buttonContainers.forEach(container => {
+                                            container.style.marginBottom = '30px';
+                                            container.style.maxWidth = '100%';
+                                        });
+                                        
+                                        // 优化按钮
+                                        const buttons = iframeDoc.querySelectorAll('button, .btn, .button');
+                                        buttons.forEach(btn => {
+                                            btn.style.maxWidth = '100%';
+                                            btn.style.whiteSpace = 'normal';
+                                            btn.style.wordBreak = 'break-word';
+                                        });
+                                    } catch (e) {
+                                        console.log('美元账户页面优化失败：', e.message);
+                                    }
+                                }
+                            }
+                            
+                            console.log(`iframe #${index} 内容高度: ${iframeBody.scrollHeight}px`);
+                            
+                            // 对于特别长的内容，设置固定高度并允许滚动
+                            if (iframeBody.scrollHeight > iframe.offsetHeight) {
+                                // 添加滚动提示
+                                const parent = iframe.closest('.iphone-screen');
+                                if (parent && !parent.querySelector('.scroll-hint')) {
+                                    const hint = document.createElement('div');
+                                    hint.className = 'scroll-hint';
+                                    hint.innerHTML = '上下滑动查看更多 <i class="fas fa-chevron-down"></i>';
+                                    parent.appendChild(hint);
+                                    
+                                    // 3秒后淡出提示
+                                    setTimeout(() => {
+                                        hint.style.opacity = '0';
+                                        setTimeout(() => {
+                                            hint.style.display = 'none';
+                                        }, 500);
+                                    }, 3000);
+                                }
+                            }
+                        }
+                    } catch (e) {
+                        console.log(`无法访问iframe #${index} 内容: ${e.message}`);
+                    }
+                };
+                
+                // 对于已加载完成的iframe立即处理
+                if (iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
+                    iframe.onload();
+                }
+            });
+        }
+
+        // 对验证按钮功能进行简化，集中在解决显示问题
+        function setupVerifyTool() {
+            const verifyBtn = document.getElementById('verifyDisplayBtn');
+            const verifyResult = document.getElementById('verifyResult');
+            const verifyResultContent = document.getElementById('verifyResultContent');
+            const closeBtn = document.getElementById('verifyResultClose');
+            
+            // 添加全屏检查模式变量
+            let isFullPageCheckMode = false;
+            
+            if (verifyBtn) {
+                verifyBtn.addEventListener('click', function() {
+                    if (isFullPageCheckMode) {
+                        // 退出全屏检查模式
+                        isFullPageCheckMode = false;
+                        verifyBtn.innerHTML = '<i class="fas fa-check-circle"></i>';
+                        verifyBtn.setAttribute('title', '检查内容显示');
+                        
+                        // 恢复正常布局
+                        document.querySelectorAll('.scene').forEach(scene => {
+                            scene.style.width = '';
+                            scene.style.margin = '';
+                            scene.classList.remove('fullpage-check-mode');
+                        });
+                        
+                        document.querySelectorAll('.iphone-frame').forEach(frame => {
+                            frame.style.width = '340px';
+                            frame.style.height = '740px';
+                        });
+                        
+                        document.querySelectorAll('.scene-frame').forEach(frame => {
+                            frame.style.height = '100%';
+                        });
+                        
+                        // 重新应用正常修复
+                        fixIframeDisplay();
+                        
+                        // 显示确认消息
+                        verifyResult.classList.add('show');
+                        verifyResultContent.innerHTML = '<div style="color: #10b981; font-weight: bold;">✅ 已退出检查模式</div>' +
+                            '<p>已恢复正常布局，您可以继续浏览内容。</p>';
+                    } else {
+                        // 显示验证结果面板
+                        verifyResult.classList.add('show');
+                        verifyResultContent.innerHTML = '<p>请选择检查模式：</p>' +
+                          '<button id="quickFixBtn" style="margin-right: 10px; padding: 5px 10px; background: #3b82f6; color: white; border: none; border-radius: 4px;">快速修复所有页面</button>' +
+                          '<button id="fullCheckBtn" style="padding: 5px 10px; background: #10b981; color: white; border: none; border-radius: 4px;">进入全屏检查模式</button>';
+                        
+                        // 按钮点击事件
+                        document.getElementById('quickFixBtn').addEventListener('click', function() {
+                            // 再次尝试修复iframe显示问题
+                            fixIframeDisplay();
+                            
+                            // 显示结果
+                            verifyResultContent.innerHTML = '<div style="color: #10b981; font-weight: bold;">✅ 所有内容已调整为可完整显示状态</div>' +
+                                '<p>已修复iframe尺寸和滚动属性，内容可以通过上下滚动完整查看。</p>' +
+                                '<p>如发现个别页面仍有显示问题，请点击"进入全屏检查模式"。</p>';
+                        });
+                        
+                        document.getElementById('fullCheckBtn').addEventListener('click', function() {
+                            // 进入全屏检查模式
+                            isFullPageCheckMode = true;
+                            verifyBtn.innerHTML = '<i class="fas fa-times-circle"></i>';
+                            verifyBtn.setAttribute('title', '退出检查模式');
+                            
+                            // 调整布局以便检查
+                            document.querySelectorAll('.scene').forEach(scene => {
+                                scene.style.width = '100%';
+                                scene.style.margin = '20px 0';
+                                scene.classList.add('fullpage-check-mode');
+                            });
+                            
+                            document.querySelectorAll('.iphone-frame').forEach(frame => {
+                                frame.style.width = '375px';
+                                frame.style.height = '800px';
+                            });
+                            
+                            document.querySelectorAll('.scene-frame').forEach(frame => {
+                                frame.style.height = '730px';
+                            });
+                            
+                            // 关闭结果面板
+                            verifyResult.classList.remove('show');
+                        });
+                    }
+                });
+            }
+            
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    verifyResult.classList.remove('show');
+                });
+            }
+        }
+
+        window.addEventListener('load', function() {
+            const pageLoader = document.querySelector('.page-loader');
+            if (pageLoader) {
+                pageLoader.classList.add('loaded');
+            }
+            
+            // 使用新的修复方法
+            setTimeout(fixIframeDisplay, 100); // 添加短暂延迟确保DOM已加载
+            
+            // 设置验证工具
+            setupVerifyTool();
+            
+            // 添加console提示用于调试
+            console.log('页面已完全加载，优化已应用。如果看不到效果，请清除浏览器缓存后刷新。');
+        });
+        
         // 处理导航高亮
         document.addEventListener('DOMContentLoaded', function() {
+            const navSidebar = document.getElementById('navSidebar');
+            const navToggle = document.getElementById('navToggle');
+            const navToggleIcon = document.getElementById('navToggleIcon');
+            const container = document.querySelector('.container');
             const navLinks = document.querySelectorAll('.nav-link');
+            const navTitle = document.querySelector('.nav-title');
             
-            // 点击导航链接高亮
+            // PC端折叠/展开按钮事件
+            if (navToggle && navToggleIcon) {
+                navToggle.addEventListener('click', function() {
+                    navSidebar.classList.toggle('expanded');
+                    container.classList.toggle('nav-expanded');
+                    
+                    // 切换图标方向
+                    if (navSidebar.classList.contains('expanded')) {
+                        navToggleIcon.classList.remove('fa-chevron-right');
+                        navToggleIcon.classList.add('fa-chevron-left');
+                    } else {
+                        navToggleIcon.classList.remove('fa-chevron-left');
+                        navToggleIcon.classList.add('fa-chevron-right');
+                    }
+                });
+            }
+            
+            // 移动端标题点击事件
+            if (navTitle) {
+                navTitle.addEventListener('click', function() {
+                    if (window.innerWidth <= 1024) {
+                        navSidebar.classList.toggle('expanded');
+                    }
+                });
+            }
+            
+            // 点击导航链接事件
             navLinks.forEach(link => {
                 link.addEventListener('click', function() {
+                    // 高亮当前选中项
                     navLinks.forEach(l => l.parentElement.classList.remove('active'));
                     this.parentElement.classList.add('active');
+                    
+                    // 移动端自动折叠导航
+                    if (window.innerWidth <= 1024) {
+                        navSidebar.classList.remove('expanded');
+                    }
                 });
             });
             
@@ -723,7 +2045,6 @@
                 
                 sections.forEach(section => {
                     const sectionTop = section.offsetTop;
-                    const sectionHeight = section.clientHeight;
                     if (pageYOffset >= (sectionTop - 300)) {
                         current = '#' + section.getAttribute('id');
                     }
@@ -735,7 +2056,78 @@
                         link.parentElement.classList.add('active');
                     }
                 });
+                
+                // 处理滚动到顶部按钮的显示
+                const scrollToTopBtn = document.getElementById('scrollToTop');
+                if (scrollToTopBtn) {
+                    if (window.pageYOffset > 300) {
+                        scrollToTopBtn.classList.add('visible');
+                    } else {
+                        scrollToTopBtn.classList.remove('visible');
+                    }
+                }
             });
+            
+            // 窗口大小变化时的处理
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 1024) {
+                    // PC模式下复原导航状态
+                    if (navToggleIcon) {
+                        navToggleIcon.classList.remove('fa-chevron-left');
+                        navToggleIcon.classList.add('fa-chevron-right');
+                    }
+                } else {
+                    // 移动模式下移除扩展状态
+                    container.classList.remove('nav-expanded');
+                    navSidebar.classList.remove('expanded');
+                }
+            });
+            
+            // 滚动到顶部按钮的点击事件
+            const scrollToTopBtn = document.getElementById('scrollToTop');
+            if (scrollToTopBtn) {
+                scrollToTopBtn.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        });
+        
+        // 添加强制刷新按钮功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const refreshBtn = document.getElementById('forceRefreshBtn');
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', function() {
+                    // 强制刷新所有iframe
+                    const allFrames = document.querySelectorAll('.scene-frame');
+                    const timestamp = new Date().getTime();
+                    
+                    allFrames.forEach(iframe => {
+                        let currentSrc = iframe.src;
+                        // 移除现有的时间戳或nocache参数
+                        currentSrc = currentSrc.split('?')[0];
+                        iframe.src = currentSrc + '?nocache=' + timestamp;
+                    });
+                    
+                    // 显示刷新提示
+                    const verifyResult = document.getElementById('verifyResult');
+                    const verifyResultContent = document.getElementById('verifyResultContent');
+                    
+                    if (verifyResult && verifyResultContent) {
+                        verifyResult.classList.add('show');
+                        verifyResultContent.innerHTML = '<div style="color: #10b981; font-weight: bold;">✅ 所有内容已强制刷新</div>' +
+                            '<p>已清除缓存并重新加载所有页面。如果仍有问题，请尝试刷新整个浏览器页面。</p>';
+                        
+                        // 转动刷新按钮图标
+                        refreshBtn.querySelector('i').style.animation = 'spin 1s linear';
+                        setTimeout(() => {
+                            refreshBtn.querySelector('i').style.animation = '';
+                        }, 1000);
+                    }
+                });
+            }
         });
     </script>
 </body>

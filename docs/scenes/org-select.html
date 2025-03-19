@@ -30,6 +30,8 @@
         
         .user-info {
             flex: 1;
+            max-width: calc(100% - 100px); /* 限制宽度，避免与标签重叠 */
+            overflow: hidden;
         }
         
         .user-name {
@@ -70,6 +72,7 @@
             transition: all 0.2s;
             cursor: pointer;
             position: relative;
+            padding-right: 80px; /* 为右侧标签留出足够空间 */
         }
         
         .org-card:hover {
@@ -116,11 +119,16 @@
         
         .org-info {
             flex: 1;
+            max-width: calc(100% - 100px); /* 限制宽度，避免与标签重叠 */
+            overflow: hidden;
         }
         
         .org-name {
             font-weight: 600;
             margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis; /* 文本超出显示省略号 */
         }
         
         .org-role {
@@ -130,11 +138,14 @@
         
         .org-badge {
             position: absolute;
-            top: 12px;
+            top: 50%;
             right: 12px;
+            transform: translateY(-50%); /* 垂直居中 */
             font-size: 12px;
             padding: 2px 8px;
             border-radius: 100px;
+            white-space: nowrap; /* 防止文本换行 */
+            z-index: 2; /* 确保在最上层 */
         }
         
         .badge-admin {
@@ -200,6 +211,7 @@
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
+            white-space: nowrap;
         }
         
         .exit-button:hover {
@@ -269,7 +281,7 @@
                         <i class="fas fa-building"></i>
                     </div>
                     <div class="org-info">
-                        <div class="org-name">北京优创科技有限公司</div>
+                        <div class="org-name">Acme Technology Inc.</div>
                         <div class="org-role">管理员</div>
                     </div>
                     <div class="org-badge badge-admin">管理员</div>
@@ -281,7 +293,7 @@
                         <i class="fas fa-globe"></i>
                     </div>
                     <div class="org-info">
-                        <div class="org-name">上海数智信息科技有限公司</div>
+                        <div class="org-name">Global Digital Solutions Ltd.</div>
                         <div class="org-role">成员</div>
                     </div>
                     <div class="org-badge badge-member">成员</div>
@@ -293,7 +305,7 @@
                         <i class="fas fa-hourglass-half"></i>
                     </div>
                     <div class="org-info">
-                        <div class="org-name">广州未来科技有限公司</div>
+                        <div class="org-name">Future Tech Innovations Co.</div>
                         <div class="org-role">审核中</div>
                     </div>
                     <div class="org-badge badge-pending">待审核</div>

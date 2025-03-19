@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>清除缓存工具 - Matrix USD</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0052ff;
+            --primary-light: #e9f0ff;
+            --primary-dark: #0039c6;
+            --neutral-50: #f7f8fa;
+            --neutral-100: #eef1f5;
+            --neutral-700: #374151;
+            --success: #10b981;
+            --error: #ef4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+            background-color: var(--neutral-50);
+            color: var(--neutral-700);
+            line-height: 1.5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--neutral-100);
+        }
+        
+        h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 0;
+            transition: all 0.2s;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-refresh {
+            background-color: var(--success);
+        }
+        
+        .btn-refresh:hover {
+            background-color: #0ca678;
+        }
+        
+        .btn-clear {
+            background-color: var(--error);
+        }
+        
+        .btn-clear:hover {
+            background-color: #dc2626;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: var(--primary-light);
+            display: none;
+        }
+        
+        .status.show {
+            display: block;
+        }
+        
+        .shortcuts {
+            background-color: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .shortcut-key {
+            background-color: #e0f2fe;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: bold;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .spinner {
+            display: inline-block;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Matrix USD - 浏览器缓存清理工具</h1>
+        
+        <div class="section">
+            <h2>问题：优化不生效</h2>
+            <p>如果您在访问 <a href="showcase.html">展示页面</a> 时发现最近的优化没有生效，这很可能是由于浏览器缓存问题导致的。浏览器可能仍在使用旧版本的文件，而不是加载最新的更改。</p>
+            
+            <div class="shortcuts">
+                <p><strong>快捷键清除缓存:</strong></p>
+                <ul>
+                    <li>Windows: <span class="shortcut-key">Ctrl + F5</span> 或 <span class="shortcut-key">Ctrl + Shift + R</span></li>
+                    <li>Mac: <span class="shortcut-key">Command + Shift + R</span></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>解决方案</h2>
+            <p>您可以使用以下方法解决浏览器缓存问题：</p>
+            
+            <h3 style="margin-top: 15px; margin-bottom: 10px;">方法1: 使用此页面的工具</h3>
+            <button id="refreshShowcase" class="btn btn-refresh">
+                <i class="fas fa-sync-alt"></i> 刷新展示页面（带时间戳）
+            </button>
+            
+            <button id="clearCacheBtn" class="btn btn-clear">
+                <i class="fas fa-trash"></i> 清除浏览器缓存
+            </button>
+            
+            <div id="statusMessage" class="status"></div>
+            
+            <h3 style="margin-top: 20px; margin-bottom: 10px;">方法2: 手动清除缓存</h3>
+            <ol>
+                <li>打开Chrome开发者工具 (按<span class="shortcut-key">F12</span>键)</li>
+                <li>右键点击刷新按钮，选择"清空缓存并硬性重新加载"</li>
+                <li>或在"网络"标签中，勾选"禁用缓存"选项</li>
+            </ol>
+        </div>
+        
+        <div class="section">
+            <h2>其他可能的解决方案</h2>
+            <ul>
+                <li>使用无痕/隐私浏览窗口访问页面</li>
+                <li>尝试使用不同的浏览器（如Firefox或Safari）</li>
+                <li>清除特定网站的缓存和Cookie</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p>
+                <a href="showcase.html" style="color: var(--primary-color); text-decoration: none;">
+                    <i class="fas fa-arrow-left"></i> 返回展示页面
+                </a>
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const refreshBtn = document.getElementById('refreshShowcase');
+            const clearCacheBtn = document.getElementById('clearCacheBtn');
+            const statusMessage = document.getElementById('statusMessage');
+            
+            function showStatus(message, isSuccess = true) {
+                statusMessage.innerHTML = message;
+                statusMessage.style.backgroundColor = isSuccess ? '#d1fae5' : '#fee2e2';
+                statusMessage.style.color = isSuccess ? '#047857' : '#b91c1c';
+                statusMessage.classList.add('show');
+            }
+            
+            // 刷新展示页面按钮
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', function() {
+                    // 添加时间戳刷新showcase.html
+                    const timestamp = new Date().getTime();
+                    const url = 'showcase.html?nocache=' + timestamp;
+                    
+                    // 显示加载中状态
+                    showStatus('<span class="spinner"><i class="fas fa-spinner"></i></span> 正在刷新页面，请稍候...');
+                    
+                    // 在新窗口打开
+                    window.open(url, '_blank');
+                    
+                    // 更新状态
+                    setTimeout(function() {
+                        showStatus('✅ 已在新窗口打开刷新后的页面！如果仍有问题，请尝试清除浏览器缓存。');
+                    }, 1000);
+                });
+            }
+            
+            // 清除缓存按钮
+            if (clearCacheBtn) {
+                clearCacheBtn.addEventListener('click', function() {
+                    showStatus('<span class="spinner"><i class="fas fa-spinner"></i></span> 正在尝试清除缓存...');
+                    
+                    // 尝试使用JavaScript清除缓存
+                    try {
+                        // 清除localStorage
+                        localStorage.clear();
+                        
+                        // 尝试使用Cache API清除缓存（如果浏览器支持）
+                        if ('caches' in window) {
+                            caches.keys().then(function(names) {
+                                names.forEach(function(name) {
+                                    caches.delete(name);
+                                });
+                            });
+                        }
+                        
+                        // 建议用户执行硬重新加载
+                        setTimeout(function() {
+                            showStatus(`
+                                <p>✅ 已尝试清除本地缓存！</p>
+                                <p>要完全清除缓存，请执行以下操作之一：</p>
+                                <ol style="margin-top: 10px;">
+                                    <li>按下 <strong>Ctrl+F5</strong>（Windows）或 <strong>Command+Shift+R</strong>（Mac）进行硬重新加载</li>
+                                    <li>关闭并重新打开浏览器</li>
+                                </ol>
+                                <p style="margin-top: 10px;">
+                                    <button id="reloadPage" style="background: #0ea5e9; padding: 5px 10px; border-radius: 4px; border: none; color: white; cursor: pointer;">
+                                        <i class="fas fa-sync-alt"></i> 立即重新加载
+                                    </button>
+                                </p>
+                            `);
+                            
+                            // 添加重新加载按钮点击事件
+                            document.getElementById('reloadPage').addEventListener('click', function() {
+                                location.reload(true); // true参数强制从服务器重新加载
+                            });
+                        }, 1500);
+                    } catch (e) {
+                        showStatus('❌ 无法自动清除缓存：' + e.message + '。请尝试手动清除浏览器缓存。', false);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

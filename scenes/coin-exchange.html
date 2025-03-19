@@ -1,0 +1,48 @@
+    <title>Matrix USD - 法币交易</title>
+    <link href="../styles/main.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* 金额快捷选择按钮样式 */
+        .amount-chip {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            padding: 8px 12px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid transparent;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            flex: 1;
+            margin: 0 4px;
+            text-align: center;
+        }
+        
+        .amount-chip:first-child {
+            margin-left: 0;
+        }
+        
+        .amount-chip:last-child {
+            margin-right: 0;
+        }
+        
+        .amount-chip:hover {
+            background-color: rgba(0, 82, 255, 0.15);
+            border-color: var(--primary-color);
+        }
+        
+        .amount-chip:active {
+            transform: scale(0.97);
+        }
+        
+        .amount-chip-accent {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .amount-chip-accent:hover {
+            background-color: var(--primary-dark);
+            border-color: transparent;
+        }
+    </style>
+</head> 

@@ -18,17 +18,18 @@
             border: 1px solid transparent;
             transition: all 0.2s ease;
             cursor: pointer;
-            flex: 1;
-            margin: 0 4px;
+            display: inline-block;
+            white-space: nowrap;
+            min-width: 70px;
             text-align: center;
         }
         
-        .amount-chip:first-child {
-            margin-left: 0;
-        }
-        
-        .amount-chip:last-child {
-            margin-right: 0;
+        /* 快捷金额选项容器 */
+        .amount-chips-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
         }
         
         .amount-chip:hover {
@@ -123,7 +124,7 @@
                                placeholder="输入数量" oninput="calculateOutbound()">
                         <div class="exchange-currency">USDC</div>
                     </div>
-                    <div class="flex justify-between mt-3">
+                    <div class="amount-chips-container">
                         <button class="amount-chip" onclick="fillAmount('sell', 1000)">1,000</button>
                         <button class="amount-chip" onclick="fillAmount('sell', 5000)">5,000</button>
                         <button class="amount-chip" onclick="fillAmount('sell', 10000)">10,000</button>
@@ -181,7 +182,7 @@
                                placeholder="输入数量" oninput="calculateInbound()">
                         <div class="exchange-currency">USD</div>
                     </div>
-                    <div class="flex justify-between mt-3">
+                    <div class="amount-chips-container">
                         <button class="amount-chip" onclick="fillAmount('buy', 1000)">1,000</button>
                         <button class="amount-chip" onclick="fillAmount('buy', 5000)">5,000</button>
                         <button class="amount-chip" onclick="fillAmount('buy', 10000)">10,000</button>
