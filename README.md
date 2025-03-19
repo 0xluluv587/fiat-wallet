@@ -1,6 +1,6 @@
 # Fiat-Wallet 原型项目
 
-Matrix USD 高净值用户USD机构专属账户功能原型展示项目。
+Matrix USD 高净值用户USD机构专属账户功能原型展示项目，探索使用Cursor+Claude进行高保真原型绘制、且持续提升生产力的可行性和经验
 
 ## 项目概述
 
