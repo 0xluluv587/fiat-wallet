@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Matrix USD - 用户旅程地图</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0052ff;
+            --primary-light: #e9f0ff;
+            --primary-dark: #0039c6;
+            --secondary-color: #5047eb;
+            --neutral-50: #f7f8fa;
+            --neutral-100: #eef1f5;
+            --neutral-200: #e5e7eb;
+            --neutral-300: #d1d5db;
+            --neutral-400: #9ca3af;
+            --neutral-500: #6b7280;
+            --neutral-600: #4b5563;
+            --neutral-700: #374151;
+            --neutral-800: #1f2937;
+            --neutral-900: #111827;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+            --info: #3b82f6;
+            
+            /* 情绪颜色 */
+            --emotion-high: #10b981;
+            --emotion-mid: #d1d5db;
+            --emotion-low: #ef4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            background-color: var(--neutral-50);
+            color: var(--neutral-700);
+            line-height: 1.5;
+        }
+        
+        header {
+            background-color: white;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1.5rem 3rem;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--neutral-200);
+            color: var(--neutral-900);
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .journey-map-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+        
+        /* 用户旅程地图样式 */
+        .journey-map {
+            min-width: 1000px;
+            display: grid;
+            grid-template-columns: 200px repeat(5, 1fr);
+            gap: 1px;
+            background-color: var(--neutral-200);
+            border: 1px solid var(--neutral-200);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .journey-map-header {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 200px repeat(5, 1fr);
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .journey-map-header > div {
+            padding: 1rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .journey-map-row {
+            display: contents;
+        }
+        
+        .journey-map-label {
+            background-color: var(--primary-light);
+            padding: 1rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+        
+        .journey-map-cell {
+            background-color: white;
+            padding: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        /* 情绪曲线 */
+        .emotion-curve-container {
+            padding: 2rem 0;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        
+        .emotion-curve {
+            height: 200px;
+            width: 100%;
+            position: relative;
+        }
+        
+        .curve-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 0;
+            border-top: 1px dashed var(--neutral-300);
+        }
+        
+        .curve-high {
+            top: 25%;
+        }
+        
+        .curve-mid {
+            top: 50%;
+        }
+        
+        .curve-low {
+            top: 75%;
+        }
+        
+        .curve-label {
+            position: absolute;
+            left: 0;
+            font-size: 0.8rem;
+            color: var(--neutral-500);
+        }
+        
+        .curve-path {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: var(--primary-color);
+            stroke-width: 3;
+        }
+        
+        .curve-point {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            transform: translate(-50%, -50%);
+        }
+        
+        .curve-point-label {
+            position: absolute;
+            font-size: 0.8rem;
+            white-space: nowrap;
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            padding: 4px 8px;
+            border-radius: 4px;
+            transform: translate(-50%, 0);
+            top: -28px;
+        }
+        
+        /* 机会和见解部分 */
+        .insights-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .insight-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            border-top: 4px solid var(--primary-color);
+        }
+        
+        .insight-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--neutral-900);
+        }
+        
+        .insight-card p {
+            font-size: 0.9rem;
+            color: var(--neutral-600);
+        }
+        
+        .insight-tag {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 6px;
+            margin-bottom: 6px;
+        }
+        
+        .tag-opportunity {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+        }
+        
+        .tag-pain {
+            background-color: #fee2e2;
+            color: var(--error);
+        }
+        
+        .tag-insight {
+            background-color: #e0f2fe;
+            color: var(--info);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem 2rem;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            h2 {
+                font-size: 1.25rem;
+            }
+            
+            .journey-map-container {
+                padding: 1rem;
+            }
+            
+            .insights-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 添加按钮样式 */
+        .button {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        
+        .button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        /* 页脚样式 */
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            border-top: 1px solid var(--neutral-200);
+            color: var(--neutral-500);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Matrix USD 用户旅程地图</h1>
+        <p>探索机构用户如何使用Matrix USD进行法币交易和开通美元账户</p>
+    </header>
+    
+    <div class="container">
+        <a href="showcase.html" class="back-link"><i class="fas fa-arrow-left"></i> 返回原型展示</a>
+        
+        <div class="section">
+            <h2>Matrix USD机构用户旅程</h2>
+            <p>下面展示了一个典型机构用户（如跨境贸易公司的财务负责人）使用Matrix USD进行法币交易和开通美元账户的完整旅程。这个旅程地图帮助我们识别用户体验中的痛点和机会，优化产品设计和流程。</p>
+            
+            <!-- 这里将添加旅程地图和内容 -->
+            <div class="journey-map-container">
+                <div class="journey-map">
+                    <!-- 表头 -->
+                    <div class="journey-map-header">
+                        <div>用户旅程要素</div>
+                        <div>1. 账户设置</div>
+                        <div>2. KYC认证</div>
+                        <div>3. 美元账户开通</div>
+                        <div>4. OTC交易使用</div>
+                        <div>5. 后续管理</div>
+                    </div>
+                    
+                    <!-- 阶段目标 -->
+                    <div class="journey-map-row">
+                        <div class="journey-map-label">目标</div>
+                        <div class="journey-map-cell">
+                            创建账户，了解平台的基本功能
+                        </div>
+                        <div class="journey-map-cell">
+                            完成企业KYC认证，以获得法币交易资格
+                        </div>
+                        <div class="journey-map-cell">
+                            开通专属美元账户，支持全球收付款
+                        </div>
+                        <div class="journey-map-cell">
+                            使用OTC功能完成法币与USDC间的兑换
+                        </div>
+                        <div class="journey-map-cell">
+                            管理账户，处理日常交易和资金动向
+                        </div>
+                    </div>
+                    
+                    <!-- 用户行动 -->
+                    <div class="journey-map-row">
+                        <div class="journey-map-label">行动</div>
+                        <div class="journey-map-cell">
+                            <ul style="padding-left: 1rem; margin-bottom: 0;">
+                                <li>注册个人账户</li>
+                                <li>创建企业账户</li>
+                                <li>浏览应用功能</li>
+                                <li>设置账户安全措施</li>
+                            </ul>
+                        </div>
+                        <div class="journey-map-cell">
+                            <ul style="padding-left: 1rem; margin-bottom: 0;">
+                                <li>准备企业资质材料</li>
+                                <li>上传营业执照等文件</li>
+                                <li>填写法人和受益人信息</li>
+                                <li>等待审核结果</li>
+                            </ul>
+                        </div>
+                        <div class="journey-map-cell">
+                            <ul style="padding-left: 1rem; margin-bottom: 0;">
+                                <li>查看美元账户介绍</li>
+                                <li>选择账户类型和服务</li>
+                                <li>支付开户费用</li>
+                                <li>激活美元账户</li>
+                            </ul>
+                        </div>
+                        <div class="journey-map-cell">
+                            <ul style="padding-left: 1rem; margin-bottom: 0;">
+                                <li>选择交易类型（入金/出金）</li>
+                                <li>输入交易金额</li>
+                                <li>选择或添加银行账户</li>
+                                <li>确认交易并处理资金</li>
+                            </ul>
+                        </div>
+                        <div class="journey-map-cell">
+                            <ul style="padding-left: 1rem; margin-bottom: 0;">
+                                <li>查看交易历史</li>
+                                <li>监控账户余额</li>
+                                <li>执行定期转账</li>
+                                <li>处理对账和财务报表</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- 用户思考 -->
+                    <div class="journey-map-row">
+                        <div class="journey-map-label">思考</div>
+                        <div class="journey-map-cell">
+                            "这个平台如何保障我的企业资金安全？"<br><br>
+                            "设置过程是否简单高效？"<br><br>
+                            "个人账户和企业账户是什么关系？"
+                        </div>
+                        <div class="journey-map-cell">
+                            "KYC认证需要准备哪些材料？"<br><br>
+                            "审核要多久？标准是什么？"<br><br>
+                            "我的企业数据如何被保护？"
+                        </div>
+                        <div class="journey-map-cell">
+                            "美元账户有什么优势？"<br><br>
+                            "费用结构如何？是否值得投入？"<br><br>
+                            "开通后多久可以使用？"
+                        </div>
+                        <div class="journey-map-cell">
+                            "交易汇率是否合理？"<br><br>
+                            "交易流程安全吗？"<br><br>
+                            "资金到账时间要多久？"
+                        </div>
+                        <div class="journey-map-cell">
+                            "如何优化日常资金管理？"<br><br>
+                            "能否支持批量操作？"<br><br>
+                            "遇到问题如何快速解决？"
+                        </div>
+                    </div>
+                    
+                    <!-- 用户感受 -->
+                    <div class="journey-map-row">
+                        <div class="journey-map-label">情绪</div>
+                        <div class="journey-map-cell">
+                            <div style="color: var(--warning);">
+                                ◐ 有些犹豫和不确定
+                            </div>
+                            对平台的功能和安全性存在疑虑，需要逐步建立信任
+                        </div>
+                        <div class="journey-map-cell">
+                            <div style="color: var(--error);">
+                                ◔ 可能感到繁琐和焦虑
+                            </div>
+                            担心审核时间长，材料不符合要求导致反复提交
+                        </div>
+                        <div class="journey-map-cell">
+                            <div style="color: var(--primary-color);">
+                                ◑ 期待但谨慎
+                            </div>
+                            对新功能感兴趣，但对费用和价值有所保留
+                        </div>
+                        <div class="journey-map-cell">
+                            <div style="color: var(--success);">
+                                ◕ 满意且有成就感
+                            </div>
+                            成功完成交易后体验到平台价值，建立信任
+                        </div>
+                        <div class="journey-map-cell">
+                            <div style="color: var(--success);">
+                                ● 满意并忠诚
+                            </div>
+                            长期使用后形成习惯，对平台产生依赖
+                        </div>
+                    </div>
+                    
+                    <!-- 机会点 -->
+                    <div class="journey-map-row">
+                        <div class="journey-map-label">机会</div>
+                        <div class="journey-map-cell">
+                            简化账户创建流程，提供清晰的安全说明和功能引导，减少初始摩擦
+                        </div>
+                        <div class="journey-map-cell">
+                            提供KYC材料准备指南，增加进度透明度，简化材料上传流程
+                        </div>
+                        <div class="journey-map-cell">
+                            提供明确的价值对比和例子，简化开户流程，增加费用透明度
+                        </div>
+                        <div class="journey-map-cell">
+                            提高汇率透明度，增加实时交易状态追踪，优化资金不足时的体验
+                        </div>
+                        <div class="journey-map-cell">
+                            提供批量操作和定制报表功能，增加API集成能力，强化客户支持
+                        </div>
+                    </div>
+                    
+                    <!-- 接触点 -->
+                    <div class="journey-map-row">
+                        <div class="journey-map-label">接触点</div>
+                        <div class="journey-map-cell">
+                            <span class="insight-tag tag-insight">移动App</span>
+                            <span class="insight-tag tag-insight">网页端</span>
+                            <span class="insight-tag tag-insight">欢迎邮件</span>
+                            <span class="insight-tag tag-insight">安全提示</span>
+                        </div>
+                        <div class="journey-map-cell">
+                            <span class="insight-tag tag-insight">KYC表单</span>
+                            <span class="insight-tag tag-insight">材料上传</span>
+                            <span class="insight-tag tag-insight">审核提醒</span>
+                            <span class="insight-tag tag-insight">客服咨询</span>
+                        </div>
+                        <div class="journey-map-cell">
+                            <span class="insight-tag tag-insight">账户选择</span>
+                            <span class="insight-tag tag-insight">费用页面</span>
+                            <span class="insight-tag tag-insight">支付界面</span>
+                            <span class="insight-tag tag-insight">激活确认</span>
+                        </div>
+                        <div class="journey-map-cell">
+                            <span class="insight-tag tag-insight">交易界面</span>
+                            <span class="insight-tag tag-insight">银行账户</span>
+                            <span class="insight-tag tag-insight">交易确认</span>
+                            <span class="insight-tag tag-insight">结果通知</span>
+                        </div>
+                        <div class="journey-map-cell">
+                            <span class="insight-tag tag-insight">账户总览</span>
+                            <span class="insight-tag tag-insight">交易历史</span>
+                            <span class="insight-tag tag-insight">财务报表</span>
+                            <span class="insight-tag tag-insight">客户支持</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 情绪曲线 -->
+            <h3 style="margin-top: 2rem;">用户情绪曲线</h3>
+            <div class="emotion-curve-container">
+                <div class="emotion-curve">
+                    <!-- 基准线 -->
+                    <div class="curve-line curve-high">
+                        <span class="curve-label" style="top: -10px;">高</span>
+                    </div>
+                    <div class="curve-line curve-mid">
+                        <span class="curve-label" style="top: -10px;">中</span>
+                    </div>
+                    <div class="curve-line curve-low">
+                        <span class="curve-label" style="top: -10px;">低</span>
+                    </div>
+                    
+                    <!-- 曲线 -->
+                    <svg viewBox="0 0 1000 200" preserveAspectRatio="none" style="width: 100%; height: 100%;">
+                        <path d="M50,100 C100,90 150,80 200,90 C250,100 300,120 350,65 C400,50 450,80 500,100 C550,120 600,135 650,60 C700,40 750,40 800,50 C850,60 900,50 950,40" class="curve-path"></path>
+                    </svg>
+                    
+                    <!-- 阶段点 -->
+                    <div class="curve-point" style="left: 10%; top: 50%;">
+                        <div class="curve-point-label">账户设置</div>
+                    </div>
+                    <div class="curve-point" style="left: 30%; top: 75%;">
+                        <div class="curve-point-label">KYC认证</div>
+                    </div>
+                    <div class="curve-point" style="left: 50%; top: 50%;">
+                        <div class="curve-point-label">美元账户开通</div>
+                    </div>
+                    <div class="curve-point" style="left: 70%; top: 30%;">
+                        <div class="curve-point-label">OTC交易使用</div>
+                    </div>
+                    <div class="curve-point" style="left: 90%; top: 20%;">
+                        <div class="curve-point-label">后续管理</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 机会和洞察 -->
+            <h3 style="margin-top: 2rem;">关键洞察与优化机会</h3>
+            <div class="insights-container">
+                <div class="insight-card">
+                    <h3>简化KYC认证流程</h3>
+                    <p>用户在KYC认证阶段情绪低落，主要原因是流程繁琐和不确定性。</p>
+                    <div>
+                        <span class="insight-tag tag-pain">痛点</span>
+                        <span class="insight-tag tag-opportunity">机会</span>
+                    </div>
+                    <p style="margin-top: 0.5rem;">优化方案：提供材料清单和例子，增加进度指示器，支持保存草稿，允许分步上传。</p>
+                </div>
+                
+                <div class="insight-card">
+                    <h3>提高交易透明度</h3>
+                    <p>用户在OTC交易时对汇率和交易状态的透明度要求高，是建立信任的关键环节。</p>
+                    <div>
+                        <span class="insight-tag tag-insight">洞察</span>
+                        <span class="insight-tag tag-opportunity">机会</span>
+                    </div>
+                    <p style="margin-top: 0.5rem;">优化方案：显示实时汇率对比，提供交易进度追踪，发送关键节点通知，增加市场行情参考。</p>
+                </div>
+                
+                <div class="insight-card">
+                    <h3>完善资金不足处理</h3>
+                    <p>资金不足是OTC交易中的常见问题，目前的处理方式可能导致用户流失。</p>
+                    <div>
+                        <span class="insight-tag tag-pain">痛点</span>
+                        <span class="insight-tag tag-opportunity">机会</span>
+                    </div>
+                    <p style="margin-top: 0.5rem;">优化方案：合并资金不足和充值页面，提供多种充值选项，保留交易锁定，简化"继续交易"流程。</p>
+                </div>
+                
+                <div class="insight-card">
+                    <h3>个人与企业账户协同</h3>
+                    <p>用户对个人账户和企业账户的关系和协同方式存在困惑。</p>
+                    <div>
+                        <span class="insight-tag tag-insight">洞察</span>
+                        <span class="insight-tag tag-opportunity">机会</span>
+                    </div>
+                    <p style="margin-top: 0.5rem;">优化方案：提供清晰的账户关系说明，简化账户切换操作，统一核心功能界面，增强权限管理。</p>
+                </div>
+                
+                <div class="insight-card">
+                    <h3>提升企业级功能</h3>
+                    <p>后续管理阶段，企业用户需要更多批量操作和报表功能。</p>
+                    <div>
+                        <span class="insight-tag tag-insight">洞察</span>
+                        <span class="insight-tag tag-opportunity">机会</span>
+                    </div>
+                    <p style="margin-top: 0.5rem;">优化方案：增加批量转账和定时任务，提供可定制财务报表，支持与企业财务系统集成，开放API接口。</p>
+                </div>
+                
+                <div class="insight-card">
+                    <h3>强化首次使用体验</h3>
+                    <p>用户在初次使用平台时，缺乏对功能和价值的完整理解。</p>
+                    <div>
+                        <span class="insight-tag tag-pain">痛点</span>
+                        <span class="insight-tag tag-opportunity">机会</span>
+                    </div>
+                    <p style="margin-top: 0.5rem;">优化方案：添加引导式教程，提供互动式功能演示，展示实际案例和成功故事，简化首次设置流程。</p>
+                </div>
+            </div>
+            
+            <h3 style="margin-top: 2rem;">行动建议</h3>
+            <p>基于用户旅程地图分析，我们提出以下优先改进项目：</p>
+            <ol style="margin-left: 1.5rem; margin-bottom: 1.5rem;">
+                <li><strong>短期目标</strong>：合并资金不足和等待页面，优化KYC材料上传流程，完善交易进度指示</li>
+                <li><strong>中期目标</strong>：强化账户协同体验，增加批量操作功能，开发更多企业级报表</li>
+                <li><strong>长期目标</strong>：开发API集成能力，提供定制化服务套餐，建立合作伙伴生态系统</li>
+            </ol>
+            
+            <div style="margin-top: 2rem; text-align: center;">
+                <a href="showcase.html" class="button">返回原型展示页面</a>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2024 Matrix USD - 用户旅程地图</p>
+    </footer>
+</body>
+</html> 
