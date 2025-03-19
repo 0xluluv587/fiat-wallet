@@ -9,41 +9,74 @@
     <style>
         /* 首页特定样式优化 */
         .token-card {
-            background: linear-gradient(135deg, #0052ff, #0039c6);
-            border-radius: 16px;
-            padding: 20px;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            border-radius: 20px;
+            padding: 16px 20px;
             color: white;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0, 82, 255, 0.15);
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0, 150, 80, 0.15);
+            position: relative;
+            overflow: hidden;
         }
         
-        .token-balance {
-            font-size: 28px;
-            font-weight: 700;
-            margin: 8px 0;
-            letter-spacing: -0.5px;
+        .token-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+            pointer-events: none;
         }
         
         .token-label {
-            font-size: 14px;
+            font-size: 16px;
             opacity: 0.9;
             font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .token-label i {
+            font-size: 14px;
+        }
+        
+        .token-balance {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 10px 0;
+            letter-spacing: -0.5px;
+        }
+        
+        .token-change {
+            font-size: 14px;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .token-change-value {
+            margin-left: 8px;
+            opacity: 0.8;
         }
         
         .token-actions {
             display: flex;
             justify-content: space-between;
             margin-top: 16px;
-            gap: 10px;
+            gap: 8px;
         }
         
         .token-action-btn {
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: rgba(255, 255, 255, 0.15);
+            background-color: rgba(0, 0, 0, 0.15);
             border-radius: 12px;
-            padding: 12px;
+            padding: 12px 8px;
             font-size: 13px;
             gap: 8px;
             flex: 1;
@@ -53,12 +86,19 @@
         
         .token-action-btn:hover, 
         .token-action-btn:active {
-            background-color: rgba(255, 255, 255, 0.25);
+            background-color: rgba(0, 0, 0, 0.25);
             transform: translateY(-2px);
         }
         
         .token-action-btn i {
-            font-size: 18px;
+            font-size: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         /* 资产列表优化 */
@@ -141,11 +181,11 @@
             width: 48px;
             height: 48px;
             border-radius: 50%;
-            background-color: var(--primary-light);
+            background-color: #222222;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--primary-color);
+            color: white;
             font-size: 20px;
         }
         
@@ -329,6 +369,221 @@
             background-color: var(--primary-light);
             color: var(--primary-color);
         }
+        
+        /* 钱包主页顶部新增样式 */
+        .wallet-header {
+            margin: -16px -16px 16px -16px;
+            padding: 16px;
+            background-color: white;
+        }
+        
+        .wallet-balance-section {
+            margin-bottom: 20px;
+        }
+        
+        .balance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .balance-info {
+            font-size: 13px;
+            color: #aaa;
+        }
+        
+        .asset-info-card {
+            background-color: #f7f8fa;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 15px;
+        }
+        
+        .asset-tabs {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+        
+        .asset-tab {
+            font-weight: 600;
+            font-size: 15px;
+            color: #999;
+            padding-bottom: 8px;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .asset-tab.active {
+            color: #333;
+        }
+        
+        .asset-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -9px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: #333;
+            border-radius: 2px;
+        }
+        
+        .asset-toggle {
+            display: flex;
+            align-items: center;
+            padding: 3px;
+            background-color: #eeeeee;
+            border-radius: 20px;
+            width: fit-content;
+        }
+        
+        .asset-toggle-option {
+            padding: 4px 12px;
+            font-size: 13px;
+            border-radius: 16px;
+            cursor: pointer;
+        }
+        
+        .asset-toggle-option.active {
+            background-color: white;
+            color: #333;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            font-weight: 500;
+        }
+        
+        .promo-banner {
+            background: linear-gradient(135deg, #febc3b, #fba003);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+            position: relative;
+            overflow: hidden;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .promo-banner-icon {
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .promo-banner-content {
+            flex: 1;
+        }
+        
+        .promo-banner-title {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        
+        .promo-banner-text {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+        
+        .promo-banner-action {
+            color: white;
+            font-size: 20px;
+        }
+
+        /* 开关组件样式 */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 22px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        input:checked + .slider {
+            background-color: #27ae60;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #27ae60;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        /* 资产卡片图表样式 */
+        .asset-chart {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .asset-chart-line {
+            position: absolute;
+            top: 70px;
+            left: 0;
+            right: 0;
+            height: 30px;
+        }
+
+        .asset-chart-bg {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            border-radius: 50%;
+            width: 300px;
+            height: 300px;
+            position: absolute;
+            top: -150px;
+            right: -100px;
+        }
     </style>
 </head>
 <body>
@@ -337,7 +592,7 @@
         <!-- 状态栏 -->
         <div class="status-bar">
             <div class="status-bar-content">
-                <div class="status-bar-time" id="statusBarTime">9:41</div>
+                <div class="status-bar-time" id="statusBarTime">12:45</div>
                 <div class="status-bar-icons">
                     <div class="status-bar-signal">
                         <i class="fas fa-signal"></i>
@@ -358,203 +613,144 @@
                 <i class="fas fa-chevron-left"></i>
                 <span>返回</span>
             </div>
-            <div class="nav-title">Matrix USD</div>
+            <div class="nav-title">账单</div>
             <div class="nav-action">
-                <i class="fas fa-bell"></i>
+                <i class="fas fa-ellipsis-h"></i>
             </div>
         </div>
 
         <!-- 主要内容区 -->
         <div class="content">
-            <!-- 账户状态通知 -->
-            <div class="notification notification-info">
-                <div class="notification-icon">
-                    <i class="fas fa-info-circle"></i>
-                </div>
-                <div class="notification-content">
-                    <div class="notification-title">请完成KYC认证</div>
-                    <div class="notification-message">完成KYC认证后可使用OTC交易和开通美元账户服务</div>
-                </div>
+            <!-- 余额提示信息 -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <div style="color: #666; font-size: 14px;">$409 内置资金可转入活期存</div>
+                <div style="color: #333; font-weight: 500; font-size: 14px;">账单</div>
             </div>
             
-            <!-- 进行中交易通知 -->
-            <div class="notification notification-warning" id="activeTransactionNotice" style="display: none;">
-                <div class="notification-icon">
-                    <i class="fas fa-clock"></i>
-                </div>
-                <div class="notification-content">
-                    <div class="notification-title">您有一笔交易正在处理中</div>
-                    <div class="notification-message">
-                        <span id="activeTxType">出金 (卖出USDC)</span> -
-                        <span id="activeTxAmount">5,000 USDC</span> -
-                        <span id="activeTxStatus">等待USDC支付</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 资产展示 -->
+            <!-- 资产展示 - 参考Figma设计 -->
             <div class="token-card">
-                <div class="token-label">总资产 (USD)</div>
-                <div class="token-balance">$10,250.00</div>
+                <div class="token-label">Total Assets <i class="fas fa-eye"></i></div>
+                <div class="token-balance">$ 271,921,118,631.30</div>
+                <div class="token-change">
+                    <span>7日</span>
+                    <span class="token-change-value">$ 120.12 (-3.40%)</span>
+                </div>
+                
+                <!-- 添加半圆指示器 -->
+                <div style="position: relative; height: 60px; margin: 0 -10px;">
+                    <svg width="100%" height="60" viewBox="0 0 350 60" xmlns="http://www.w3.org/2000/svg">
+                        <!-- 绿色部分 -->
+                        <path d="M0,60 A175,175 0 0,1 70,10" stroke="rgba(255,255,255,0.5)" stroke-width="6" fill="none" />
+                        <!-- 黄色部分 -->
+                        <path d="M70,10 A175,175 0 0,1 280,10" stroke="rgba(255,220,0,0.5)" stroke-width="6" fill="none" />
+                        <!-- 红色部分 -->
+                        <path d="M280,10 A175,175 0 0,1 350,60" stroke="rgba(255,100,100,0.5)" stroke-width="6" fill="none" />
+                        <!-- 指示器 -->
+                        <circle cx="175" cy="10" r="8" fill="white" />
+                    </svg>
+                </div>
+                
                 <div class="token-actions">
                     <div class="token-action-btn" id="depositBtn">
                         <i class="fas fa-arrow-down"></i>
-                        <span>充值</span>
+                        <span>Deposit</span>
                     </div>
                     <div class="token-action-btn" id="withdrawBtn">
                         <i class="fas fa-arrow-up"></i>
-                        <span>提现</span>
+                        <span>Withdraw</span>
                     </div>
-                    <div class="token-action-btn" onclick="location.href='coin-exchange.html'">
+                    <div class="token-action-btn">
                         <i class="fas fa-exchange-alt"></i>
-                        <span>兑换</span>
+                        <span>Transfer</span>
+                    </div>
+                    <div class="token-action-btn">
+                        <i class="fas fa-link"></i>
+                        <span>Fiat</span>
                     </div>
                 </div>
+            </div>
+
+            <!-- 账户提示信息 -->
+            <div class="promo-banner" style="position: relative; overflow: hidden;">
+                <!-- 添加背景装饰 -->
+                <div style="position: absolute; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%; top: -30px; right: -30px;"></div>
+                <div style="position: absolute; width: 40px; height: 40px; background: rgba(255,255,255,0.15); border-radius: 50%; bottom: -10px; left: 20px;"></div>
+                
+                <div class="promo-banner-icon">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="promo-banner-content">
+                    <div class="promo-banner-title">机构专属美元账户已开通 <span style="display:inline-block; background: rgba(255,255,255,0.2); font-size: 11px; padding: 1px 6px; border-radius: 10px; margin-left: 5px;">查看 →</span></div>
+                    <div class="promo-banner-text">T+0 结算，打通你的链上链下资产</div>
+                </div>
+            </div>
+
+            <!-- 资产选项卡 -->
+            <div class="asset-tabs">
+                <div class="asset-tab active">Coins</div>
+                <div class="asset-tab">Allocation</div>
+            </div>
+            
+            <!-- 隐藏资产选项 -->
+            <div style="display: flex; align-items: center; margin-bottom: 16px; gap: 6px;">
+                <span style="font-size: 14px; color: #666;">隐藏0资产</span>
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider round"></span>
+                </label>
             </div>
 
             <!-- 我的资产列表 -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">我的资产</div>
-                </div>
-                
-                <!-- USD资产 -->
-                <div class="list-item" onclick="location.href='account-status.html?status=opened'">
-                    <div class="list-item-icon">
-                        <div class="coin-icon">$</div>
+            <div class="card" style="box-shadow: none; padding: 0;">
+                <!-- BTC资产 -->
+                <div class="list-item">
+                    <div class="list-item-icon" style="background: #F7931A; margin-right: 12px;">
+                        <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png" alt="BTC" width="25" height="25" style="filter: brightness(0) invert(1);">
                     </div>
                     <div class="list-item-content">
-                        <div class="list-item-title">USD</div>
-                        <div class="list-item-subtitle">美元账户</div>
+                        <div class="list-item-title">BTC</div>
+                        <div class="list-item-subtitle">Bitcoin</div>
                     </div>
                     <div>
-                        <div class="text-right font-semibold">1,750.00</div>
-                        <div class="text-right text-sm text-neutral-500">≈ $1,750.00</div>
+                        <div class="text-right font-semibold">2.52581891 <i class="fas fa-chevron-down" style="font-size: 12px; color: #999; margin-left: 2px;"></i></div>
+                        <div class="text-right text-sm text-neutral-500">$ 189,108.52</div>
                     </div>
                 </div>
                 
-                <!-- USDC资产 -->
-                <div class="list-item" id="usdcAsset">
-                    <div class="list-item-icon">
-                        <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png" alt="USDC" width="40" height="40">
+                <!-- BCH资产 -->
+                <div class="list-item">
+                    <div class="list-item-icon" style="background: #8DC351; margin-right: 12px;">
+                        <img src="https://cryptologos.cc/logos/bitcoin-cash-bch-logo.png" alt="BCH" width="28" height="28" style="filter: brightness(0) invert(1);">
                     </div>
                     <div class="list-item-content">
-                        <div class="list-item-title">USDC</div>
-                        <div class="list-item-subtitle">USD Coin</div>
+                        <div class="list-item-title">BCH</div>
+                        <div class="list-item-subtitle">Bitcoin Cash</div>
                     </div>
                     <div>
-                        <div class="text-right font-semibold">8,500.00</div>
-                        <div class="text-right text-sm text-neutral-500">≈ $8,500.00</div>
+                        <div class="text-right font-semibold">41.38 <i class="fas fa-chevron-down" style="font-size: 12px; color: #999; margin-left: 2px;"></i></div>
+                        <div class="text-right text-sm text-neutral-500">$ 189,108.52</div>
                     </div>
                 </div>
-            </div>
-
-            <!-- 快捷功能 -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">快捷功能</div>
-                </div>
-                
-                <div class="shortcut-grid">
-                    <!-- 法币交易 -->
-                    <div class="shortcut-item" onclick="location.href='coin-exchange.html'">
-                        <div class="shortcut-icon">
-                            <i class="fas fa-exchange-alt"></i>
-                        </div>
-                        <div class="shortcut-label">法币交易</div>
-                    </div>
-                    
-                    <!-- 美元账户 -->
-                    <div class="shortcut-item" onclick="location.href='account-status.html?status=opened'">
-                        <div class="shortcut-icon">
-                            <i class="fas fa-university"></i>
-                        </div>
-                        <div class="shortcut-label">美元账户</div>
-                    </div>
-                    
-                    <!-- 交易记录 -->
-                    <div class="shortcut-item" onclick="location.href='../otc-history.html'">
-                        <div class="shortcut-icon">
-                            <i class="fas fa-history"></i>
-                        </div>
-                        <div class="shortcut-label">交易记录</div>
-                    </div>
-                    
-                    <!-- KYC认证 -->
-                    <div class="shortcut-item">
-                        <div class="shortcut-icon">
-                            <i class="fas fa-id-card"></i>
-                        </div>
-                        <div class="shortcut-label">KYC认证</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 最近交易 -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">最近交易</div>
-                    <div class="card-subtitle">查看您的最近交易记录</div>
-                </div>
-                
-                <!-- 交易项目 -->
-                <div class="transaction-item">
-                    <div class="transaction-icon deposit">
-                        <i class="fas fa-arrow-down"></i>
-                    </div>
-                    <div class="transaction-details">
-                        <div class="transaction-title">USDC 充值</div>
-                        <div class="transaction-date">2023-11-12 14:30</div>
-                    </div>
-                    <div class="transaction-amount positive">+2,500 USDC</div>
-                </div>
-                
-                <div class="transaction-item">
-                    <div class="transaction-icon exchange">
-                        <i class="fas fa-exchange-alt"></i>
-                    </div>
-                    <div class="transaction-details">
-                        <div class="transaction-title">USDC 兑换 USD</div>
-                        <div class="transaction-date">2023-11-10 09:15</div>
-                    </div>
-                    <div class="transaction-amount negative">-1,000 USDC</div>
-                </div>
-                
-                <div class="transaction-item">
-                    <div class="transaction-icon withdraw">
-                        <i class="fas fa-arrow-up"></i>
-                    </div>
-                    <div class="transaction-details">
-                        <div class="transaction-title">USD 提现</div>
-                        <div class="transaction-date">2023-11-08 16:45</div>
-                    </div>
-                    <div class="transaction-amount negative">-500 USD</div>
-                </div>
-                
-                <!-- 查看更多按钮 -->
-                <button class="btn-view-more" onclick="location.href='../otc-history.html'">
-                    查看更多交易
-                </button>
             </div>
         </div>
 
         <!-- 底部标签栏 -->
         <div class="tab-bar">
-            <div class="tab-item active" data-tab="home">
+            <div class="tab-item" data-tab="home">
                 <div class="tab-icon"><i class="fas fa-home"></i></div>
-                <div class="tab-text">首页</div>
+                <div class="tab-text">Home</div>
             </div>
-            <div class="tab-item" data-tab="otc">
+            <div class="tab-item" data-tab="invest">
+                <div class="tab-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="tab-text">Invest</div>
+            </div>
+            <div class="tab-item" data-tab="trade">
                 <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div>
-                <div class="tab-text">法币交易</div>
+                <div class="tab-text">Trade</div>
             </div>
-            <div class="tab-item" data-tab="account">
-                <div class="tab-icon"><i class="fas fa-university"></i></div>
-                <div class="tab-text">美元账户</div>
-            </div>
-            <div class="tab-item" data-tab="profile">
-                <div class="tab-icon"><i class="fas fa-user"></i></div>
-                <div class="tab-text">我的</div>
+            <div class="tab-item active" data-tab="wallet">
+                <div class="tab-icon"><i class="fas fa-wallet"></i></div>
+                <div class="tab-text">Wallet</div>
             </div>
         </div>
     </div>
@@ -562,78 +758,15 @@
     <script>
         // 设置状态栏时间
         function updateStatusBarTime() {
-            const now = new Date();
-            let hours = now.getHours();
-            let minutes = now.getMinutes();
-            
-            // 格式化时间为两位数
-            hours = hours < 10 ? `0${hours}` : hours;
-            minutes = minutes < 10 ? `0${minutes}` : minutes;
-            
-            document.getElementById('statusBarTime').textContent = `${hours}:${minutes}`;
+            document.getElementById('statusBarTime').textContent = '12:45';
         }
         
-        // 初始化时间并每分钟更新一次
+        // 初始化时间
         updateStatusBarTime();
-        setInterval(updateStatusBarTime, 60000);
-        
-        // 检查是否有进行中的交易
-        function checkActiveTransaction() {
-            if (window.sessionStorage && sessionStorage.getItem('hasActiveTransaction') === 'true') {
-                document.getElementById('activeTransactionNotice').style.display = 'flex';
-                document.getElementById('activeTxType').textContent = sessionStorage.getItem('activeTxType') || '交易';
-                document.getElementById('activeTxAmount').textContent = sessionStorage.getItem('activeTxAmount') || '';
-                document.getElementById('activeTxStatus').textContent = sessionStorage.getItem('activeTxStatus') || '处理中';
-                
-                // 如果存在倒计时，显示倒计时
-                const remainingTime = sessionStorage.getItem('activeTxRemainingTime');
-                if (remainingTime) {
-                    startCountdown(parseInt(remainingTime));
-                }
-            }
-        }
-        
-        // 倒计时功能
-        function startCountdown(seconds) {
-            const countdownInterval = setInterval(() => {
-                seconds--;
-                
-                if (seconds <= 0) {
-                    clearInterval(countdownInterval);
-                    // 交易超时处理
-                    sessionStorage.removeItem('hasActiveTransaction');
-                    document.getElementById('activeTransactionNotice').style.display = 'none';
-                } else {
-                    // 更新剩余时间
-                    sessionStorage.setItem('activeTxRemainingTime', seconds.toString());
-                    
-                    // 格式化显示
-                    const minutes = Math.floor(seconds / 60);
-                    const secs = seconds % 60;
-                    const timeStr = `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
-                    
-                    const statusEl = document.getElementById('activeTxStatus');
-                    // 检查状态文本，如果包含倒计时则更新倒计时部分
-                    if (statusEl.textContent.includes('剩余时间')) {
-                        statusEl.textContent = `等待USDC支付 (剩余时间: ${timeStr})`;
-                    } else {
-                        statusEl.textContent = `${statusEl.textContent} (剩余时间: ${timeStr})`;
-                    }
-                }
-            }, 1000);
-        }
         
         // 页面加载时检查交易状态
-        window.addEventListener('DOMContentLoaded', function() {
-            checkActiveTransaction();
-            
+        window.addEventListener('DOMContentLoaded', function() {            
             // 添加USDC资产点击事件
-            document.getElementById('usdcAsset').addEventListener('click', function() {
-                // 显示USDC详情或操作页面
-                showCryptoOptions('USDC');
-            });
-            
-            // 添加充值按钮的点击事件
             document.getElementById('depositBtn').addEventListener('click', function() {
                 showDepositOptions();
             });
@@ -644,21 +777,15 @@
             });
         });
         
-        // 显示加密货币选项
-        function showCryptoOptions(coin) {
-            alert(`${coin} 详情页功能即将上线`);
-            // 实际应用中可以导航到具体的币种详情页
-        }
-        
         // 显示充值选项
         function showDepositOptions() {
-            alert('请选择充值方式: 1. 从链上转入USDC  2. 通过OTC买入USDC');
+            alert('请选择充值方式: 1. 从链上转入加密货币  2. 通过法币买入');
             // 实际应用中应该显示模态框或导航到充值页面
         }
         
         // 显示提现选项
         function showWithdrawOptions() {
-            alert('请选择提现方式: 1. 提取到链上地址  2. 提取为USD法币');
+            alert('请选择提现方式: 1. 提取到链上地址  2. 提取为法币');
             // 实际应用中应该显示模态框或导航到提现页面
         }
         
@@ -677,19 +804,19 @@
                 // 根据标签执行相应的操作
                 switch(tabName) {
                     case 'home':
+                        // 跳转到首页
+                        alert('切换到首页');
+                        break;
+                    case 'invest':
+                        // 跳转到投资页面
+                        alert('切换到投资页面');
+                        break;
+                    case 'trade':
+                        // 跳转到交易页面
+                        alert('切换到交易页面');
+                        break;
+                    case 'wallet':
                         // 当前页面，不做操作
-                        break;
-                    case 'otc':
-                        // 跳转到OTC交易页面
-                        window.location.href = 'coin-exchange.html';
-                        break;
-                    case 'account':
-                        // 跳转到账户页面
-                        window.location.href = 'account-status.html?status=opened';
-                        break;
-                    case 'profile':
-                        // 跳转到个人中心页面
-                        window.location.href = 'profile.html';
                         break;
                 }
             });
